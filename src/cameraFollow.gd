@@ -18,7 +18,6 @@ var limit_top: float = -1000.0
 var limit_bottom: float = 1000.0
 
 func _ready() -> void:
-	print("vie_margin:", view_margin, " smooth_speed:", smooth_speed)
 	# 1. 自动寻找主角 (这就是为什么要加 group 的原因)
 	var players = get_tree().get_nodes_in_group("player")
 	if 0 < players.size():
@@ -31,28 +30,21 @@ func _ready() -> void:
 func calculate_map_limits():
 	# 获取网格的包围盒 (AABB)
 	var aabb = map_mesh.mesh.get_aabb()
-	prints("aabb:", aabb)
-	var scaled_size = aabb.size 
+	var scaled_size = aabb.size
 	var scaled_start = aabb.position
 	
 	var global_pos = map_mesh.global_position
-	prints("map_mesh.global_position:", map_mesh.global_position)
 	# 计算绝对边缘
 	var edge_left = global_pos.x + scaled_start.x
 	var edge_right = global_pos.x + scaled_start.x + scaled_size.x
 	var edge_top = global_pos.z + scaled_start.z
 	var edge_bottom = global_pos.z + scaled_start.z + scaled_size.z
-	prints("edge_left:", edge_left, "edge_right:", edge_right, "edge_top:", edge_top, "edge_bottom:", edge_bottom)
 	# 应用边距
 	limit_left = edge_left + view_margin
 	limit_right = edge_right - view_margin
 	limit_top = edge_top + view_margin
 	limit_bottom = edge_bottom - view_margin
-	
-	# 打印出来方便调试，看看数值是不是正常的数字
-	prints("地图边界 左:", limit_left, "右:", limit_right, "上:", limit_top, "下:", limit_bottom)
-	
-	
+
 func _process(delta: float) -> void:
 	if not target:
 		return

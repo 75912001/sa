@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://blvvfganv6qi1"]
+[gd_scene load_steps=10 format=3 uid="uid://blvvfganv6qi1"]
 
 [ext_resource type="PackedScene" uid="uid://u2mcrv87ic44" path="res://scenes/camera.tscn" id="1_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://c74oeid1wxo7y" path="res://res/map/objects/tree/tree.001.glb" id="2_k0juu"]
 [ext_resource type="PackedScene" uid="uid://be6c8o37us7q8" path="res://scenes/player.tscn" id="3_4wyf3"]
+[ext_resource type="Script" path="res://src/debugUI.gd" id="4_debug"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gv5m4"]
 size = Vector3(60, 0.1, 60)
@@ -107,3 +108,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.601384, 0.5002072, -2.8676
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4884496, 0.5002072, -4.3577223)
 
 [node name="Player" parent="." instance=ExtResource("3_4wyf3")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DebugLabel" type="Label" parent="CanvasLayer"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 300.0
+offset_bottom = 80.0
+script = ExtResource("4_debug")
