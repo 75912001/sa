@@ -31,7 +31,7 @@ shadow_enabled = true
 [node name="CameraPivot" parent="." node_paths=PackedStringArray("map_mesh") instance=ExtResource("1_4wyf3")]
 transform = Transform3D(0.7071067, -0.40860698, 0.5770962, 0, 0.8161375, 0.57785743, -0.7071067, -0.40860698, 0.5770962, 0, 0, 0)
 map_mesh = NodePath("../Ground/MeshInstance3D")
-view_margin = 8.0
+view_margin = 6.0
 
 [node name="Ground" type="StaticBody3D" parent="."]
 
