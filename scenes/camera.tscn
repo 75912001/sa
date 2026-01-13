@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://u2mcrv87ic44"]
+
+[ext_resource type="Script" uid="uid://b5kvmjs7sxdej" path="res://src/cameraFollow.gd" id="1_cvpoc"]
+
+[node name="CameraPivot" type="Node3D"]
+transform = Transform3D(0.70710677, -0.40860704, 0.5770964, 0, 0.8161376, 0.5778576, -0.70710677, -0.40860704, 0.5770964, 0, 0, 0)
+script = ExtResource("1_cvpoc")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.9999999, 0, 0, 0, 1, 0, 0, 0, 0.9999999, 0, 0, 100)
+projection = 1
+size = 30.0
+far = 1000.0
