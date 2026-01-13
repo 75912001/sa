@@ -1,7 +1,17 @@
 extends CharacterBody3D
 
-const SPEED = 8.0 # 移动速度
-const ROTATION_SPEED = 10.0 # 转身速度
+const SPEED = 4.0 # 移动速度
+const ROTATION_SPEED = 6.0 # 转身速度
+
+
+@onready var animation_tree = $AnimationTree
+@onready var state_machine = animation_tree.get("parameters/playback")
+
+func _ready() -> void:
+	# 强制激活动画树，防止编辑器中未勾选 Active 导致 T-pose
+	if animation_tree:
+		prints("animation_tree active:", animation_tree.active)
+		animation_tree.active = true
 
 func _physics_process(delta: float) -> void:
 	var wasd_x := 0.0
@@ -15,7 +25,6 @@ func _physics_process(delta: float) -> void:
 		wasd_y -= 1.0
 	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
 		wasd_y += 1.0
-
 
 	# 2. 将 2D 输入转为 3D 向量 (x, 0, y)
 	var direction := Vector3(wasd_x, 0, wasd_y).normalized()
@@ -41,3 +50,8 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 
 	move_and_slide()
+	
+	if velocity.length() > 0.1: # 如果在移动
+		state_machine.travel("Global_Walking")
+	else:
+		state_machine.travel("Global_Idle")
