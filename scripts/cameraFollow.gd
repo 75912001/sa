@@ -19,7 +19,7 @@ var limit_bottom: float = 1000.0
 
 func _ready() -> void:
 	# 1. 自动寻找主角 (这就是为什么要加 group 的原因)
-	var players = get_tree().get_nodes_in_group("player")
+	var players = get_tree().get_nodes_in_group("Player")
 	if 0 < players.size():
 		target = players[0]
 	

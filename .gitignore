@@ -3,3 +3,6 @@
 /android/
 *.uid
 
+# Claude Code temp files
+tmpclaude-*
+
