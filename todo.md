@@ -1,3 +1,5 @@
+现在角色 player.tscn->Player->AnimationTree 中的各个动画之间, 并没有任何连接. 比如, idle和walking 之间, 这些连接是做什么用的? 请详细解释. 
+
 
 问题: 跳跃动作有点搞笑. 前摇时间, 落地时间 ... 
 
