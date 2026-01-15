@@ -35,13 +35,9 @@
 # 均来自 Mixamo 免费资源
 # 制作流程
 ## 1. 在 Mixamo 网站 下载 角色模型 + 动作
-
-
-将 Mixamo 下载的 FBX 导入 Blender。
-
-在 Blender 里检查一下骨骼（检查手指是否太开，或者调整为你喜欢的矢量艺术风格比例）。
-
-从 Blender 导出为 .glb 格式放入 Godot。
+## 将 Mixamo 下载的 FBX 导入 Blender
+## 在 Blender 里检查一下骨骼
+## 从 Blender 导出为 .glb 格式放入 Godot
 
 
 
@@ -49,7 +45,7 @@
 
 
 
-# 角色跳跃
+# todo menglc 角色跳跃
 ## 逻辑判断高度，动画只管姿态
 ## 动画切分与状态机 (AnimationTree)
 ### 不要把跳跃看作一个单一的动作，而应将其拆解为三个阶段，利用 AnimationTree 的 StateNode 进行控制：
@@ -60,5 +56,10 @@
 #### 向上跳 (更高地面): 只要角色的垂直速度 $v_y$ 变为负数（开始下降）且碰撞体接触到地面，就切入 Jump_Land。
 #### 向下跳 (更低地面): 角色会保持 Jump_Idle 状态更久，直到射线检测或碰撞体接触到低处地面。
 
-# 角色手持武器
-# todo menglc 
+# todo menglc  角色手持武器
+# 
+
+
+
+
+
