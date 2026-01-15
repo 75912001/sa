@@ -8,6 +8,11 @@ const JUMP_SQUAT_TIME = 0.8 # 下蹲蓄力时间（秒） 空中时间 [0.8-1.4]
 @onready var anim_tree: AnimationTree = $AnimationTree
 @onready var state_machine: AnimationNodeStateMachinePlayback = anim_tree.get("parameters/playback")
 
+
+@onready var weapon_manager: WeaponMgr = $WeaponMgr                                                             
+var is_armed := false    
+
+
 var is_jumping := false
 var jump_requested := false # 是否请求了跳跃（等待蓄力）
 var current_anim := "" # 当前动画，避免重复播放
