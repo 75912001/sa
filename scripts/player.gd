@@ -61,7 +61,7 @@ func _physics_process(delta: float) -> void:
 	# 跳跃：空格键（带蓄力延迟）
 	if Input.is_key_pressed(KEY_SPACE) and is_on_floor() and not jump_requested and not is_jumping:
 		jump_requested = true
-		play_anim("Jump")
+		play_anim("Unarmed_Jump")
 		# 等待下蹲动画后再施加跳跃力
 		await get_tree().create_timer(JUMP_SQUAT_TIME).timeout
 		if jump_requested: # 确保还在跳跃状态
@@ -84,8 +84,8 @@ func _physics_process(delta: float) -> void:
 	var horizontal_speed := Vector2(velocity.x, velocity.z).length()
 
 	if jump_requested or is_jumping or not is_on_floor():
-		play_anim("Jump")
+		play_anim("Unarmed_Jump")
 	elif horizontal_speed > 0.1: # 如果在水平移动
-		play_anim("Walking")
+		play_anim("Unarmed_Walking")
 	else:
-		play_anim("Idle")
+		play_anim("Unarmed_Idle")
