@@ -32,7 +32,7 @@ shadow_enabled = true
 transform = Transform3D(0.7071067, -0.40860698, 0.5770962, 0, 0.8161375, 0.57785743, -0.7071067, -0.40860698, 0.5770962, 0, 0, 0)
 map_mesh = NodePath("../Ground/MeshInstance3D")
 
-[node name="Player" parent="." groups=["Player"] instance=ExtResource("2_1lgw5")]
+[node name="Player" parent="." instance=ExtResource("2_1lgw5")]
 
 [node name="Ground" type="StaticBody3D" parent="."]
 

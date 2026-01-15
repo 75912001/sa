@@ -4,7 +4,7 @@ var target: Node3D
 
 func _ready() -> void:
 	# 查找玩家节点
-	var players = get_tree().get_nodes_in_group("player")
+	var players = get_tree().get_nodes_in_group("Player")
 	if players.size() > 0:
 		target = players[0]
 
