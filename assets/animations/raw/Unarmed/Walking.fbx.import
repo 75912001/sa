@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dw3rayklub1d4"
-path="res://.godot/imported/Walking.fbx-a182ae6eb8fa24bddd7a03b1e3fc3a82.scn"
+path="res://.godot/imported/Walking.fbx-2e3692711147971bf9074086947d7402.scn"
 
 [deps]
 
-source_file="res://Assets/Animations/Raw/Walking.fbx"
-dest_files=["res://.godot/imported/Walking.fbx-a182ae6eb8fa24bddd7a03b1e3fc3a82.scn"]
+source_file="res://Assets/Animations/Raw/Unarmed/Walking.fbx"
+dest_files=["res://.godot/imported/Walking.fbx-2e3692711147971bf9074086947d7402.scn"]
 
 [params]
 
@@ -41,7 +41,7 @@ _subresources={
 "animations": {
 "mixamo_com": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://Assets/Animations/Library/Walking.res",
+"save_to_file/fallback_path": "res://Assets/Animations/Library/Unarmed/Walking.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://e3vujykiovi8",
 "settings/loop_mode": 1,

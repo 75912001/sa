@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://ct8k6fw0dfvw"
-path="res://.godot/imported/Jump.fbx-cf8f1bacc6df06b1a3da9b79102fd7c7.scn"
+path="res://.godot/imported/Jump.fbx-62da7032a98a6c19c9001efc2e0e92f6.scn"
 
 [deps]
 
-source_file="res://Assets/Animations/Raw/Jump.fbx"
-dest_files=["res://.godot/imported/Jump.fbx-cf8f1bacc6df06b1a3da9b79102fd7c7.scn"]
+source_file="res://Assets/Animations/Raw/Unarmed/Jump.fbx"
+dest_files=["res://.godot/imported/Jump.fbx-62da7032a98a6c19c9001efc2e0e92f6.scn"]
 
 [params]
 
@@ -41,7 +41,7 @@ _subresources={
 "animations": {
 "mixamo_com": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://Assets/Animations/Library/Jump.res",
+"save_to_file/fallback_path": "res://Assets/Animations/Library/Unarmed/Jump.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://biyh1eubhiecd",
 "settings/loop_mode": 0,
