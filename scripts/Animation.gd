@@ -24,23 +24,22 @@ func play(animation_name: String) -> void:
 
 # 根据状态更新动画
 # 移动
-# 武装
+# 有-武器
 # 跳跃
 # 空中
-func update(is_moving: bool, is_armed: bool, is_jumping: bool, is_airborne: bool) -> void:
+func update(is_moving: bool, has_weapon: bool, is_jumping: bool, is_airborne: bool) -> void:
 	# 跳跃状态优先
 	if is_jumping or is_airborne:
-		# TODO: 添加持剑跳跃动画后根据 is_armed 区分
+		# TODO: 添加持剑跳跃动画后根据 has_weapon 区分
 		play("Unarmed_Jump")
 		return
 
 	# 根据武器状态选择动画
-	if is_armed:
+	if has_weapon:
 		if is_moving:
-			# TODO: 添加持剑行走动画后改为 SwordAndShield_Walking
-			play("SwordAndShield_Idle_004")
+			play("SwordAndShield_Walk")
 		else:
-			play("SwordAndShield_Idle_004")
+			play("SwordAndShield_Idle")
 	else:
 		if is_moving:
 			play("Unarmed_Walking")
