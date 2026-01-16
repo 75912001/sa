@@ -11,6 +11,9 @@ var weapon_attachment: BoneAttachment3D
 var current_weapon: Node3D = null
 var current_weapon_name: String = ""  # 当前武器名称
 
+# 武器切换按键冷却，防止连续触发
+var weapon_toggle_cooldown := false
+
 # 预加载武器场景
 var weapon_scenes := {
 	"sword.001": preload("res://Scenes/Weapons/Sword.tscn")
@@ -57,3 +60,13 @@ func toggle_weapon(weapon_name: String) -> void:
 	else:
 		# 不同武器，切换（equip_weapon 内部会先卸下旧武器）
 		equip_weapon(weapon_name)
+
+
+func handle_input() -> void:
+	# E 键切换武器
+	if Input.is_key_pressed(KEY_E) and not weapon_toggle_cooldown:
+		weapon_toggle_cooldown = true
+		toggle_weapon("sword.001")
+		# 冷却时间，防止连续触发
+		await get_tree().create_timer(0.3).timeout
+		weapon_toggle_cooldown = false
