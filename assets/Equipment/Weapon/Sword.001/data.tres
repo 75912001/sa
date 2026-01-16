@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://chlwdqbkoa7oo"]
+
+[ext_resource type="Script" uid="uid://duvjjrbal5237" path="res://Scripts/Weapon/WeaponData.gd" id="1_copp5"]
+
+[resource]
+script = ExtResource("1_copp5")
+weapon_name = "sword_001"
+scene_path = "uid://dvrkajol8i1eb"
+model_path = "uid://g0k5fcclw61b"
+grip_position = Vector3(0, 0.414, 0.002)
+grip_rotation_degrees = Vector3(-72, -90, 73)
+grip_scale = Vector3(0.01, 0.01, 0.01)
+metadata/_custom_type_script = "uid://duvjjrbal5237"

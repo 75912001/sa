@@ -27,7 +27,13 @@
 ## 走
 ## 跳
 
-## 支持换装
+## 更换武器
+### Alt + 数字键 1-9 装备/卸下 武器
+### Alt + 0 卸下武器
+
+## 攻击 todo menglc
+
+## 支持换装 todo menglc
 
 ############################################################
 # 角色模型, 动作. 
@@ -39,11 +45,21 @@
 ## 在 Blender 里检查一下骨骼
 ## 从 Blender 导出为 .glb 格式放入 Godot
 
-
-
-
-
-
+############################################################
+# 调整-武器
+############################################################
+# 武器-修改-角色手持位置
+## 可在对应的(sa\Assets\Equipment\Weapon\Sword.001\data.tres)文件中调整握持位置参数
+# 武器-添加新武器
+1. 放入模型: `Assets/Equipment/Weapon/${NewWeapon}/scene.gltf`
+2. 创建配置: `Assets/Equipment/Weapon/${NewWeapon}/data.tres` (类型: WeaponData [来源 -> sa\Scripts\Weapon\WeaponData.gd])
+3. 填写配置参数（包括 `scene_path` 指定使用哪个武器场景）
+4. 在 `WeaponMgr._weapon_configs` 添加一行:
+   ```gdscript
+   3: preload("res://Assets/Equipment/Weapon/${NewWeapon}/data.tres"),
+   ```
+**同类型武器**（如新的剑）：`scene_path` 填 `res://Scenes/Weapons/Sword.tscn`
+**新类型武器**（如斧头）：先创建 `Scenes/Weapons/Axe.tscn`，再在配置中引用
 
 # todo menglc 角色跳跃
 ## 逻辑判断高度，动画只管姿态

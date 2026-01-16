@@ -57,7 +57,7 @@
 
 ### 第一步：创建武器配置资源类
 
-**创建文件**: `Scripts/WeaponData.gd`
+**创建文件**: `Scripts/Weapon/WeaponData.gd`
 
 ```gdscript
 class_name WeaponData extends Resource
@@ -65,6 +65,7 @@ class_name WeaponData extends Resource
 
 @export var weapon_name: String              # 武器名称（唯一标识）
 @export var display_name: String             # 显示名称
+@export_file("*.tscn") var scene_path: String  # 武器场景路径
 @export_file("*.gltf", "*.glb") var model_path: String  # 模型文件路径
 @export var grip_position: Vector3           # 握持位置偏移
 @export var grip_rotation_degrees: Vector3   # 握持旋转（欧拉角，度数）
@@ -73,13 +74,13 @@ class_name WeaponData extends Resource
 
 ---
 
-### 第二步：创建通用武器场景
+### 第二步：改造武器场景
 
-**修改文件**: `Scenes/Weapons/Sword.tscn` → 重命名为 `Weapon.tscn`
+**修改文件**: `Scenes/Weapons/Sword.tscn`（保持原名，作为剑类武器模板）
 
 **场景结构**:
 ```
-Weapon (Node3D)          ← 附加脚本 Weapon.gd
+Sword (Node3D)           ← 附加脚本 Weapon.gd
 └── Grip (Node3D)        ← 握持调整节点
     └── Model (Node3D)   ← 模型容器（运行时动态加载）
 ```
@@ -88,14 +89,16 @@ Weapon (Node3D)          ← 附加脚本 Weapon.gd
 1. 打开 `Scenes/Weapons/Sword.tscn`
 2. 删除 `Grip/SwordMesh` 节点
 3. 在 `Grip` 下新建空的 `Node3D`，命名为 `Model`
-4. 将场景另存为 `Scenes/Weapons/Weapon.tscn`
-5. 删除旧的 `Sword.tscn`
+4. 选中根节点，附加脚本 `Scripts/Weapon.gd`
+5. 保存场景
+
+**说明**：不同武器类型可以有独立场景（Sword.tscn, Axe.tscn, Bow.tscn...），共用 `Weapon.gd` 脚本
 
 ---
 
 ### 第三步：创建武器场景脚本
 
-**创建文件**: `Scripts/Weapon.gd`
+**创建文件**: `Scripts/Weapon/Weapon.gd`
 
 ```gdscript
 extends Node3D
@@ -133,9 +136,9 @@ func get_weapon_name() -> String:
 ```
 
 **绑定脚本**:
-1. 打开 `Scenes/Weapons/Weapon.tscn`
-2. 选中根节点 `Weapon`
-3. 在检查器中 Script 属性，加载 `Scripts/Weapon.gd`
+1. 打开 `Scenes/Weapons/Sword.tscn`
+2. 选中根节点 `Sword`
+3. 在检查器中 Script 属性，加载 `Scripts/Weapon/Weapon.gd`
 4. 保存场景
 
 ---
@@ -151,6 +154,7 @@ func get_weapon_name() -> String:
 5. 填写属性:
    - `weapon_name`: `sword_001`
    - `display_name`: `铁剑`
+   - `scene_path`: `res://Scenes/Weapons/Sword.tscn`
    - `model_path`: `res://Assets/Equipment/Weapon/Sword.001/scene.gltf`
    - `grip_position`: 从原 Sword.tscn 的 SwordMesh Transform 中提取
    - `grip_rotation_degrees`: 从原 Transform 中提取
@@ -164,6 +168,7 @@ func get_weapon_name() -> String:
 4. 填写属性:
    - `weapon_name`: `sword_002`
    - `display_name`: `魔剑`
+   - `scene_path`: `res://Scenes/Weapons/Sword.tscn`
    - `model_path`: `res://Assets/Equipment/Weapon/Sword.002/scene.gltf`
    - `grip_position`/`rotation`/`scale`: 需要在编辑器中调试确定
 
@@ -188,9 +193,6 @@ class_name WeaponMgr
 # --- 信号 ---
 signal weapon_equipped(weapon_name: String)
 signal weapon_unequipped
-
-# --- 常量 ---
-const WEAPON_SCENE := preload("res://Scenes/Weapons/Weapon.tscn")
 
 # --- 武器配置（槽位 -> 配置资源） ---
 var _weapon_configs := {
@@ -217,7 +219,14 @@ func equip_weapon(slot: int) -> void:
         unequip_weapon()
 
     var config: WeaponData = _weapon_configs[slot]
-    var weapon_instance: Weapon = WEAPON_SCENE.instantiate()
+
+    # 从配置加载对应的武器场景
+    var weapon_scene: PackedScene = load(config.scene_path)
+    if not weapon_scene:
+        push_error("无法加载武器场景: " + config.scene_path)
+        return
+
+    var weapon_instance: Weapon = weapon_scene.instantiate()
     weapon_instance.weapon_data = config
     _weapon_attachment.add_child(weapon_instance)
 
@@ -304,13 +313,14 @@ func _start_cooldown() -> void:
 
 1. 放入模型: `Assets/Equipment/Weapon/NewWeapon/scene.gltf`
 2. 创建配置: `Assets/Equipment/Weapon/NewWeapon/data.tres` (类型: WeaponData)
-3. 填写配置参数
+3. 填写配置参数（包括 `scene_path` 指定使用哪个武器场景）
 4. 在 `WeaponMgr._weapon_configs` 添加一行:
    ```gdscript
    3: preload("res://Assets/Equipment/Weapon/NewWeapon/data.tres"),
    ```
 
-**无需创建新场景，Weapon.tscn 保持不变**
+**同类型武器**（如新的剑）：`scene_path` 填 `res://Scenes/Weapons/Sword.tscn`
+**新类型武器**（如斧头）：先创建 `Scenes/Weapons/Axe.tscn`，再在配置中引用
 
 ---
 
@@ -318,10 +328,10 @@ func _start_cooldown() -> void:
 
 | 操作 | 文件 |
 |------|------|
-| 新建 | `Scripts/WeaponData.gd` |
-| 新建 | `Scripts/Weapon.gd` |
+| 新建 | `Scripts/Weapon/WeaponData.gd` |
+| 新建 | `Scripts/Weapon/Weapon.gd` |
 | 新建 | `Assets/Equipment/Weapon/Sword.001/data.tres` |
 | 新建 | `Assets/Equipment/Weapon/Sword.002/data.tres` |
-| 修改 | `Scenes/Weapons/Sword.tscn` → `Weapon.tscn` |
+| 修改 | `Scenes/Weapons/Sword.tscn`（删除 SwordMesh，添加 Model 节点，附加脚本） |
 | 修改 | `Scripts/WeaponMgr.gd` |
 

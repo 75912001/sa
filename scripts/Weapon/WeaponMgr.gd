@@ -9,6 +9,12 @@ class_name WeaponMgr
 signal weapon_equipped(weapon_name: String)
 signal weapon_unequipped
 
+# --- 武器配置（槽位 -> 配置资源） ---
+var _weapon_configs := {
+	1: preload("res://Assets/Equipment/Weapon/Sword.001/data.tres"),
+	2: preload("res://Assets/Equipment/Weapon/Sword.002/data.tres"),
+}
+
 # --- 变量 ---
 var _Weapon_Name: String = "sword.001"
 var _weapon_attachment: BoneAttachment3D
