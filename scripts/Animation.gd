@@ -1,5 +1,5 @@
 extends Node
-
+# 动画-管理器
 class_name AnimationMgr
 
 @export var animation_tree_path: NodePath

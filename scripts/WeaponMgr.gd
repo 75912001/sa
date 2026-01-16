@@ -1,5 +1,5 @@
 extends Node
-
+# 武器-管理器
 class_name WeaponMgr
 
 signal weapon_equipped(weapon_name: String)
