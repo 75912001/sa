@@ -1,16 +1,16 @@
 extends Node3D
 # 相机-跟随
 
-# --- 配置区 ---
+# --- 配置 ---
 @export_group("Map Settings")
 # 拖入地图的 MeshInstance3D，脚本会自动计算多大
 @export var map_mesh: MeshInstance3D 
 # 视野边距：为了防止看到地图外的虚空，必须往里缩一点 (通常等于 Camera Size 的一半左右)
 @export var view_margin: float = 18.0 
-
 @export_group("Smooth Settings")
 @export var smooth_speed: float = 10.0
 
+# --- 变量 ---
 var _target: Node3D
 var _limit_left: float = -1000.0
 var _limit_right: float = 1000.0

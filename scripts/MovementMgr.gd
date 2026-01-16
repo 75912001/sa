@@ -2,10 +2,11 @@ extends Node
 # 移动-管理器
 class_name MovementMgr
 
-# --- 配置区 ---
+# --- 配置 ---
 @export var speed: float = 4.0
 @export var rotation_speed: float = 6.0
 
+# --- 变量 ---
 var _body: CharacterBody3D
 var _is_locked: bool = false  # 锁定移动（如跳跃蓄力时）
 

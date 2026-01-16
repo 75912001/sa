@@ -2,22 +2,20 @@ extends Node
 # 武器-管理器
 class_name WeaponMgr
 
-# --- 配置区 ---
+# --- 配置 ---
 @export var weapon_attachment_path: NodePath
 
-var _Weapon_Name: String = "sword.001"
+# --- 信号 ---
 signal weapon_equipped(weapon_name: String)
 signal weapon_unequipped
 
+# --- 变量 ---
+var _Weapon_Name: String = "sword.001"
 var _weapon_attachment: BoneAttachment3D
 var _current_weapon: Node3D = null
 var _current_weapon_name: String = ""  # 当前武器名称
-
-# 武器切换按键冷却，防止连续触发 false: 不在cd中 true: 处于cd中
-var _weapon_toggle_cooldown := false
-
-# 预加载武器场景
-var _weapon_scenes := {
+var _weapon_toggle_cooldown := false # 武器切换按键冷却，防止连续触发 false: 不在cd中 true: 处于cd中
+var _weapon_scenes := { # 预加载武器场景
 	_Weapon_Name: preload("res://Scenes/Weapons/Sword.tscn")
 }
 

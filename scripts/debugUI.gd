@@ -1,5 +1,6 @@
 extends Label
 
+# --- 变量 ---
 var _target: Node3D
 
 func _ready() -> void:

@@ -2,12 +2,12 @@ extends Node
 # 动画-管理器
 class_name AnimationMgr
 
-# --- 配置区 ---
+# --- 配置 ---
 @export var animation_tree_path: NodePath
 
+# --- 变量 ---
 var _animation_tree: AnimationTree
 var _state_machine: AnimationNodeStateMachinePlayback
-
 var _current_animation_name := "" # 当前动画
 
 func _ready() -> void:
