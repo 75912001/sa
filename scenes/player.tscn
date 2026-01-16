@@ -1,8 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://cltl4miymivys"]
+[gd_scene load_steps=22 format=3 uid="uid://cltl4miymivys"]
 
 [ext_resource type="PackedScene" uid="uid://bqpd5cm5dcy71" path="res://Assets/Characters/XBot.glb" id="1_mdl7e"]
 [ext_resource type="Script" uid="uid://btgkhykbev6d6" path="res://Scripts/Player.gd" id="1_script"]
-[ext_resource type="Script" uid="uid://bkp6agvjjm47t" path="res://Scripts/WeaponMgr.gd" id="2_52ee3"]
+[ext_resource type="Script" uid="uid://bkp6agvjjm47t" path="res://Scripts/Weapon/WeaponMgr.gd" id="2_52ee3"]
 [ext_resource type="Script" uid="uid://ruoxwj2thpuw" path="res://Scripts/MovementMgr.gd" id="2_megsn"]
 [ext_resource type="Animation" uid="uid://cmym1cbyn4tg5" path="res://Assets/Animations/Library/Unarmed/Idle.res" id="2_qu4a1"]
 [ext_resource type="Animation" uid="uid://biyh1eubhiecd" path="res://Assets/Animations/Library/Unarmed/Jump.res" id="3_70d11"]
@@ -10,7 +10,6 @@
 [ext_resource type="Animation" uid="uid://dygqhwo1805bn" path="res://Assets/Animations/Library/SwordAndShield/Idle.res" id="3_nn08x"]
 [ext_resource type="Animation" uid="uid://e3vujykiovi8" path="res://Assets/Animations/Library/Unarmed/Walking.res" id="4_cw2d6"]
 [ext_resource type="Script" uid="uid://bhuu0dvqbcotn" path="res://Scripts/JumpMgr.gd" id="4_yoq75"]
-[ext_resource type="PackedScene" uid="uid://dvrkajol8i1eb" path="res://Scenes/Weapons/Sword.tscn" id="7_glx4g"]
 [ext_resource type="Animation" uid="uid://ywb7kg2bg88c" path="res://Assets/Animations/Library/SwordAndShield/Walk.res" id="8_ksbbd"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mdl7e"]
@@ -92,8 +91,6 @@ bones/38/scale = Vector3(1.0005782, 1.0004864, 1.0001515)
 transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -0.7133314, 1.4405689, -0.055485006)
 bone_name = "RightHand"
 bone_idx = 10
-
-[node name="Sword" parent="XBot/Skeleton/GeneralSkeleton/RightHandAttachment" instance=ExtResource("7_glx4g")]
 
 [node name="AnimationPlayer" parent="XBot" index="1"]
 libraries = {
