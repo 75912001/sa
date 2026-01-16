@@ -2,6 +2,7 @@ extends Node
 # 动画-管理器
 class_name AnimationMgr
 
+# --- 配置区 ---
 @export var animation_tree_path: NodePath
 
 var _animation_tree: AnimationTree

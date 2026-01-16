@@ -1,4 +1,5 @@
 extends Node3D
+# 相机-跟随
 
 # --- 配置区 ---
 @export_group("Map Settings")
@@ -10,24 +11,40 @@ extends Node3D
 @export_group("Smooth Settings")
 @export var smooth_speed: float = 10.0
 
-# --- 内部变量 ---
-var target: Node3D
-var limit_left: float = -1000.0
-var limit_right: float = 1000.0
-var limit_top: float = -1000.0
-var limit_bottom: float = 1000.0
+var _target: Node3D
+var _limit_left: float = -1000.0
+var _limit_right: float = 1000.0
+var _limit_top: float = -1000.0
+var _limit_bottom: float = 1000.0
 
 func _ready() -> void:
-	# 1. 自动寻找主角 (这就是为什么要加 group 的原因)
+	# 寻找主角
 	var players = get_tree().get_nodes_in_group("Player")
 	if 0 < players.size():
-		target = players[0]
+		_target = players[0]
 	
-	# 2. 如果绑定了地图网格，计算边界
-	if map_mesh:
-		calculate_map_limits()
+	if map_mesh: # 绑定了地图网格
+		_calculate_map_limits()
 
-func calculate_map_limits():
+func _process(delta: float) -> void:
+	if not _target:
+		return
+
+	# 获取目标当前位置
+	var target_pos = _target.global_position
+	
+	# 【核心】钳制坐标 (Clamp)
+	# 如果目标坐标超出了 limit 范围，就强制设为 limit 值
+	var final_x = clamp(target_pos.x, _limit_left, _limit_right)
+	var final_z = clamp(target_pos.z, _limit_top, _limit_bottom)
+	
+	# 构造目标位置 (Y轴保持不变，只动水平面)
+	var desired_pos = Vector3(final_x, global_position.y, final_z)
+	
+	# 平滑移动
+	global_position = global_position.lerp(desired_pos, smooth_speed * delta)
+
+func _calculate_map_limits():
 	# 获取网格的包围盒 (AABB)
 	var aabb = map_mesh.mesh.get_aabb()
 	var scaled_size = aabb.size
@@ -40,25 +57,7 @@ func calculate_map_limits():
 	var edge_top = global_pos.z + scaled_start.z
 	var edge_bottom = global_pos.z + scaled_start.z + scaled_size.z
 	# 应用边距
-	limit_left = edge_left + view_margin
-	limit_right = edge_right - view_margin
-	limit_top = edge_top + view_margin
-	limit_bottom = edge_bottom - view_margin
-
-func _process(delta: float) -> void:
-	if not target:
-		return
-
-	# 1. 获取目标当前位置
-	var target_pos = target.global_position
-	
-	# 2. 【核心】钳制坐标 (Clamp)
-	# 如果目标坐标超出了 limit 范围，就强制设为 limit 值
-	var final_x = clamp(target_pos.x, limit_left, limit_right)
-	var final_z = clamp(target_pos.z, limit_top, limit_bottom)
-	
-	# 3. 构造目标位置 (Y轴保持不变，只动水平面)
-	var desired_pos = Vector3(final_x, global_position.y, final_z)
-	
-	# 4. 平滑移动
-	global_position = global_position.lerp(desired_pos, smooth_speed * delta)
+	_limit_left = edge_left + view_margin
+	_limit_right = edge_right - view_margin
+	_limit_top = edge_top + view_margin
+	_limit_bottom = edge_bottom - view_margin

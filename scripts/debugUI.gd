@@ -1,25 +1,25 @@
 extends Label
 
-var target: Node3D
+var _target: Node3D
 
 func _ready() -> void:
 	# 查找玩家节点
 	var players = get_tree().get_nodes_in_group("Player")
 	if players.size() > 0:
-		target = players[0]
+		_target = players[0]
 
 func _process(_delta: float) -> void:
-	if not target:
+	if not _target:
 		return
 
 	# 获取世界坐标
-	var pos = target.global_position
+	var pos = _target.global_position
 
 	# 获取朝向角度 (Y轴旋转，转为度数)
-	var facing_deg = rad_to_deg(target.rotation.y)
+	var facing_deg = rad_to_deg(_target.rotation.y)
 
 	# 获取朝向方向向量
-	var facing_dir = Vector3.FORWARD.rotated(Vector3.UP, target.rotation.y)
+	var facing_dir = Vector3.FORWARD.rotated(Vector3.UP, _target.rotation.y)
 
 	# 获取 FPS
 	var fps = Engine.get_frames_per_second()

@@ -2,11 +2,12 @@ extends Node
 # 武器-管理器
 class_name WeaponMgr
 
+# --- 配置区 ---
+@export var weapon_attachment_path: NodePath
+
 var _Weapon_Name: String = "sword.001"
 signal weapon_equipped(weapon_name: String)
 signal weapon_unequipped
-
-@export var weapon_attachment_path: NodePath
 
 var _weapon_attachment: BoneAttachment3D
 var _current_weapon: Node3D = null

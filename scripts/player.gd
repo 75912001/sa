@@ -18,7 +18,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	# 1. 处理输入
-	movement_mgr.handle_movement(delta)
+	movement_mgr.handle_input(delta)
 	_handle_jump_input()
 	weapon_mgr.handle_input()
 
