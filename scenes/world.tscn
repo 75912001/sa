@@ -33,6 +33,7 @@ transform = Transform3D(0.7071067, -0.40860698, 0.5770962, 0, 0.8161375, 0.57785
 map_mesh = NodePath("../Ground/MeshInstance3D")
 
 [node name="Player" parent="." instance=ExtResource("2_1lgw5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0022144318, 1.1920929e-07, 0.0029768944)
 
 [node name="Ground" type="StaticBody3D" parent="."]
 

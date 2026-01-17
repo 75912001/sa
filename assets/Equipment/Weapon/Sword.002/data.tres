@@ -7,4 +7,5 @@ script = ExtResource("1_tm0rc")
 weapon_name = "sword_002"
 scene_path = "uid://dvrkajol8i1eb"
 model_path = "uid://boabsqta75q0c"
+grip_scale = Vector3(5, 5, 5)
 metadata/_custom_type_script = "uid://duvjjrbal5237"
