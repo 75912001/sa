@@ -16,18 +16,19 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	movement_mgr.handle_input(delta)
 	jump_mgr.handle_input()
-	weapon_switch_mgr.handle_input()
 	# 处理重力
 	jump_mgr.handle_gravity(delta)
+	weapon_switch_mgr.handle_input()
 	# 移动
 	move_and_slide()
-	# 更新动画
-	animation_mgr.update(
-		movement_mgr.is_moving(),
-		weapon_mgr.has_weapon(),
-		jump_mgr.is_jumping(),
-		jump_mgr.is_in_air()
-	)
+	# 更新动画（切换过程中跳过自动更新）
+	if not weapon_switch_mgr.is_switching():
+		animation_mgr.update(
+			movement_mgr.is_moving(),
+			weapon_mgr.has_weapon(),
+			jump_mgr.is_jumping(),
+			jump_mgr.is_in_air()
+		)
 
 ############################################################
 # JumpMgr
