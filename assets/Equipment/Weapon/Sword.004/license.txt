@@ -1,0 +1,11 @@
+Model Information:
+* title:	Procedural sword test 14
+* source:	https://sketchfab.com/3d-models/procedural-sword-test-14-256d1e51412a4d32809466e13f65bb1b
+* author:	ghostnoface (https://sketchfab.com/ghostnoface)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Procedural sword test 14" (https://sketchfab.com/3d-models/procedural-sword-test-14-256d1e51412a4d32809466e13f65bb1b) by ghostnoface (https://sketchfab.com/ghostnoface) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Low poly sword
+* source:	https://sketchfab.com/3d-models/low-poly-sword-7e183f07ae834e05bc517b5bfb1ed879
+* author:	RanJJ (https://sketchfab.com/RanJJ)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Low poly sword" (https://sketchfab.com/3d-models/low-poly-sword-7e183f07ae834e05bc517b5bfb1ed879) by RanJJ (https://sketchfab.com/RanJJ) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
