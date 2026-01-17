@@ -40,17 +40,28 @@
 ############################################################
 # 均来自 Mixamo 免费资源
 # 制作流程
-## 1. 在 Mixamo 网站 下载 角色模型 + 动作
-## 将 Mixamo 下载的 FBX 导入 Blender
-## 在 Blender 里检查一下骨骼
-## 从 Blender 导出为 .glb 格式放入 Godot
+## 模型-增加
+### 在 Mixamo 网站 下载 角色模型
+### 将 Mixamo 下载的 FBX 导入 Blender
+### 在 Blender 里检查一下骨骼
+### 从 Blender 导出为 .glb 格式放入 Godot
+### 生成 res ...
 
+## 动作-增加
+### 在 Mixamo 网站 下载 角色动作, fbx
+### 双击 *.fbx 在 Godot 中打开, 左侧 Skeleton3D, 右侧 重定向->骨骼映射->BoneMap 再次点击BoneMap, Profile 选择 加载(选择 角色模型.res)
+### 保存为 动画资源 .res 文件, 左侧场景标签下,选择 AnimationPlayer->mixamo_com, 右侧保存为文件, 启用, 选择路径保存
+### 点击左下角 重新导入
+
+### Player->XBot->AnimationPlayer 下方动画窗口,点击按钮(动画) 进入编辑动画, 将动画加入到库中
+### Player->XBot->AnimationTree, 如需要, 加入到状态机中
 ############################################################
 # 调整-武器
 ############################################################
-# 武器-修改-角色手持位置
-## 可在对应的(sa\Assets\Equipment\Weapon\Sword.001\data.tres)文件中调整握持位置参数
-# 武器-添加新武器
+## 武器-修改-角色手持位置
+### 可在对应的(sa\Assets\Equipment\Weapon\Sword.001\data.tres)文件中调整握持位置参数
+
+## 武器-添加新武器
 1. 放入模型: `Assets/Equipment/Weapon/${NewWeapon}/scene.gltf`
 2. 创建配置: `Assets/Equipment/Weapon/${NewWeapon}/data.tres` (类型: WeaponData [来源 -> sa\Scripts\Weapon\WeaponData.gd])
 3. 填写配置参数（包括 `scene_path` 指定使用哪个武器场景）

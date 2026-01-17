@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://csamy0m4er3v4"
-path="res://.godot/imported/Walk.fbx-0d77809c9df75efac203999e9f2753fc.scn"
+uid="uid://bfxeo0r6oevp7"
+path="res://.godot/imported/DrawSword.fbx-fecad3baca4fb2adb5134468350c116d.scn"
 
 [deps]
 
-source_file="res://Assets/Animations/Raw/SwordAndShield/Walk.fbx"
-dest_files=["res://.godot/imported/Walk.fbx-0d77809c9df75efac203999e9f2753fc.scn"]
+source_file="res://Assets/Animations/Raw/Unarmed/DrawSword.fbx"
+dest_files=["res://.godot/imported/DrawSword.fbx-fecad3baca4fb2adb5134468350c116d.scn"]
 
 [params]
 
@@ -41,10 +41,10 @@ _subresources={
 "animations": {
 "mixamo_com": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://Assets/Animations/Library/SwordAndShield/Walk.res",
+"save_to_file/fallback_path": "res://Assets/Animations/Library/Unarmed/DrawSword.res",
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "uid://ywb7kg2bg88c",
-"settings/loop_mode": 1,
+"save_to_file/path": "uid://o4xndrx00au6",
+"settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
 "slice_1/name": "",
