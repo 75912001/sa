@@ -6,15 +6,17 @@ extends CharacterBody3D
 @onready var jump_mgr: JumpMgr = $JumpMgr
 @onready var animation_mgr: AnimationMgr = $AnimationMgr
 @onready var weapon_mgr: WeaponMgr = $WeaponMgr
+@onready var weapon_switch_mgr: WeaponSwitchMgr = $WeaponSwitchMgr
 
 func _ready() -> void:
 	_init_jump_mgr()
 	_init_weapon_mgr()
+	_init_weapon_switch_mgr()
 
 func _physics_process(delta: float) -> void:
 	movement_mgr.handle_input(delta)
 	jump_mgr.handle_input()
-	weapon_mgr.handle_input()
+	weapon_switch_mgr.handle_input()
 	# 处理重力
 	jump_mgr.handle_gravity(delta)
 	# 移动
@@ -24,7 +26,7 @@ func _physics_process(delta: float) -> void:
 		movement_mgr.is_moving(),
 		weapon_mgr.has_weapon(),
 		jump_mgr.is_jumping(),
-		jump_mgr.is_in_air()  # 物理检查，包括跳跃和掉落
+		jump_mgr.is_in_air()
 	)
 
 ############################################################
@@ -57,3 +59,21 @@ func _on_weapon_equipped(_weapon_name: String) -> void:
 
 func _on_weapon_unequipped() -> void:
 	prints("weapon unequipped")
+
+############################################################
+# WeaponSwitchMgr
+############################################################
+func _init_weapon_switch_mgr() -> void:
+	# 设置引用
+	weapon_switch_mgr.animation_mgr = animation_mgr
+	weapon_switch_mgr.weapon_mgr = weapon_mgr
+	weapon_switch_mgr.movement_mgr = movement_mgr
+	# 连接信号
+	weapon_switch_mgr.switch_started.connect(_on_weapon_switch_started)
+	weapon_switch_mgr.switch_completed.connect(_on_weapon_switch_completed)
+
+func _on_weapon_switch_started() -> void:
+	prints("weapon switch started")
+
+func _on_weapon_switch_completed() -> void:
+	prints("weapon switch completed")
