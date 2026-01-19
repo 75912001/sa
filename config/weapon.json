@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "description": "武器配置文件",
+    "idRange": [100001, 2000003]
+  },
+  "weaponsType": {
+    "_common": [
+      "武器类型",
+      "dagger-匕首",
+      "sword-剑",
+      "greatSword-大剑",
+      "colossalSword-特大剑"
+    ],
+    "dagger": 1,
+    "sword": 2,
+    "greatSword": 3,
+    "colossalSword": 4
+  },
+
+  "_common 武器": [
+  ],
+  "weapons": [
+    {
+      "id": 100001,
+      "name": "剑001",
+      "type": 2,
+      "attack": 10,
+      "description": "平衡的近战武器，适合新手使用"
+    },
+    {
+      "id": 100002,
+      "name": "剑002",
+      "type": 2,
+      "attack": 20,
+      "description": "平衡的近战武器，适合新手使用"
+    },
+    {
+      "id": 100003,
+      "name": "剑003",
+      "type": 2,
+      "attack": 30,
+      "description": "平衡的近战武器，适合新手使用"
+    },
+    {
+      "id": 100004,
+      "name": "剑004",
+      "type": 2,
+      "attack": 40,
+      "description": "平衡的近战武器，适合新手使用"
+    }
+  ]
+}
