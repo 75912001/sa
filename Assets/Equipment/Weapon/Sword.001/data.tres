@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://chlwdqbkoa7oo"]
 
-[ext_resource type="Script" uid="uid://duvjjrbal5237" path="res://Scripts/WeaponData.gd" id="1_copp5"]
+[ext_resource type="Script" path="res://Scripts/WeaponData.gd" id="1_copp5"]
 
 [resource]
 script = ExtResource("1_copp5")
-weapon_id = 100001
+weapon_id = 11000001
 scene_path = "uid://dvrkajol8i1eb"
 model_path = "uid://g0k5fcclw61b"
 grip_position = Vector3(0.289, 0.127, 0.096)

@@ -697,7 +697,8 @@ enum AssetType {
 	AssetType_Building = 7,
 	AssetType_Plant = 8,
 	AssetType_Quest = 9,
-	AssetType_UI = 10
+	AssetType_UI = 10,
+	AssetType_Weapon = 11
 }
 
 enum AssetIDRange {
@@ -723,7 +724,9 @@ enum AssetIDRange {
 	AssetIDRange_Quest_Start = 9000001,
 	AssetIDRange_Quest_End = 9999999,
 	AssetIDRange_UI_Start = 10000001,
-	AssetIDRange_UI_End = 10999999
+	AssetIDRange_UI_End = 10999999,
+	AssetIDRange_Weapon_Start = 11000001,
+	AssetIDRange_Weapon_End = 11999999
 }
 
 enum AssetIDRecord {
