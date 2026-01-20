@@ -1,0 +1,53 @@
+syntax="proto3";
+
+package pb;
+
+option go_package = "saClient/proto";
+
+import "Record.proto";
+
+////////////////////////////////////////////////////////////
+// 宠物 Pet
+////////////////////////////////////////////////////////////
+// 宠物-动作
+enum PetAction {
+  PetAction_Unknow = 0; // 未知动作
+  PetAction_Idle = 1; // 待机
+  PetAction_Stand = 2; // 站立
+  PetAction_Move = 3; // 移动
+  PetAction_Attack = 4; // 攻击
+  PetAction_Hurt = 5; // 受伤
+  PetAction_Die = 6; // 死亡
+  PetAction_Max = 7; // 动作最大值
+}
+
+// 宠物-稀有度
+enum PetRarity {
+  PetRarity_Unknow = 0; // 未知
+  PetRarity_Common = 1; // 普通-白色
+  PetRarity_Rare = 2; // 罕见-绿色
+  PetRarity_Epic = 3; // 史诗-紫色
+  PetRarity_Legendary = 4; // 传说-橙色
+  PetRarity_Mythic = 5; // 神话-红色
+  PetRarity_Max = 6; // 稀有度最大值
+}
+
+// 宠物-品质-可培养
+// 平凡-白, 普通-绿, 优秀-紫, 稀有-橙, 极品-红
+enum PetGrade {
+  PetGrade_Unknow = 0; // 未知
+  PetGrade_Common = 1; // 平凡-白色
+  PetGrade_Rare = 2; // 普通-绿色
+  PetGrade_Epic = 3; // 优秀-紫色
+  PetGrade_Legendary = 4; // 稀有-橙色
+  PetGrade_Mythic = 5; // 极品-红色
+  PetGrade_Max = 6; // 品质最大值
+}
+
+// 宠物-记录
+message PetRecord {
+  uint64 UUID = 1; // 唯一ID 每个角色的宠物唯一ID
+  string Nick = 3; // 昵称
+  map<uint32, uint64> AssetRecordBaseMap = 10; // 资产表 key: 资产ID-记录基础 AssetIDRBase value: 数值
+  map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: 记录-主要ID
+}

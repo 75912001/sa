@@ -1,0 +1,25 @@
+syntax="proto3";
+
+package pb;
+
+option go_package = "saClient/proto";
+
+////////////////////////////////////////////////////////////
+// 武器 Weapon
+////////////////////////////////////////////////////////////
+// 武器-类型
+enum WeaponType {
+  WeaponType_Unarmed = 0; // 赤手空拳
+  WeaponType_Dagger = 1; // 匕首
+  WeaponType_Sword = 2; // 剑
+  WeaponType_GreatSword = 3; // 大剑
+  WeaponType_ColossalSword = 4; // 特大剑
+//  WeaponType_Axe = 1; // 斧
+//  WeaponType_Stick = 2; // 棍
+//  WeaponType_Spear = 3; // 枪
+//  WeaponType_Claw = 4; // 爪
+//  WeaponType_Bow = 5; // 弓
+//  WeaponType_Stone = 6; // 石头
+//  WeaponType_Boomerang = 7; // 回旋镖
+  WeaponType_Max = 5; // 武器类型-最大值
+}

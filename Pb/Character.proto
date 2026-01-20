@@ -1,0 +1,54 @@
+syntax="proto3";
+
+package pb;
+
+option go_package = "saClient/proto";
+
+import "Record.proto";
+import "Pet.proto";
+
+////////////////////////////////////////////////////////////
+// 角色 Character
+////////////////////////////////////////////////////////////
+// 角色-等级范围
+enum CharacterLevelRange {
+  CharacterLevelRange_Unknow = 0; // 未知参数
+
+  CharacterLevelRange_Min = 1; // 最小等级
+  CharacterLevelRange_Max = 140; // 最大等级
+}
+
+// 角色-动作
+enum CharacterActionType {
+  CharacterActionType_Sit = 0; // 坐下
+  CharacterActionType_Stand = 1; // 站立
+  CharacterActionType_Wave = 2; // 挥手
+  CharacterActionType_Walk = 3; // 走动
+  CharacterActionType_Nod = 4; // 点头
+  CharacterActionType_Faint = 5; // 晕倒
+  CharacterActionType_Happy = 6; // 高兴
+  CharacterActionType_Attack = 7; // 攻击
+  CharacterActionType_Angry = 8; // 生气
+  CharacterActionType_Defense = 9; // 防御
+  CharacterActionType_Sad = 10; // 悲伤
+  CharacterActionType_Hurt = 11; // 受伤
+  CharacterActionType_Throw = 12; // 投掷
+  CharacterActionType_Max = 13; // 动作最大值
+}
+
+// 角色-记录
+message CharacterRecord {
+  uint64 UUID = 1; // 角色UUID 每个用户的角色唯一ID
+  string Nick = 2; // 昵称
+  map<uint32, uint64> AssetIDRecordMap = 10; // 资产表 key: 资产ID-角色基础 AssetIDRecord value: 数值
+  map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: 记录-主要ID
+  map<uint64, PetRecord> PetRecordMap = 2000; // 宠物记录表 key: 宠物UUID
+}
+
+////////////////////////////////////////////////////////////
+// 用户 User
+////////////////////////////////////////////////////////////
+// 用户-记录
+message UserRecord {
+  map<uint64, CharacterRecord> RoleRecordMap = 10; // 角色记录表 key: 角色UUID
+}

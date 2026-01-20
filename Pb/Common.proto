@@ -1,0 +1,16 @@
+syntax="proto3";
+
+package pb;
+
+option go_package = "saClient/proto";
+
+////////////////////////////////////////////////////////////
+// 通用 Common
+////////////////////////////////////////////////////////////
+// 键值对 key:uint32 value:uint32
+message KV {
+  uint32 Key = 1;
+  uint32 Value = 2;
+}
+
+

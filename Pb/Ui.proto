@@ -1,0 +1,42 @@
+syntax="proto3";
+
+package pb;
+
+option go_package = "saClient/proto";
+
+////////////////////////////////////////////////////////////
+// 界面 UI
+////////////////////////////////////////////////////////////
+// UI状态
+enum UIState {
+  UIState_Unknow = 0; // 未知状态
+  UIState_Closed = 1; // 关闭
+  UIState_Opening = 2; // 正在打开
+  UIState_Open = 3; // 已打开
+  UIState_Closing = 4; // 正在关闭
+  UIState_Hidden = 5; // 隐藏
+}
+
+
+// UI消息
+enum UIMsg {
+  UIMsg_Unknow = 0; // 未知参数
+
+  UIMsg_Click = 10001; // 点击
+  UIMsg_Show = 10003; // 显示
+  UIMsg_Hide = 10004; // 隐藏
+}
+
+enum UIUUID {
+  UIUUID_Unknow = 0; // 未知参数
+
+  UIUUID_PopupMenu = 10000001; // 弹出菜单 (- && +)
+
+  UIUUID_ICON_PopupMenu_Expand = 10000002; // 弹出菜单(+)
+  UIUUID_ICON_PopupMenu_Collapse = 10000003; // 弹出菜单(-)
+
+  UIUUID_ICON_Bag = 10001001; // 背包
+  UIUUID_ICON_Pet = 10001002; // 宠物
+  UIUUID_ICON_Quest = 10001003; // 任务
+  UIUUID_ICON_Settings = 10001004; // 设置
+}
