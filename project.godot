@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 YAML="*res://addons/miniyaml/miniyaml.gd"
+PbAsset="*res://Scripts/Pb/Asset.gd"
+PbWeapon="*res://Scripts/Pb/Weapon.gd"
 CfgMgr="*res://Scripts/Cfg/Mgr.gd"
 
 [display]
