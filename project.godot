@@ -17,8 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-ConfigMgr="*res://Scripts/Config/ConfigMgr.gd"
 YAML="*res://addons/miniyaml/miniyaml.gd"
+CfgMgr="*res://Scripts/Cfg/Mgr.gd"
 
 [display]
 
@@ -35,5 +35,7 @@ enabled=PackedStringArray("res://addons/miniyaml/plugin.cfg", "res://addons/prot
 folder_colors={
 "res://Assets/": "green",
 "res://Assets/Animations/": "red",
-"res://Assets/Characters/": "orange"
+"res://Assets/Characters/": "orange",
+"res://Cfg/": "gray",
+"res://Pb/": "gray"
 }

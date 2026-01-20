@@ -1,20 +1,14 @@
-class_name WeaponConfig extends RefCounted
+class_name WeaponCfg extends RefCounted
 ## 武器配置数据
 
-# --- 武器类型枚举 ---
-enum Type {
-	UNKNOWN = 0,
-	DAGGER = 1,    # 匕首
-	SWORD = 2,     # 剑
-	GREAT_SWORD = 3, # 大剑
-	COLOSSAL_SWORD = 4, # 特大剑
-}
+# --- 引用Pb定义的武器类型 ---
+const PbWeapon = preload("res://Scripts/Pb/Weapon.gd")
 
 # --- 单个武器数据 ---
 class WeaponEntry extends RefCounted:
 	var id: int
 	var name: String
-	var type: int
+	var type: PbWeapon.WeaponType
 	var attack: int
 	var description: String
 
@@ -26,8 +20,8 @@ var weapons_type: Dictionary = {}  # 类型名 -> 类型ID
 var weapons: Dictionary = {}       # 武器ID -> WeaponEntry
 
 ## 从字典加载
-static func load_from_dict(data: Dictionary) -> WeaponConfig:
-	var config := WeaponConfig.new()
+static func load_from_dict(data: Dictionary) -> WeaponCfg:
+	var config := WeaponCfg.new()
 
 	# 加载武器类型（过滤注释）
 	var types: Dictionary = data.get("weaponsType", {})
@@ -79,7 +73,7 @@ func check() -> Array[String]:
 			errors.append("武器名称为空: ID=%d" % weapon.id)
 
 		# 类型有效性
-		if weapon.type < Type.DAGGER or weapon.type > Type.COLOSSAL_SWORD:
+		if weapon.type < PbWeapon.WeaponType.WeaponType_Dagger or weapon.type >= PbWeapon.WeaponType.WeaponType_Max:
 			errors.append("武器类型无效: ID=%d, type=%d" % [weapon.id, weapon.type])
 
 		# 攻击力
@@ -87,6 +81,9 @@ func check() -> Array[String]:
 			errors.append("武器攻击力不能为负: ID=%d, attack=%d" % [weapon.id, weapon.attack])
 
 	return errors
+
+func assemble()->void:
+	return
 
 ## 获取武器
 func get_weapon(id: int) -> WeaponEntry:
