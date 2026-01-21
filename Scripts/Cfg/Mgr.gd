@@ -3,20 +3,20 @@ extends Node
 ## 负责加载、校验、组装配置文件
 
 # --- 配置数据 ---
-var weapon: WeaponCfg
+var cfg_weapon_mgr: CfgWeaponMgr
 
 func _ready() -> void:
-	weapon = WeaponCfg.new()
+	cfg_weapon_mgr = CfgWeaponMgr.new()
 	_load_all_cfg()
 
 ## 加载所有配置
 func _load_all_cfg() -> void:
 	# --- 加载 ---
-	weapon.load("res://Cfg/weapon.yaml")
+	cfg_weapon_mgr.load("res://Cfg/weapon.yaml")
 	# --- 检查 ---
-	weapon.check()
+	cfg_weapon_mgr.check()
 	# --- 组装 ---
-	weapon.assemble()
+	cfg_weapon_mgr.assemble()
 	
 	prints("配置加载完成")
 
