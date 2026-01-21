@@ -1,14 +1,18 @@
-[gd_scene load_steps=31 format=3 uid="uid://cltl4miymivys"]
+[gd_scene load_steps=35 format=3 uid="uid://cltl4miymivys"]
 
 [ext_resource type="PackedScene" uid="uid://bqpd5cm5dcy71" path="res://Assets/Characters/XBot.glb" id="1_mdl7e"]
 [ext_resource type="Script" uid="uid://btgkhykbev6d6" path="res://Scripts/Player.gd" id="1_script"]
 [ext_resource type="Script" uid="uid://bkp6agvjjm47t" path="res://Scripts/Weapon/WeaponMgr.gd" id="2_52ee3"]
+[ext_resource type="Script" uid="uid://d14qgxfwj44vu" path="res://Scripts/StateMachine/StateMachine.gd" id="2_lslt6"]
+[ext_resource type="Script" uid="uid://cgibjq8orsoge" path="res://Scripts/Input/InputMgr.gd" id="2_m0x7a"]
 [ext_resource type="Script" uid="uid://ruoxwj2thpuw" path="res://Scripts/MovementMgr.gd" id="2_megsn"]
 [ext_resource type="Animation" uid="uid://cmym1cbyn4tg5" path="res://Assets/Animations/Library/Unarmed/Idle.res" id="2_qu4a1"]
+[ext_resource type="Script" uid="uid://dxq7sbwp7l7lv" path="res://Scripts/StateMachine/StateIdle.gd" id="3_1iu4k"]
 [ext_resource type="Animation" uid="uid://biyh1eubhiecd" path="res://Assets/Animations/Library/Unarmed/Jump.res" id="3_70d11"]
 [ext_resource type="Script" uid="uid://hxg50be1t0o6" path="res://Scripts/Animation.gd" id="3_bhhdu"]
 [ext_resource type="Animation" uid="uid://dygqhwo1805bn" path="res://Assets/Animations/Library/SwordAndShield/Idle.res" id="3_nn08x"]
 [ext_resource type="Animation" uid="uid://e3vujykiovi8" path="res://Assets/Animations/Library/Unarmed/Walking.res" id="4_cw2d6"]
+[ext_resource type="Script" uid="uid://q0fe6t0mhdg5" path="res://Scripts/StateMachine/StateMove.gd" id="4_m0x7a"]
 [ext_resource type="Script" uid="uid://bhuu0dvqbcotn" path="res://Scripts/JumpMgr.gd" id="4_yoq75"]
 [ext_resource type="Animation" uid="uid://ywb7kg2bg88c" path="res://Assets/Animations/Library/SwordAndShield/Walk.res" id="8_ksbbd"]
 [ext_resource type="Animation" uid="uid://bm2d4g8pfoe07" path="res://Assets/Animations/Library/SwordAndShield/DrawSword.res" id="9_miouo"]
@@ -93,18 +97,31 @@ graph_offset = Vector2(-215.45851, 75.37501)
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_script")
 
+[node name="InputMgr" type="Node" parent="."]
+script = ExtResource("2_m0x7a")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 shape = SubResource("CapsuleShape3D_mdl7e")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("2_lslt6")
+
+[node name="StateIdle" type="Node" parent="StateMachine"]
+script = ExtResource("3_1iu4k")
+
+[node name="StateMove" type="Node" parent="StateMachine"]
+script = ExtResource("4_m0x7a")
+
 [node name="AnimationMgr" type="Node" parent="."]
 script = ExtResource("3_bhhdu")
 animation_tree_path = NodePath("../AnimationTree")
 
-[node name="MovementMgr" type="Node" parent="."]
+[node name="MovementMgr" type="Node" parent="." node_paths=PackedStringArray("input_mgr")]
 script = ExtResource("2_megsn")
+input_mgr = NodePath("../InputMgr")
 
 [node name="JumpMgr" type="Node" parent="."]
 script = ExtResource("4_yoq75")

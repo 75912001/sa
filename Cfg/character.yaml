@@ -1,0 +1,10 @@
+# 角色-配置
+# 任何修改此文件的行为都需要通知客户端和服务端开发人员
+
+# 角色 [1000001,1999999]
+characters:
+  - id: 1000001
+    name: "角色-1000001"
+    speed: 4.0
+    rotationSpeed: 6.0
+    description: "description-角色-1000001"

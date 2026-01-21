@@ -17,7 +17,7 @@ enum State {
 	SQUATTING, # 蓄力
 	AIRBORNE # 空中
 }
-
+var ddd: Dictionary = {}  # 武器ID -> WeaponEntry
 # --- 变量 ---
 var _body: CharacterBody3D
 var _state: State = State.IDLE

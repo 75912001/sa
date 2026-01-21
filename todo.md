@@ -1,3 +1,42 @@
+状态机
+角色同一时刻, 只能处于一个状态
+当前状态有
+	idle
+	walking
+	jumping(只包括起跳和落地. 空中可以攻击)
+	attacking
+	running
+	被击中
+	倒地
+
+	move
+
+idle
+move
+jump
+attack
+
+one state active at a time 
+
+
+stateMachine Brain
+1. runs the current state every frame
+2. Switches states when told to
+
+
+
+State Machine
+
+StateMachine brain
+BaseState
+IdleState
+WalkingState
+JumpingState
+AttackingState
+RunningState
+HurtState
+DownState
+
 
 
 手拿武器.

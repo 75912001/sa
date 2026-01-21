@@ -1,36 +1,39 @@
-extends Node
 # 移动-管理器
 class_name MovementMgr
 
-# --- 配置 ---
-@export var speed: float = 4.0
-@export var rotation_speed: float = 6.0
+extends Node
+
+@export var input_mgr: InputMgr
 
 # --- 变量 ---
-var _body: CharacterBody3D
+var character_body: CharacterBody3D
 var _is_locked: bool = false  # 锁定移动（如跳跃蓄力时）
 
 func _ready() -> void:
-	_body = get_parent() as CharacterBody3D
+	character_body = get_parent() as CharacterBody3D
 
+func _physics_process(delta: float) -> void:
+	var direction = input_mgr.get_move_vector()
+	prints("movement mgr direction:",direction)
+	
 # 处理-输入（应用速度和转身）
 func handle_input(delta: float) -> void:
 	var direction := _get_input_direction()
 
 	if _is_locked:
-		_body.velocity.x = 0
-		_body.velocity.z = 0
+		character_body.velocity.x = 0
+		character_body.velocity.z = 0
 		return
 
 	if direction:
-		_body.velocity.x = direction.x * speed
-		_body.velocity.z = direction.z * speed
+		character_body.velocity.x = direction.x * GameMgr.player.cfg_character_entry.speed
+		character_body.velocity.z = direction.z *  GameMgr.player.cfg_character_entry.speed
 		# 平滑转身
 		var target_rotation = atan2(direction.x, direction.z)
-		_body.rotation.y = lerp_angle(_body.rotation.y, target_rotation, rotation_speed * delta)
+		character_body.rotation.y = lerp_angle(character_body.rotation.y, target_rotation, GameMgr.player.cfg_character_entry.rotation_speed * delta)
 	else:
-		_body.velocity.x = move_toward(_body.velocity.x, 0, speed)
-		_body.velocity.z = move_toward(_body.velocity.z, 0, speed)
+		character_body.velocity.x = move_toward(character_body.velocity.x, 0, GameMgr.player.cfg_character_entry.speed)
+		character_body.velocity.z = move_toward(character_body.velocity.z, 0, GameMgr.player.cfg_character_entry.speed)
 
 # 是否在移动
 func is_moving() -> bool:
@@ -63,4 +66,4 @@ func _get_input_direction() -> Vector3:
 
 # 获取水平速度
 func _get_horizontal_speed() -> float:
-	return Vector2(_body.velocity.x, _body.velocity.z).length()
+	return Vector2(character_body.velocity.x, character_body.velocity.z).length()

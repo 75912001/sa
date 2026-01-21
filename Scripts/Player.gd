@@ -1,6 +1,8 @@
 extends CharacterBody3D
 # 玩家-协调者
 
+@export var character_id: int = 1000001
+
 # --- 组件引用 ---
 @onready var movement_mgr: MovementMgr = $MovementMgr
 @onready var jump_mgr: JumpMgr = $JumpMgr
@@ -8,10 +10,17 @@ extends CharacterBody3D
 @onready var weapon_mgr: WeaponMgr = $WeaponMgr
 @onready var weapon_switch_mgr: WeaponSwitchMgr = $WeaponSwitchMgr
 
+var cfg_character_entry: CfgCharacterMgr.CfgCharacterEntry
+
 func _ready() -> void:
+	GameMgr.player = self
+	cfg_character_entry = CfgMgr.cfg_character_mgr.get_character(character_id)
+	assert(cfg_character_entry != null, "角色配置不存在: %d" % character_id)
 	_init_jump_mgr()
 	_init_weapon_mgr()
 	_init_weapon_switch_mgr()
+	
+	
 
 func _physics_process(delta: float) -> void:
 	movement_mgr.handle_input(delta)

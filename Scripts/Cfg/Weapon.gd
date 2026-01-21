@@ -1,5 +1,7 @@
-class_name CfgWeaponMgr extends RefCounted
-## 武器配置数据
+# 配置-武器-管理器
+class_name CfgWeaponMgr 
+
+extends RefCounted
 
 # --- 单个武器数据 ---
 class CfgWeaponEntry extends RefCounted:
@@ -12,9 +14,9 @@ class CfgWeaponEntry extends RefCounted:
 		return name
 
 # --- 缓存数据 ---
-var _weapons: Dictionary = {}  # 武器ID -> WeaponEntry
+var weapons: Dictionary = {}  # 武器ID -> WeaponEntry
 
-## 加载配置
+# 加载配置
 func load(path: String) -> void:
 	var data := CfgMgr.load_yaml(path)
 	var weapons_array: Array = data.get("weapons", [])
@@ -31,21 +33,21 @@ func load(path: String) -> void:
 		entry.attack = item.get("attack", 0)
 		assert(0 < entry.attack, "武器攻击力非法: ID:%d " % entry.id)
 		entry.description = item.get("description", "")
-		if _weapons.has(entry.id):
+		if weapons.has(entry.id):
 			assert(false, "武器ID-重复: %d" % entry.id)
 		else:
-			_weapons[entry.id] = entry
+			weapons[entry.id] = entry
 
-## 校验配置
+# 校验配置
 func check() -> void:
-	for weapon_id in _weapons:
-		var entry: CfgWeaponEntry = _weapons[weapon_id]
+	for weapon_id in weapons:
+		var entry: CfgWeaponEntry = weapons[weapon_id]
 		prints("武器:", entry.show())
 
-## 组装配置 (预处理/索引构建)
+# 组装配置 (预处理/索引构建)
 func assemble() -> void:
 	pass
 
-## 获取武器
+# 获取武器
 func get_weapon(id: int) -> CfgWeaponEntry:
-	return _weapons.get(id, null)
+	return weapons.get(id, null)

@@ -1,26 +1,32 @@
+# 配置-管理器
+# 负责加载、校验、组装配置文件
+
 extends Node
-## 配置管理器 (Autoload)
-## 负责加载、校验、组装配置文件
 
 # --- 配置数据 ---
 var cfg_weapon_mgr: CfgWeaponMgr
+var cfg_character_mgr: CfgCharacterMgr
 
 func _ready() -> void:
 	cfg_weapon_mgr = CfgWeaponMgr.new()
+	cfg_character_mgr = CfgCharacterMgr.new()
 	_load_all_cfg()
 
-## 加载所有配置
+# 加载所有配置
 func _load_all_cfg() -> void:
 	# --- 加载 ---
 	cfg_weapon_mgr.load("res://Cfg/weapon.yaml")
+	cfg_character_mgr.load("res://Cfg/character.yaml")
 	# --- 检查 ---
 	cfg_weapon_mgr.check()
+	cfg_character_mgr.check()
 	# --- 组装 ---
 	cfg_weapon_mgr.assemble()
-	
+	cfg_character_mgr.assemble()
+
 	prints("配置加载完成")
 
-## 加载YAML文件 (使用miniyaml插件)
+# 加载YAML文件 (使用miniyaml插件)
 func load_yaml(path: String) -> Dictionary:
 	if not FileAccess.file_exists(path):
 		assert(false, "配置文件不存在: %s" % path)
