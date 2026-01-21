@@ -1,8 +1,6 @@
 class_name WeaponCfg extends RefCounted
 ## 武器配置数据
 
-#const PbWeapon = preload("res://Scripts/Pb/Weapon.gd")
-
 # --- 单个武器数据 ---
 class WeaponEntry extends RefCounted:
 	var id: int
@@ -12,7 +10,6 @@ class WeaponEntry extends RefCounted:
 	var description: String
 	func show() -> String:
 		return name
-		#return id + name + type + attack + description
 
 # --- 缓存数据 ---
 var weapons: Dictionary = {}  # 武器ID -> WeaponEntry
@@ -41,7 +38,6 @@ func load(path: String) -> void:
 
 ## 校验配置
 func check() -> void:
-	var seen_ids: Dictionary = {}
 	for weapon_id in weapons:
 		var entry: WeaponEntry = weapons[weapon_id]
 		prints("武器:", entry.show())

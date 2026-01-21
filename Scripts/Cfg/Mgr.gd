@@ -11,9 +11,13 @@ func _ready() -> void:
 
 ## 加载所有配置
 func _load_all_cfg() -> void:
+	# --- 加载 ---
 	weapon.load("res://Cfg/weapon.yaml")
+	# --- 检查 ---
 	weapon.check()
+	# --- 组装 ---
 	weapon.assemble()
+	
 	prints("配置加载完成")
 
 ## 加载YAML文件 (使用miniyaml插件)
