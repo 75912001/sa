@@ -251,7 +251,7 @@ class PBPacker:
 				break
 		return result
 
-	static func unpack_type_tag(bytes : PackedByteArray, index : int) -> PBTypeTag:
+	static func unpack_type_tag(bytes : PackedByteArray, index : int) -> PbRecord.PBTypeTag:
 		var varint_bytes : PackedByteArray = isolate_varint(bytes, index)
 		var result : PBTypeTag = PBTypeTag.new()
 		if varint_bytes.size() != 0:
@@ -730,7 +730,7 @@ class RecordPrimary:
 		var element = RecordPrimary.map_type_RecordElementMap.new()
 		__RecordElementMap.value.append(element)
 		return element
-	func add_RecordElementMap(a_key) -> RecordSecondary:
+	func add_RecordElementMap(a_key) -> PbRecord.RecordSecondary:
 		var idx = -1
 		for i in range(__RecordElementMap.value.size()):
 			if __RecordElementMap.value[i].get_key() == a_key:
@@ -781,12 +781,12 @@ class RecordPrimary:
 			if __value.value != null:
 				return true
 			return false
-		func get_value() -> RecordSecondary:
+		func get_value() -> PbRecord.RecordSecondary:
 			return __value.value
 		func clear_value() -> void:
 			data[2].state = PB_SERVICE_STATE.UNFILLED
 			__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-		func new_value() -> RecordSecondary:
+		func new_value() -> PbRecord.RecordSecondary:
 			__value.value = RecordSecondary.new()
 			return __value.value
 		

@@ -251,7 +251,7 @@ class PBPacker:
 				break
 		return result
 
-	static func unpack_type_tag(bytes : PackedByteArray, index : int) -> PBTypeTag:
+	static func unpack_type_tag(bytes : PackedByteArray, index : int) -> PbCharacter.PBTypeTag:
 		var varint_bytes : PackedByteArray = isolate_varint(bytes, index)
 		var result : PBTypeTag = PBTypeTag.new()
 		if varint_bytes.size() != 0:
@@ -829,7 +829,7 @@ class CharacterRecord:
 		var element = CharacterRecord.map_type_RecordMap.new()
 		__RecordMap.value.append(element)
 		return element
-	func add_RecordMap(a_key) -> RecordPrimary:
+	func add_RecordMap(a_key) -> PbCharacter.RecordPrimary:
 		var idx = -1
 		for i in range(__RecordMap.value.size()):
 			if __RecordMap.value[i].get_key() == a_key:
@@ -855,7 +855,7 @@ class CharacterRecord:
 		var element = CharacterRecord.map_type_PetRecordMap.new()
 		__PetRecordMap.value.append(element)
 		return element
-	func add_PetRecordMap(a_key) -> PetRecord:
+	func add_PetRecordMap(a_key) -> PbCharacter.PetRecord:
 		var idx = -1
 		for i in range(__PetRecordMap.value.size()):
 			if __PetRecordMap.value[i].get_key() == a_key:
@@ -971,12 +971,12 @@ class CharacterRecord:
 			if __value.value != null:
 				return true
 			return false
-		func get_value() -> RecordPrimary:
+		func get_value() -> PbCharacter.RecordPrimary:
 			return __value.value
 		func clear_value() -> void:
 			data[2].state = PB_SERVICE_STATE.UNFILLED
 			__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-		func new_value() -> RecordPrimary:
+		func new_value() -> PbCharacter.RecordPrimary:
 			__value.value = RecordPrimary.new()
 			return __value.value
 		
@@ -1038,12 +1038,12 @@ class CharacterRecord:
 			if __value.value != null:
 				return true
 			return false
-		func get_value() -> PetRecord:
+		func get_value() -> PbCharacter.PetRecord:
 			return __value.value
 		func clear_value() -> void:
 			data[2].state = PB_SERVICE_STATE.UNFILLED
 			__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-		func new_value() -> PetRecord:
+		func new_value() -> PbCharacter.PetRecord:
 			__value.value = PetRecord.new()
 			return __value.value
 		
@@ -1114,7 +1114,7 @@ class PlayerRecord:
 		var element = PlayerRecord.map_type_CharacterRecordMap.new()
 		__CharacterRecordMap.value.append(element)
 		return element
-	func add_CharacterRecordMap(a_key) -> CharacterRecord:
+	func add_CharacterRecordMap(a_key) -> PbCharacter.CharacterRecord:
 		var idx = -1
 		for i in range(__CharacterRecordMap.value.size()):
 			if __CharacterRecordMap.value[i].get_key() == a_key:
@@ -1165,12 +1165,12 @@ class PlayerRecord:
 			if __value.value != null:
 				return true
 			return false
-		func get_value() -> CharacterRecord:
+		func get_value() -> PbCharacter.CharacterRecord:
 			return __value.value
 		func clear_value() -> void:
 			data[2].state = PB_SERVICE_STATE.UNFILLED
 			__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-		func new_value() -> CharacterRecord:
+		func new_value() -> PbCharacter.CharacterRecord:
 			__value.value = CharacterRecord.new()
 			return __value.value
 		
@@ -1259,7 +1259,7 @@ class RecordPrimary:
 		var element = RecordPrimary.map_type_RecordElementMap.new()
 		__RecordElementMap.value.append(element)
 		return element
-	func add_RecordElementMap(a_key) -> RecordSecondary:
+	func add_RecordElementMap(a_key) -> PbCharacter.RecordSecondary:
 		var idx = -1
 		for i in range(__RecordElementMap.value.size()):
 			if __RecordElementMap.value[i].get_key() == a_key:
@@ -1310,12 +1310,12 @@ class RecordPrimary:
 			if __value.value != null:
 				return true
 			return false
-		func get_value() -> RecordSecondary:
+		func get_value() -> PbCharacter.RecordSecondary:
 			return __value.value
 		func clear_value() -> void:
 			data[2].state = PB_SERVICE_STATE.UNFILLED
 			__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-		func new_value() -> RecordSecondary:
+		func new_value() -> PbCharacter.RecordSecondary:
 			__value.value = RecordSecondary.new()
 			return __value.value
 		
@@ -1597,7 +1597,7 @@ class PetRecord:
 		var element = PetRecord.map_type_RecordMap.new()
 		__RecordMap.value.append(element)
 		return element
-	func add_RecordMap(a_key) -> RecordPrimary:
+	func add_RecordMap(a_key) -> PbCharacter.RecordPrimary:
 		var idx = -1
 		for i in range(__RecordMap.value.size()):
 			if __RecordMap.value[i].get_key() == a_key:
@@ -1713,12 +1713,12 @@ class PetRecord:
 			if __value.value != null:
 				return true
 			return false
-		func get_value() -> RecordPrimary:
+		func get_value() -> PbCharacter.RecordPrimary:
 			return __value.value
 		func clear_value() -> void:
 			data[2].state = PB_SERVICE_STATE.UNFILLED
 			__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-		func new_value() -> RecordPrimary:
+		func new_value() -> PbCharacter.RecordPrimary:
 			__value.value = RecordPrimary.new()
 			return __value.value
 		

@@ -56,21 +56,35 @@ echo "✅ 生成完成！"
 echo ""
 
 # 修复 godobuf bug 的函数
+# 把所有顶层类的返回类型引用改为使用 class_name 前缀
 fix_godobuf_bug() {
     local file="$1"
     local fix_count=0
+
+    # 获取文件的 class_name (PbXxx)
+    local basename=$(basename "$file" .gd)
+    local script_class="Pb$basename"
 
     # 获取所有顶级 class 名称 (兼容 Windows Git Bash)
     local classes=$(grep "^class [A-Za-z_]*:" "$file" | sed 's/^class \([A-Za-z_]*\):.*/\1/')
 
     for cls in $classes; do
-        # 统计修复次数 (使用 head -1 确保只取一个数字)
-        local count=$(grep -c -- "-> [A-Za-z_]*\.$cls:" "$file" 2>/dev/null | head -1)
-        count=${count:-0}
-        if [ "$count" -gt 0 ] 2>/dev/null; then
-            # 修复 "-> XXX.ClassName:" 为 "-> ClassName:"
-            sed -i "s/-> [A-Za-z_]*\.$cls:/-> $cls:/g" "$file"
-            fix_count=$((fix_count + count))
+        # 修复1: "-> XXX.ClassName:" 改为 "-> PbXxx.ClassName:"
+        local count1=$(grep -c -- "-> [A-Za-z_]*\.$cls:" "$file" 2>/dev/null | head -1)
+        count1=${count1:-0}
+        if [ "$count1" -gt 0 ] 2>/dev/null; then
+            sed -i "s/-> [A-Za-z_]*\.$cls:/-> $script_class.$cls:/g" "$file"
+            fix_count=$((fix_count + count1))
+        fi
+
+        # 修复2: 裸露的 "-> ClassName:" 改为 "-> PbXxx.ClassName:" (仅当不是内置类型时)
+        # 排除已经有前缀的情况 (避免重复处理)
+        local count2=$(grep -c -- "-> $cls:" "$file" 2>/dev/null | head -1)
+        count2=${count2:-0}
+        if [ "$count2" -gt 0 ] 2>/dev/null; then
+            # 使用负向前瞻的替代方案：只替换没有 . 前缀的
+            sed -i "s/-> $cls:/-> $script_class.$cls:/g" "$file"
+            fix_count=$((fix_count + count2))
         fi
     done
 
@@ -106,17 +120,18 @@ if [ "$answer" = "y" ] || [ "$answer" = "Y" ]; then
     class_added=0
     for file in "${generated_files[@]}"; do
         if [ -f "$file" ]; then
-            fixes=$(fix_godobuf_bug "$file")
-            if [ "$fixes" -gt 0 ]; then
-                echo "  修复 $(basename "$file"): $fixes 处"
-                total_fixes=$((total_fixes + fixes))
-            fi
-
-            # 添加 class_name
+            # 先添加 class_name (修复依赖它)
             result=$(add_class_name "$file")
             if [ "$result" = "added" ]; then
                 echo "  添加 class_name: $(basename "$file")"
                 class_added=$((class_added + 1))
+            fi
+
+            # 再修复返回类型引用
+            fixes=$(fix_godobuf_bug "$file")
+            if [ "$fixes" -gt 0 ]; then
+                echo "  修复 $(basename "$file"): $fixes 处"
+                total_fixes=$((total_fixes + fixes))
             fi
         fi
     done

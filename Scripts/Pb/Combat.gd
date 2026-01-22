@@ -251,7 +251,7 @@ class PBPacker:
 				break
 		return result
 
-	static func unpack_type_tag(bytes : PackedByteArray, index : int) -> PBTypeTag:
+	static func unpack_type_tag(bytes : PackedByteArray, index : int) -> PbCombat.PBTypeTag:
 		var varint_bytes : PackedByteArray = isolate_varint(bytes, index)
 		var result : PBTypeTag = PBTypeTag.new()
 		if varint_bytes.size() != 0:

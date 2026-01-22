@@ -46,20 +46,16 @@ func _create_new_save() -> void:
 	# 初始化 UUID 管理器
 	GUuidMgr.init_counter(0)
 
-	# 创建第一个默认角色
+	# 创建第一个默认角色 (使用 add_ 方法获取内部引用)
 	var new_uuid = GUuidMgr.get_new_uuid()
-	var characterRecord = PbCharacter.CharacterRecord.new()
+	var characterRecord = player_record.add_CharacterRecordMap(new_uuid)
 	characterRecord.set_UUID(new_uuid)
 	characterRecord.set_CharacterID(1000001)
 	characterRecord.set_Nick("CharacterID-1000001")
 
-	# 设置资产表
-	var asset_map = characterRecord.get_AssetIDRecordMap()
-	asset_map[PbAsset.AssetIDRecord.AssetIDRecord_Exp] = 0
-	asset_map[PbAsset.AssetIDRecord.AssetIDRecord_UUID] = new_uuid 
-
-	# 添加
-	player_record.get_CharacterRecordMap()[new_uuid] = characterRecord
+	# 设置资产表 (使用 add_ 方法直接设置键值)
+	characterRecord.add_AssetIDRecordMap(PbAsset.AssetIDRecord.AssetIDRecord_Exp, 0)
+	characterRecord.add_AssetIDRecordMap(PbAsset.AssetIDRecord.AssetIDRecord_UUID, new_uuid)
 
 	save()
 
