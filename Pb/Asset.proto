@@ -87,6 +87,7 @@ enum AssetIDRecord {
   AssetIDRecord_Orientation = 10; // 当前朝向
   AssetIDRecord_Pose = 11; // 姿势 CharacterAction
   AssetIDRecord_RebirthCount = 13; // 转生次数 [0, 配置表最大值]
+  AssetIDRecord_UUID = 14; // 全局唯一ID
 
   AssetIDRecord_ElementalEarth = 101; // 元素属性-土
   AssetIDRecord_ElementalWater = 102; // 元素属性-水

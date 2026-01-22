@@ -3,12 +3,29 @@ class_name InputMgr
 
 extends Node
 
+# 移动
 var move_vector: Vector2 = Vector2.ZERO
+# 切换-左手
+var switch_left_hand_pressed: bool = false
+# 切换-右手
+var switch_right_hand_pressed: bool = false
 
 func _process(delta: float) -> void:
 	# 移动输入
 	move_vector = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	# 切换-左手
+	switch_left_hand_pressed = Input.is_action_just_pressed("switch_left_hand")
+	# 切换-右手
+	switch_right_hand_pressed = Input.is_action_just_pressed("switch_right_hand")
 
-# 如果需要阻断输入(例如打开菜单时), 可以在这里加开关
+# 如果需要阻断输入, 可以在这里加开关
 func get_move_vector() -> Vector2:
 	return move_vector
+
+# 如果需要阻断输入, 可以在这里加开关
+func get_switch_left_hand_pressed() -> bool:
+	return switch_left_hand_pressed
+
+# 如果需要阻断输入, 可以在这里加开关
+func get_switch_right_hand_pressed() -> bool:
+	return switch_right_hand_pressed
