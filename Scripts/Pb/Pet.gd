@@ -727,22 +727,17 @@ class PetRecord:
 		service.field = __UUID
 		data[__UUID.tag] = service
 		
-		__CfgID = PBField.new("CfgID", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
-		service = PBServiceField.new()
-		service.field = __CfgID
-		data[__CfgID.tag] = service
-		
-		__Nick = PBField.new("Nick", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		__Nick = PBField.new("Nick", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
 		service = PBServiceField.new()
 		service.field = __Nick
 		data[__Nick.tag] = service
 		
-		var __AssetRecordBaseMap_default: Array = []
-		__AssetRecordBaseMap = PBField.new("AssetRecordBaseMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 10, true, __AssetRecordBaseMap_default)
+		var __RecordBaseMap_default: Array = []
+		__RecordBaseMap = PBField.new("RecordBaseMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 10, true, __RecordBaseMap_default)
 		service = PBServiceField.new()
-		service.field = __AssetRecordBaseMap
-		service.func_ref = Callable(self, "add_empty_AssetRecordBaseMap")
-		data[__AssetRecordBaseMap.tag] = service
+		service.field = __RecordBaseMap
+		service.func_ref = Callable(self, "add_empty_RecordBaseMap")
+		data[__RecordBaseMap.tag] = service
 		
 		var __RecordMap_default: Array = []
 		__RecordMap = PBField.new("RecordMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 1000, true, __RecordMap_default)
@@ -766,19 +761,6 @@ class PetRecord:
 	func set_UUID(value : int) -> void:
 		__UUID.value = value
 	
-	var __CfgID: PBField
-	func has_CfgID() -> bool:
-		if __CfgID.value != null:
-			return true
-		return false
-	func get_CfgID() -> int:
-		return __CfgID.value
-	func clear_CfgID() -> void:
-		data[2].state = PB_SERVICE_STATE.UNFILLED
-		__CfgID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
-	func set_CfgID(value : int) -> void:
-		__CfgID.value = value
-	
 	var __Nick: PBField
 	func has_Nick() -> bool:
 		if __Nick.value != null:
@@ -787,36 +769,36 @@ class PetRecord:
 	func get_Nick() -> String:
 		return __Nick.value
 	func clear_Nick() -> void:
-		data[3].state = PB_SERVICE_STATE.UNFILLED
+		data[2].state = PB_SERVICE_STATE.UNFILLED
 		__Nick.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
 	func set_Nick(value : String) -> void:
 		__Nick.value = value
 	
-	var __AssetRecordBaseMap: PBField
-	func get_raw_AssetRecordBaseMap():
-		return __AssetRecordBaseMap.value
-	func get_AssetRecordBaseMap():
-		return PBPacker.construct_map(__AssetRecordBaseMap.value)
-	func clear_AssetRecordBaseMap():
+	var __RecordBaseMap: PBField
+	func get_raw_RecordBaseMap():
+		return __RecordBaseMap.value
+	func get_RecordBaseMap():
+		return PBPacker.construct_map(__RecordBaseMap.value)
+	func clear_RecordBaseMap():
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__AssetRecordBaseMap.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MAP]
-	func add_empty_AssetRecordBaseMap() -> PetRecord.map_type_AssetRecordBaseMap:
-		var element = PetRecord.map_type_AssetRecordBaseMap.new()
-		__AssetRecordBaseMap.value.append(element)
+		__RecordBaseMap.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MAP]
+	func add_empty_RecordBaseMap() -> PetRecord.map_type_RecordBaseMap:
+		var element = PetRecord.map_type_RecordBaseMap.new()
+		__RecordBaseMap.value.append(element)
 		return element
-	func add_AssetRecordBaseMap(a_key, a_value) -> void:
+	func add_RecordBaseMap(a_key, a_value) -> void:
 		var idx = -1
-		for i in range(__AssetRecordBaseMap.value.size()):
-			if __AssetRecordBaseMap.value[i].get_key() == a_key:
+		for i in range(__RecordBaseMap.value.size()):
+			if __RecordBaseMap.value[i].get_key() == a_key:
 				idx = i
 				break
-		var element = PetRecord.map_type_AssetRecordBaseMap.new()
+		var element = PetRecord.map_type_RecordBaseMap.new()
 		element.set_key(a_key)
 		element.set_value(a_value)
 		if idx != -1:
-			__AssetRecordBaseMap.value[idx] = element
+			__RecordBaseMap.value[idx] = element
 		else:
-			__AssetRecordBaseMap.value.append(element)
+			__RecordBaseMap.value.append(element)
 	
 	var __RecordMap: PBField
 	func get_raw_RecordMap():
@@ -844,7 +826,7 @@ class PetRecord:
 			__RecordMap.value.append(element)
 		return element.new_value()
 	
-	class map_type_AssetRecordBaseMap:
+	class map_type_RecordBaseMap:
 		func _init():
 			var service
 			
@@ -997,6 +979,29 @@ class PetRecord:
 			return PB_ERR.PARSE_INCOMPLETE
 		return result
 	
+enum PetAssetIDRecordBase {
+	PetAssetIDRecordBase_Unknow = 0,
+	PetAssetIDRecordBase_AttributesAttack = 2001,
+	PetAssetIDRecordBase_AttributesDefense = 2002,
+	PetAssetIDRecordBase_AttributesAgility = 2003,
+	PetAssetIDRecordBase_AttributesHP = 2004,
+	PetAssetIDRecordBase_Loyalty = 2005,
+	PetAssetIDRecordBase_Pose = 2006,
+	PetAssetIDRecordBase_AttributesLevel_InitialStats = 2101,
+	PetAssetIDRecordBase_AttributesAttack_InitialStats = 2102,
+	PetAssetIDRecordBase_AttributesDefense_InitialStats = 2103,
+	PetAssetIDRecordBase_AttributesAgility_InitialStats = 2104,
+	PetAssetIDRecordBase_AttributesHP_InitialStats = 2105
+}
+
+enum PetRecordPrimary {
+	PetRecordPrimary_Unknow = 0
+}
+
+enum PetRecordSecondary {
+	PetRecordSecondary_Unknow = 0
+}
+
 class RecordPrimary:
 	func _init():
 		var service
