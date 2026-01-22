@@ -23,7 +23,6 @@ func _ready() -> void:
 	
 
 func _physics_process(delta: float) -> void:
-	movement_mgr.handle_input(delta)
 	jump_mgr.handle_input()
 	# 处理重力
 	jump_mgr.handle_gravity(delta)

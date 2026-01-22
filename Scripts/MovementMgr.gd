@@ -13,27 +13,27 @@ func _ready() -> void:
 	character_body = get_parent() as CharacterBody3D
 
 func _physics_process(delta: float) -> void:
-	var direction = input_mgr.get_move_vector()
-	prints("movement mgr direction:",direction)
-	
-# 处理-输入（应用速度和转身）
-func handle_input(delta: float) -> void:
-	var direction := _get_input_direction()
-
 	if _is_locked:
 		character_body.velocity.x = 0
 		character_body.velocity.z = 0
 		return
 
+	var input_direction = input_mgr.get_move_vector()
+	var direction = Vector3(input_direction.x, 0, input_direction.y).normalized()
+	# 旋转45度适配等距摄像机
+	direction = direction.rotated(Vector3.UP, deg_to_rad(45))
 	if direction:
 		character_body.velocity.x = direction.x * GameMgr.player.cfg_character_entry.speed
-		character_body.velocity.z = direction.z *  GameMgr.player.cfg_character_entry.speed
+		character_body.velocity.z = direction.z * GameMgr.player.cfg_character_entry.speed
 		# 平滑转身
 		var target_rotation = atan2(direction.x, direction.z)
 		character_body.rotation.y = lerp_angle(character_body.rotation.y, target_rotation, GameMgr.player.cfg_character_entry.rotation_speed * delta)
 	else:
+		# 处理停止时的逻辑
 		character_body.velocity.x = move_toward(character_body.velocity.x, 0, GameMgr.player.cfg_character_entry.speed)
 		character_body.velocity.z = move_toward(character_body.velocity.z, 0, GameMgr.player.cfg_character_entry.speed)
+
+	character_body.move_and_slide()
 
 # 是否在移动
 func is_moving() -> bool:
@@ -46,24 +46,6 @@ func lock() -> void:
 func unlock() -> void:
 	_is_locked = false
 	
-# 获取输入方向（已旋转45度适配摄像机）
-func _get_input_direction() -> Vector3:
-	var wasd_x := 0.0
-	var wasd_y := 0.0
-
-	if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
-		wasd_x -= 1.0
-	if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
-		wasd_x += 1.0
-	if Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
-		wasd_y -= 1.0
-	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
-		wasd_y += 1.0
-
-	var direction := Vector3(wasd_x, 0, wasd_y).normalized()
-	# 旋转45度适配等距摄像机
-	return direction.rotated(Vector3.UP, deg_to_rad(45))
-
 # 获取水平速度
 func _get_horizontal_speed() -> float:
 	return Vector2(character_body.velocity.x, character_body.velocity.z).length()
