@@ -77,6 +77,24 @@ fix_godobuf_bug() {
     echo "$fix_count"
 }
 
+# 添加 class_name 的函数
+add_class_name() {
+    local file="$1"
+    local basename=$(basename "$file" .gd)
+    local class_name="Pb$basename"
+
+    # 检查第一行是否已有 class_name
+    local first_line=$(head -1 "$file")
+    if [[ "$first_line" == class_name* ]]; then
+        echo "skip"
+        return
+    fi
+
+    # 在第一行插入 class_name
+    sed -i "1i class_name $class_name" "$file"
+    echo "added"
+}
+
 # 提示是否修复
 read -p "是否修复生成文件中的 godobuf bug? (y/n): " answer
 
@@ -85,6 +103,7 @@ if [ "$answer" = "y" ] || [ "$answer" = "Y" ]; then
     echo "正在修复..."
 
     total_fixes=0
+    class_added=0
     for file in "${generated_files[@]}"; do
         if [ -f "$file" ]; then
             fixes=$(fix_godobuf_bug "$file")
@@ -92,12 +111,19 @@ if [ "$answer" = "y" ] || [ "$answer" = "Y" ]; then
                 echo "  修复 $(basename "$file"): $fixes 处"
                 total_fixes=$((total_fixes + fixes))
             fi
+
+            # 添加 class_name
+            result=$(add_class_name "$file")
+            if [ "$result" = "added" ]; then
+                echo "  添加 class_name: $(basename "$file")"
+                class_added=$((class_added + 1))
+            fi
         fi
     done
 
-    if [ "$total_fixes" -gt 0 ]; then
+    if [ "$total_fixes" -gt 0 ] || [ "$class_added" -gt 0 ]; then
         echo ""
-        echo "✅ 修复完成！共修复 $total_fixes 处"
+        echo "✅ 修复完成！共修复 $total_fixes 处，添加 $class_added 个 class_name"
     else
         echo "✅ 无需修复"
     fi

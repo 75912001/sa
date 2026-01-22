@@ -1,3 +1,4 @@
+class_name PbCombat
 #
 # BSD 3-Clause License
 #

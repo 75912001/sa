@@ -1,3 +1,4 @@
+class_name PbPet
 #
 # BSD 3-Clause License
 #
@@ -726,6 +727,11 @@ class PetRecord:
 		service.field = __UUID
 		data[__UUID.tag] = service
 		
+		__PetID = PBField.new("PetID", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
+		service = PBServiceField.new()
+		service.field = __PetID
+		data[__PetID.tag] = service
+		
 		__Nick = PBField.new("Nick", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
 		service = PBServiceField.new()
 		service.field = __Nick
@@ -759,6 +765,19 @@ class PetRecord:
 		__UUID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64]
 	func set_UUID(value : int) -> void:
 		__UUID.value = value
+	
+	var __PetID: PBField
+	func has_PetID() -> bool:
+		if __PetID.value != null:
+			return true
+		return false
+	func get_PetID() -> int:
+		return __PetID.value
+	func clear_PetID() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__PetID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
+	func set_PetID(value : int) -> void:
+		__PetID.value = value
 	
 	var __Nick: PBField
 	func has_Nick() -> bool:

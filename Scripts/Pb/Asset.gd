@@ -1,3 +1,4 @@
+class_name PbAsset
 #
 # BSD 3-Clause License
 #
@@ -742,6 +743,7 @@ enum AssetIDRecord {
 	AssetIDRecord_Orientation = 10,
 	AssetIDRecord_Pose = 11,
 	AssetIDRecord_RebirthCount = 13,
+	AssetIDRecord_UUID = 14,
 	AssetIDRecord_ElementalEarth = 101,
 	AssetIDRecord_ElementalWater = 102,
 	AssetIDRecord_ElementalFire = 103,

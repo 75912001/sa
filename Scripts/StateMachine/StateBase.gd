@@ -1,7 +1,5 @@
-extends Node
-
 class_name StateBase
-
+extends Node
 
 signal state_finished(next_state_name: String)
 

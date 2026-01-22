@@ -1,3 +1,4 @@
+class_name PbUi
 #
 # BSD 3-Clause License
 #

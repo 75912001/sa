@@ -18,10 +18,10 @@ config/icon="res://icon.svg"
 [autoload]
 
 YAML="*res://addons/miniyaml/miniyaml.gd"
-PbAsset="*res://Scripts/Pb/Asset.gd"
-PbWeapon="*res://Scripts/Pb/Weapon.gd"
-CfgMgr="*res://Scripts/Cfg/Mgr.gd"
-GameMgr="*res://Scripts/GameMgr.gd"
+GCfgMgr="*res://Scripts/Cfg/Mgr.gd"
+GUuidMgr="*res://Scripts/System/UuidMgr.gd"
+GGameMgr="*res://Scripts/GameMgr.gd"
+GSave="*res://Scripts/System/Save.gd"
 
 [display]
 

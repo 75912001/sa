@@ -39,16 +39,17 @@ enum CharacterActionType {
 // 角色-记录
 message CharacterRecord {
   uint64 UUID = 1; // 角色UUID 每个用户的角色唯一ID
-  string Nick = 2; // 昵称
+  uint32 CharacterID = 2; // 角色ID
+  string Nick = 3; // 昵称
   map<uint32, uint64> AssetIDRecordMap = 10; // 资产表 key: 资产ID-角色基础 AssetIDRecord value: 数值
   map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: 记录-主要ID
   map<uint64, PetRecord> PetRecordMap = 2000; // 宠物记录表 key: 宠物UUID
 }
 
 ////////////////////////////////////////////////////////////
-// 用户 User
+// 用户 Player
 ////////////////////////////////////////////////////////////
 // 用户-记录
-message UserRecord {
-  map<uint64, CharacterRecord> RoleRecordMap = 10; // 角色记录表 key: 角色UUID
+message PlayerRecord {
+  map<uint64, CharacterRecord> CharacterRecordMap = 10; // 角色记录表 key: 角色UUID
 }

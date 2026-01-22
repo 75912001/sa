@@ -1,6 +1,9 @@
-extends Node
+# 武器-切换管理器 - 编排切换动画序列（支持打断）
 class_name WeaponSwitchMgr
-## 武器切换管理器 - 编排切换动画序列（支持打断）
+
+extends Node
+
+@export var input_mgr: InputMgr
 
 # --- 信号 ---
 signal switch_started()
@@ -24,6 +27,21 @@ var movement_mgr: MovementMgr
 
 # --- 时序配置（秒）---
 const SHEATH_UNEQUIP_DELAY := 0.6  # 收剑动画多久后卸下武器
+
+func _process(delta: float) -> void:
+	if input_mgr.get_switch_left_hand_pressed():
+		_handle_switch_left_hand()
+	if input_mgr.get_switch_right_hand_pressed():
+		_handle_switch_right_hand()
+		
+func _handle_switch_left_hand() -> void:
+	return
+
+func _handle_switch_right_hand() -> void:
+	var next_id = GGameMgr.player.get_right_hand_next_id()
+	prints("WeaponSwitchMgr 切换-右手:", next_id)
+	weapon_mgr.equip_weapon(next_id)
+	return
 
 func handle_input() -> void:
 	if Input.is_key_pressed(KEY_ALT): # Alt

@@ -1,3 +1,4 @@
+class_name PbRecord
 #
 # BSD 3-Clause License
 #

@@ -18,7 +18,7 @@ var characters: Dictionary = {}  # 角色ID -> CfgCharacterEntry
 
 # 加载配置
 func load(path: String) -> void:
-	var data := CfgMgr.load_yaml(path)
+	var data := GCfgMgr.load_yaml(path)
 	var characters_array: Array = data.get("characters", [])
 	for item in characters_array:
 		var entry := CfgCharacterEntry.new()

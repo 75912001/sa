@@ -1,3 +1,4 @@
+class_name PbCharacter
 #
 # BSD 3-Clause License
 #
@@ -718,7 +719,12 @@ class CharacterRecord:
 		service.field = __UUID
 		data[__UUID.tag] = service
 		
-		__Nick = PBField.new("Nick", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		__CharacterID = PBField.new("CharacterID", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
+		service = PBServiceField.new()
+		service.field = __CharacterID
+		data[__CharacterID.tag] = service
+		
+		__Nick = PBField.new("Nick", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
 		service = PBServiceField.new()
 		service.field = __Nick
 		data[__Nick.tag] = service
@@ -759,6 +765,19 @@ class CharacterRecord:
 	func set_UUID(value : int) -> void:
 		__UUID.value = value
 	
+	var __CharacterID: PBField
+	func has_CharacterID() -> bool:
+		if __CharacterID.value != null:
+			return true
+		return false
+	func get_CharacterID() -> int:
+		return __CharacterID.value
+	func clear_CharacterID() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__CharacterID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
+	func set_CharacterID(value : int) -> void:
+		__CharacterID.value = value
+	
 	var __Nick: PBField
 	func has_Nick() -> bool:
 		if __Nick.value != null:
@@ -767,7 +786,7 @@ class CharacterRecord:
 	func get_Nick() -> String:
 		return __Nick.value
 	func clear_Nick() -> void:
-		data[2].state = PB_SERVICE_STATE.UNFILLED
+		data[3].state = PB_SERVICE_STATE.UNFILLED
 		__Nick.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
 	func set_Nick(value : String) -> void:
 		__Nick.value = value
@@ -1070,46 +1089,46 @@ class CharacterRecord:
 			return PB_ERR.PARSE_INCOMPLETE
 		return result
 	
-class UserRecord:
+class PlayerRecord:
 	func _init():
 		var service
 		
-		var __RoleRecordMap_default: Array = []
-		__RoleRecordMap = PBField.new("RoleRecordMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 10, true, __RoleRecordMap_default)
+		var __CharacterRecordMap_default: Array = []
+		__CharacterRecordMap = PBField.new("CharacterRecordMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 10, true, __CharacterRecordMap_default)
 		service = PBServiceField.new()
-		service.field = __RoleRecordMap
-		service.func_ref = Callable(self, "add_empty_RoleRecordMap")
-		data[__RoleRecordMap.tag] = service
+		service.field = __CharacterRecordMap
+		service.func_ref = Callable(self, "add_empty_CharacterRecordMap")
+		data[__CharacterRecordMap.tag] = service
 		
 	var data = {}
 	
-	var __RoleRecordMap: PBField
-	func get_raw_RoleRecordMap():
-		return __RoleRecordMap.value
-	func get_RoleRecordMap():
-		return PBPacker.construct_map(__RoleRecordMap.value)
-	func clear_RoleRecordMap():
+	var __CharacterRecordMap: PBField
+	func get_raw_CharacterRecordMap():
+		return __CharacterRecordMap.value
+	func get_CharacterRecordMap():
+		return PBPacker.construct_map(__CharacterRecordMap.value)
+	func clear_CharacterRecordMap():
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__RoleRecordMap.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MAP]
-	func add_empty_RoleRecordMap() -> UserRecord.map_type_RoleRecordMap:
-		var element = UserRecord.map_type_RoleRecordMap.new()
-		__RoleRecordMap.value.append(element)
+		__CharacterRecordMap.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MAP]
+	func add_empty_CharacterRecordMap() -> PlayerRecord.map_type_CharacterRecordMap:
+		var element = PlayerRecord.map_type_CharacterRecordMap.new()
+		__CharacterRecordMap.value.append(element)
 		return element
-	func add_RoleRecordMap(a_key) -> CharacterRecord:
+	func add_CharacterRecordMap(a_key) -> CharacterRecord:
 		var idx = -1
-		for i in range(__RoleRecordMap.value.size()):
-			if __RoleRecordMap.value[i].get_key() == a_key:
+		for i in range(__CharacterRecordMap.value.size()):
+			if __CharacterRecordMap.value[i].get_key() == a_key:
 				idx = i
 				break
-		var element = UserRecord.map_type_RoleRecordMap.new()
+		var element = PlayerRecord.map_type_CharacterRecordMap.new()
 		element.set_key(a_key)
 		if idx != -1:
-			__RoleRecordMap.value[idx] = element
+			__CharacterRecordMap.value[idx] = element
 		else:
-			__RoleRecordMap.value.append(element)
+			__CharacterRecordMap.value.append(element)
 		return element.new_value()
 	
-	class map_type_RoleRecordMap:
+	class map_type_CharacterRecordMap:
 		func _init():
 			var service
 			
@@ -1475,6 +1494,11 @@ class PetRecord:
 		service.field = __UUID
 		data[__UUID.tag] = service
 		
+		__PetID = PBField.new("PetID", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
+		service = PBServiceField.new()
+		service.field = __PetID
+		data[__PetID.tag] = service
+		
 		__Nick = PBField.new("Nick", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
 		service = PBServiceField.new()
 		service.field = __Nick
@@ -1508,6 +1532,19 @@ class PetRecord:
 		__UUID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64]
 	func set_UUID(value : int) -> void:
 		__UUID.value = value
+	
+	var __PetID: PBField
+	func has_PetID() -> bool:
+		if __PetID.value != null:
+			return true
+		return false
+	func get_PetID() -> int:
+		return __PetID.value
+	func clear_PetID() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__PetID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
+	func set_PetID(value : int) -> void:
+		__PetID.value = value
 	
 	var __Nick: PBField
 	func has_Nick() -> bool:

@@ -47,6 +47,7 @@ enum PetGrade {
 // 宠物-记录
 message PetRecord {
   uint64 UUID = 1; // 唯一ID 每个角色的宠物唯一ID
+  uint32 PetID = 2; // 宠物ID
   string Nick = 3; // 昵称
   map<uint32, uint64> AssetRecordBaseMap = 10; // 资产表 key: 资产ID-记录基础 AssetIDRBase value: 数值
   map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: 记录-主要ID

@@ -1,3 +1,4 @@
+class_name PbCommon
 #
 # BSD 3-Clause License
 #

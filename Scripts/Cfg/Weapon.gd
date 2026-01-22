@@ -18,7 +18,7 @@ var weapons: Dictionary = {}  # 武器ID -> WeaponEntry
 
 # 加载配置
 func load(path: String) -> void:
-	var data := CfgMgr.load_yaml(path)
+	var data := GCfgMgr.load_yaml(path)
 	var weapons_array: Array = data.get("weapons", [])
 	for item in weapons_array:
 		var entry := CfgWeaponEntry.new()

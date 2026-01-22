@@ -1,3 +1,4 @@
+class_name PbWeapon
 #
 # BSD 3-Clause License
 #

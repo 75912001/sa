@@ -3,6 +3,9 @@ extends CharacterBody3D
 
 @export var character_id: int = 1000001
 
+# todo menglc 替换成 武器 uuid
+@export var right_hand_weapon_ids: Array[int] = [0, 11000002,11000003,11000004]
+
 # --- 组件引用 ---
 @onready var movement_mgr: MovementMgr = $MovementMgr
 @onready var jump_mgr: JumpMgr = $JumpMgr
@@ -10,11 +13,14 @@ extends CharacterBody3D
 @onready var weapon_mgr: WeaponMgr = $WeaponMgr
 @onready var weapon_switch_mgr: WeaponSwitchMgr = $WeaponSwitchMgr
 
+# 配置-角色-条目
 var cfg_character_entry: CfgCharacterMgr.CfgCharacterEntry
+# 当前-右手-序号
+var current_right_hand_index: int = 0
 
 func _ready() -> void:
-	GameMgr.player = self
-	cfg_character_entry = CfgMgr.cfg_character_mgr.get_character(character_id)
+	GGameMgr.player = self
+	cfg_character_entry = GCfgMgr.cfg_character_mgr.get_character(character_id)
 	assert(cfg_character_entry != null, "角色配置不存在: %d" % character_id)
 	_init_jump_mgr()
 	_init_weapon_mgr()
@@ -86,3 +92,8 @@ func _on_weapon_switch_started() -> void:
 
 func _on_weapon_switch_completed() -> void:
 	prints("weapon switch completed")
+
+# 获取-右手-下一个id
+func get_right_hand_next_id() -> int:
+	current_right_hand_index = (current_right_hand_index+1)%right_hand_weapon_ids.size()
+	return right_hand_weapon_ids[current_right_hand_index]
