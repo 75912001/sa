@@ -8,6 +8,15 @@ import "Record.proto";
 import "Pet.proto";
 
 ////////////////////////////////////////////////////////////
+// 用户 Player
+////////////////////////////////////////////////////////////
+// 用户-记录
+message PlayerRecord {
+  uint64 UUID = 1; // UUID 标记已使用的唯一ID
+  map<uint64, CharacterRecord> CharacterRecordMap = 10; // 角色记录表 key: 角色UUID
+}
+
+////////////////////////////////////////////////////////////
 // 角色 Character
 ////////////////////////////////////////////////////////////
 // 角色-等级范围
@@ -39,17 +48,31 @@ enum CharacterActionType {
 // 角色-记录
 message CharacterRecord {
   uint64 UUID = 1; // 角色UUID 每个用户的角色唯一ID
-  uint32 CharacterID = 2; // 角色ID
-  string Nick = 3; // 昵称
-  map<uint32, uint64> AssetIDRecordMap = 10; // 资产表 key: 资产ID-角色基础 AssetIDRecord value: 数值
-  map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: 记录-主要ID
+  string Nick = 2; // 昵称
+  map<uint32, uint64> AssetIDRecordMap = 10; // 资产表 key: CharacterAssetIDRecordBase value: 数值
+  map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: CharacterRecordPrimary
   map<uint64, PetRecord> PetRecordMap = 2000; // 宠物记录表 key: 宠物UUID
 }
 
-////////////////////////////////////////////////////////////
-// 用户 Player
-////////////////////////////////////////////////////////////
-// 用户-记录
-message PlayerRecord {
-  map<uint64, CharacterRecord> CharacterRecordMap = 10; // 角色记录表 key: 角色UUID
+// 角色-资产-ID-记录 [1001,2000]
+enum CharacterAssetIDRecordBase {
+  CharacterAssetIDRecordBase_Unknow = 0; // 未知
+
+  CharacterAssetIDRecordBase_Pose = 1001; // 姿势 CharacterAction
+  CharacterAssetIDRecordBase_LastLoginTimestamp = 1002; // 上次登录时间戳
+  CharacterAssetIDRecordBase_LastLogoutTimestamp = 1003; // 上次登出时间戳
+  CharacterAssetIDRecordBase_AvailablePoint = 1004; // 可用点数 - 出生/升级/转生 后获得的可用点数
+
+  CharacterAssetIDRecordBase_AttributesStrength = 1101; // 腕力 (1HP, 1攻, 0.1防) [主要提升攻击力，HP 提升较少]
+  CharacterAssetIDRecordBase_AttributesEndurance = 1102; // 耐力 (1HP, 0.1攻, 1防) [主要提升防御力，HP 提升较少]
+  CharacterAssetIDRecordBase_AttributesAgility = 1103; // 敏捷 (1HP, 1敏捷, 0.05攻, 0.05防) [主要提升敏捷，HP 提升较少]
+  CharacterAssetIDRecordBase_AttributesStamina = 1104; // 体力 (4HP, 0.1攻击, 0.1防御) [对 HP 提升最大，是 "血牛" 角色首选]
+}
+
+enum CharacterRecordPrimary {
+  CharacterRecordPrimary_Unknow = 0; // 未知
+}
+
+enum CharacterRecordSecondary {
+  CharacterRecordSecondary_Unknow = 0; // 未知
 }

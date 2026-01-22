@@ -727,10 +727,10 @@ class PetRecord:
 		service.field = __UUID
 		data[__UUID.tag] = service
 		
-		__PetID = PBField.new("PetID", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
+		__CfgID = PBField.new("CfgID", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
 		service = PBServiceField.new()
-		service.field = __PetID
-		data[__PetID.tag] = service
+		service.field = __CfgID
+		data[__CfgID.tag] = service
 		
 		__Nick = PBField.new("Nick", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
 		service = PBServiceField.new()
@@ -766,18 +766,18 @@ class PetRecord:
 	func set_UUID(value : int) -> void:
 		__UUID.value = value
 	
-	var __PetID: PBField
-	func has_PetID() -> bool:
-		if __PetID.value != null:
+	var __CfgID: PBField
+	func has_CfgID() -> bool:
+		if __CfgID.value != null:
 			return true
 		return false
-	func get_PetID() -> int:
-		return __PetID.value
-	func clear_PetID() -> void:
+	func get_CfgID() -> int:
+		return __CfgID.value
+	func clear_CfgID() -> void:
 		data[2].state = PB_SERVICE_STATE.UNFILLED
-		__PetID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
-	func set_PetID(value : int) -> void:
-		__PetID.value = value
+		__CfgID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
+	func set_CfgID(value : int) -> void:
+		__CfgID.value = value
 	
 	var __Nick: PBField
 	func has_Nick() -> bool:

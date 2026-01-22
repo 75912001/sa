@@ -1093,6 +1093,11 @@ class PlayerRecord:
 	func _init():
 		var service
 		
+		__UUID = PBField.new("UUID", PB_DATA_TYPE.UINT64, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64])
+		service = PBServiceField.new()
+		service.field = __UUID
+		data[__UUID.tag] = service
+		
 		var __CharacterRecordMap_default: Array = []
 		__CharacterRecordMap = PBField.new("CharacterRecordMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 10, true, __CharacterRecordMap_default)
 		service = PBServiceField.new()
@@ -1101,6 +1106,19 @@ class PlayerRecord:
 		data[__CharacterRecordMap.tag] = service
 		
 	var data = {}
+	
+	var __UUID: PBField
+	func has_UUID() -> bool:
+		if __UUID.value != null:
+			return true
+		return false
+	func get_UUID() -> int:
+		return __UUID.value
+	func clear_UUID() -> void:
+		data[1].state = PB_SERVICE_STATE.UNFILLED
+		__UUID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64]
+	func set_UUID(value : int) -> void:
+		__UUID.value = value
 	
 	var __CharacterRecordMap: PBField
 	func get_raw_CharacterRecordMap():
@@ -1494,10 +1512,10 @@ class PetRecord:
 		service.field = __UUID
 		data[__UUID.tag] = service
 		
-		__PetID = PBField.new("PetID", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
+		__CfgID = PBField.new("CfgID", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
 		service = PBServiceField.new()
-		service.field = __PetID
-		data[__PetID.tag] = service
+		service.field = __CfgID
+		data[__CfgID.tag] = service
 		
 		__Nick = PBField.new("Nick", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
 		service = PBServiceField.new()
@@ -1533,18 +1551,18 @@ class PetRecord:
 	func set_UUID(value : int) -> void:
 		__UUID.value = value
 	
-	var __PetID: PBField
-	func has_PetID() -> bool:
-		if __PetID.value != null:
+	var __CfgID: PBField
+	func has_CfgID() -> bool:
+		if __CfgID.value != null:
 			return true
 		return false
-	func get_PetID() -> int:
-		return __PetID.value
-	func clear_PetID() -> void:
+	func get_CfgID() -> int:
+		return __CfgID.value
+	func clear_CfgID() -> void:
 		data[2].state = PB_SERVICE_STATE.UNFILLED
-		__PetID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
-	func set_PetID(value : int) -> void:
-		__PetID.value = value
+		__CfgID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
+	func set_CfgID(value : int) -> void:
+		__CfgID.value = value
 	
 	var __Nick: PBField
 	func has_Nick() -> bool:

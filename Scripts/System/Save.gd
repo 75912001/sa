@@ -13,6 +13,8 @@ func _ready() -> void:
 	if not dir.dir_exists("Save"): # 目录不存在
 		dir.make_dir("Save")
 
+	player_record = PbCharacter.PlayerRecord.new()
+
 	load_game()
 
 func load_game() -> void:
@@ -29,7 +31,6 @@ func _load_from_file() -> void:
 
 	var bytes = file.get_buffer(file.get_length())
 
-	player_record = PbCharacter.PlayerRecord.new()
 	var result = player_record.from_bytes(bytes)
 
 	if result != PbCharacter.PB_ERR.NO_ERRORS:
@@ -41,7 +42,6 @@ func _load_from_file() -> void:
 
 func _create_new_save() -> void:
 	print("SaveMgr: 未找到存档或解析失败，创建新存档...")
-	player_record = PbCharacter.PlayerRecord.new()
 
 	# 初始化 UUID 管理器
 	GUuidMgr.init_counter(0)

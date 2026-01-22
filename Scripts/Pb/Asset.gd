@@ -743,7 +743,6 @@ enum AssetIDRecord {
 	AssetIDRecord_Orientation = 10,
 	AssetIDRecord_Pose = 11,
 	AssetIDRecord_RebirthCount = 13,
-	AssetIDRecord_UUID = 14,
 	AssetIDRecord_ElementalEarth = 101,
 	AssetIDRecord_ElementalWater = 102,
 	AssetIDRecord_ElementalFire = 103,
@@ -765,7 +764,10 @@ enum AssetIDRecord {
 	AssetIDRecord_Pet_AttributesAttack_InitialStats = 2102,
 	AssetIDRecord_Pet_AttributesDefense_InitialStats = 2103,
 	AssetIDRecord_Pet_AttributesAgility_InitialStats = 2104,
-	AssetIDRecord_Pet_AttributesHP_InitialStats = 2105
+	AssetIDRecord_Pet_AttributesHP_InitialStats = 2105,
+	AssetIDRecord_Weapon_DamagePercent = 10000,
+	AssetIDRecord_Weapon_CritRate = 10001,
+	AssetIDRecord_Weapon_CritDamageBonusRate = 10002
 }
 
 enum AssetOrientation {

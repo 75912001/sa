@@ -46,9 +46,34 @@ enum PetGrade {
 
 // 宠物-记录
 message PetRecord {
-  uint64 UUID = 1; // 唯一ID 每个角色的宠物唯一ID
-  uint32 PetID = 2; // 宠物ID
-  string Nick = 3; // 昵称
-  map<uint32, uint64> AssetRecordBaseMap = 10; // 资产表 key: 资产ID-记录基础 AssetIDRBase value: 数值
-  map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: 记录-主要ID
+  uint64 UUID = 1; // 唯一ID
+  string Nick = 2; // 昵称
+  map<uint32, uint64> RecordBaseMap = 10; // 资产表 key: PetAssetIDRecordBase value: 数值
+  map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: PetRecordPrimary
+}
+
+// 宠物-资产-ID-记录 [2001,3000]
+enum PetAssetIDRecordBase {
+  PetAssetIDRecordBase_Unknow = 0; // 未知
+  PetAssetIDRecordBase_AttributesAttack = 2001; // 宠物属性-攻击
+  PetAssetIDRecordBase_AttributesDefense = 2002; // 宠物属性-防御
+  PetAssetIDRecordBase_AttributesAgility = 2003; // 宠物属性-敏捷
+  PetAssetIDRecordBase_AttributesHP = 2004; // 宠物属性-生命
+  PetAssetIDRecordBase_Loyalty = 2005; // 宠物忠诚度 [0,100]
+  PetAssetIDRecordBase_Pose = 2006; // 姿势 PetAction
+
+  // 宠物属性-初始属性, 用户计算成长率,预测宠物最终属性
+  PetAssetIDRecordBase_AttributesLevel_InitialStats = 2101; // 宠物属性-等级-初始属性
+  PetAssetIDRecordBase_AttributesAttack_InitialStats = 2102; // 宠物属性-攻击-初始属性
+  PetAssetIDRecordBase_AttributesDefense_InitialStats = 2103; // 宠物属性-防御-初始属性
+  PetAssetIDRecordBase_AttributesAgility_InitialStats = 2104; // 宠物属性-敏捷-初始属性
+  PetAssetIDRecordBase_AttributesHP_InitialStats = 2105; // 宠物属性-生命-初始属性
+}
+
+enum PetRecordPrimary {
+  PetRecordPrimary_Unknow = 0; // 未知
+}
+
+enum PetRecordSecondary {
+  PetRecordSecondary_Unknow = 0; // 未知
 }

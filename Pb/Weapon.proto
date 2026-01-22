@@ -23,3 +23,32 @@ enum WeaponType {
 //  WeaponType_Boomerang = 7; // 回旋镖
   WeaponType_Max = 5; // 武器类型-最大值
 }
+
+// 武器-记录
+message WeaponRecord {
+  uint64 UUID = 1; // 唯一ID
+  uint32 WeaponID = 2; // 配置ID
+  map<uint32, uint64> RecordBaseMap = 10; // 资产表 key: WeaponAssetIDRecord value: 数值
+  map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: WeaponRecordPrimary
+}
+
+// 武器-资产-ID-记录
+enum WeaponAssetIDRecordBase {
+  WeaponAssetIDRecordBase_Unknow = 0; // 未知
+  WeaponAssetIDRecordBase_CreateTimestamp = 1; // 创建时间戳
+  WeaponAssetIDRecordBase_Exp = 2; // 经验值
+
+  WeaponAssetIDRecordBase_DamagePercent = 10000; // 伤害百分比(0,100]
+  WeaponAssetIDRecordBase_CritRate = 10001; // 暴击概率 范围(0,100]
+  WeaponAssetIDRecordBase_CritDamageBonusRate = 10002; // 暴击伤害加成倍数 范围(0,100]
+}
+
+enum WeaponRecordPrimary {
+  WeaponRecordPrimary_Unknow = 0; // 未知
+  WeaponRecordPrimary_Slot = 1; // 孔
+}
+
+enum WeaponRecordSecondary {
+  WeaponRecordSecondary_Unknow = 0; // 未知
+  WeaponRecordSecondary_Slot_Data = 1; // 孔数据
+}

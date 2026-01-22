@@ -85,9 +85,8 @@ enum AssetIDRecord {
   AssetIDRecord_Y = 7; // 当前位置y
   AssetIDRecord_Z = 8; // 当前位置z
   AssetIDRecord_Orientation = 10; // 当前朝向
-  AssetIDRecord_Pose = 11; // 姿势 CharacterAction
   AssetIDRecord_RebirthCount = 13; // 转生次数 [0, 配置表最大值]
-  AssetIDRecord_UUID = 14; // 全局唯一ID
+  AssetIDRecord_AssetID = 14; // 资产ID
 
   AssetIDRecord_ElementalEarth = 101; // 元素属性-土
   AssetIDRecord_ElementalWater = 102; // 元素属性-水
@@ -95,29 +94,13 @@ enum AssetIDRecord {
   AssetIDRecord_ElementalWind = 104; // 元素属性-风
 
   // 角色 [1001,2000]
-  AssetIDRecord_Character_LastLoginTimestamp = 1001; // 上次登录时间戳
-  AssetIDRecord_Character_LastLogoutTimestamp = 1002; // 上次登出时间戳
-  AssetIDRecord_Character_AvailablePoint = 1003; // 可用点数 - 出生/升级/转生 后获得的可用点数
-  AssetIDRecord_Character_AssetID = 1004; // 资产ID
-
-  AssetIDRecord_Character_AttributesStrength = 1101; // 腕力 (1HP, 1攻, 0.1防) [主要提升攻击力，HP 提升较少]
-  AssetIDRecord_Character_AttributesEndurance = 1102; // 耐力 (1HP, 0.1攻, 1防) [主要提升防御力，HP 提升较少]
-  AssetIDRecord_Character_AttributesAgility = 1103; // 敏捷 (1HP, 1敏捷, 0.05攻, 0.05防) [主要提升敏捷，HP 提升较少]
-  AssetIDRecord_Character_AttributesStamina = 1104; // 体力 (4HP, 0.1攻击, 0.1防御) [对 HP 提升最大，是 "血牛" 角色首选]
+  // 在 Character.proto 中定义
 
   // 宠物 [2001,3000]
-  AssetIDRecord_Pet_AttributesAttack = 2001; // 宠物属性-攻击
-  AssetIDRecord_Pet_AttributesDefense = 2002; // 宠物属性-防御
-  AssetIDRecord_Pet_AttributesAgility = 2003; // 宠物属性-敏捷
-  AssetIDRecord_Pet_AttributesHP = 2004; // 宠物属性-生命
-  AssetIDRecord_Pet_Loyalty = 2005; // 宠物忠诚度 [0,100]
+  // 在 Pet.proto 中定义
 
-  // 宠物属性-初始属性, 用户计算成长率,预测宠物最终属性
-  AssetIDRecord_Pet_AttributesLevel_InitialStats = 2101; // 宠物属性-等级-初始属性
-  AssetIDRecord_Pet_AttributesAttack_InitialStats = 2102; // 宠物属性-攻击-初始属性
-  AssetIDRecord_Pet_AttributesDefense_InitialStats = 2103; // 宠物属性-防御-初始属性
-  AssetIDRecord_Pet_AttributesAgility_InitialStats = 2104; // 宠物属性-敏捷-初始属性
-  AssetIDRecord_Pet_AttributesHP_InitialStats = 2105; // 宠物属性-生命-初始属性
+  // 武器 [10000,200000]
+  // 在 Weapon.proto 中定义
 }
 
 // 资产-朝向

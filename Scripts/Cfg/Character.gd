@@ -41,7 +41,7 @@ func load(path: String) -> void:
 func check() -> void:
 	for character_id in characters:
 		var entry: CfgCharacterEntry = characters[character_id]
-		prints("角色:", entry.show())
+		# prints("角色:", entry.show())
 
 # 组装配置 (预处理/索引构建)
 func assemble() -> void:

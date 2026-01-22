@@ -42,7 +42,7 @@ func load(path: String) -> void:
 func check() -> void:
 	for weapon_id in weapons:
 		var entry: CfgWeaponEntry = weapons[weapon_id]
-		prints("武器:", entry.show())
+		#prints("武器:", entry.show())
 
 # 组装配置 (预处理/索引构建)
 func assemble() -> void:
