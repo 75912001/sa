@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://u2mcrv87ic44" path="res://Scenes/Camera.tscn" id="1_d1c63"]
 [ext_resource type="PackedScene" uid="uid://cltl4miymivys" path="res://Scenes/Player.tscn" id="2_1lgw5"]
-[ext_resource type="PackedScene" uid="uid://dd67eu8t6f0ek" path="res://Assets/Objects/Tree/tree.001.glb" id="3_hlk0d"]
+[ext_resource type="PackedScene" uid="uid://bu2wvq5fuhn86" path="res://Assets/Objects/Tree/tree.001.glb" id="3_hlk0d"]
 [ext_resource type="Script" uid="uid://bcde0lk0ql7dq" path="res://Scripts/DebugUI.gd" id="4_0uv0p"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gv5m4"]

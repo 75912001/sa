@@ -61,9 +61,11 @@ func _create_new_save() -> void:
 	characterRecord.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_LastLoginTimestamp, timestamp)
 	characterRecord.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_AvailablePoint, 20)
 	# 武器
+	var weaponUUIDList: Array[int] = []
 	for weaponID in [11000001,11000002,11000003,11000004]:
 		new_uuid = GUuidMgr.get_new_uuid()
 		player_record.set_UUID(new_uuid)
+		weaponUUIDList.append(new_uuid)
 
 		var weaponRecord = characterRecord.add_WeaponRecordMap(new_uuid)
 		weaponRecord.set_UUID(new_uuid)
@@ -87,7 +89,10 @@ func _create_new_save() -> void:
 		recordSecondary.add_StrData("str2")
 		recordSecondary.add_StrData("str3")
 	# 武器-装备
-
+	var weaponEquippedData = characterRecord.new_WeaponEquippedData()
+	for weaponUUID in weaponUUIDList:
+		weaponEquippedData.add_RightHandBackupWeaponUUIDList(weaponUUID)
+	weaponEquippedData.set_RightHandWeaponUUID(weaponUUIDList[0])
 	save()
 
 func _init_systems_with_data() -> void:
