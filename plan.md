@@ -338,216 +338,320 @@ Locomotion/Knockdown   # 击倒
 
 ---
 
-## 四、实施步骤
+## 四、实施步骤（详细 UI 操作）
 
-### 步骤 1：准备动画资源
+### 步骤 1：打开场景并定位 AnimationTree
 
-#### 1.1 当前动画目录结构
-```
-Assets/Animations/Library/
-├── Unarmed/
-│   ├── Idle.res
-│   ├── Walking.res
-│   ├── Jump.res
-│   └── DrawSword.res
-└── SwordAndShield/
-    ├── Idle.res
-    ├── Walk.res
-    ├── DrawSword.res
-    ├── SheathSword.1.res
-    └── SheathSword.2.res
-```
+#### 1.1 打开 Player 场景
+1. 在 Godot 编辑器左上角 **FileSystem** 面板（文件系统）
+2. 导航到 `res://Scenes/`
+3. **双击** `Player.tscn` 打开场景
 
-#### 1.2 新建动画目录（可选）
-如果需要区分上下半身专用动画，可新建目录：
-```
-Assets/Animations/Library/
-├── Locomotion/         # 下半身动画
-│   ├── Idle.res
-│   ├── Walk.res
-│   ├── Run.res
-│   ├── Jump.res
-│   ├── Roll.res        # 全身动画
-│   └── HitStagger.res  # 全身动画
-└── Upper/              # 上半身动画
-    ├── Idle.res
-    ├── Attack_Light_1.res
-    ├── Attack_Light_2.res
-    ├── DrawSword.res
-    └── SheathSword.res
-```
-
-#### 1.3 动画复用说明
-- **不需要重新制作动画**，骨骼过滤器会自动只取需要的骨骼
-- 同一个 `Walk.res` 可以同时用于下半身（取腿部）和上半身（取手臂摆动）
-- 攻击动画建议使用原地动画（Hips 不移动），避免身体撕裂
+#### 1.2 选中 AnimationTree 节点
+1. 在左上角 **Scene** 面板（场景树）中
+2. 展开 `Player` 节点
+3. **单击** `AnimationTree` 节点选中它
+4. 右侧 **Inspector** 面板会显示其属性
 
 ---
 
-### 步骤 2：重构 AnimationTree（Godot 编辑器）
+### 步骤 2：将根节点改为 BlendTree
 
-#### 2.1 打开场景
-1. 在 Godot 编辑器中打开 `Scenes/Player.tscn`
-2. 在场景树中选中 `AnimationTree` 节点
+#### 2.1 清除现有状态机
+1. 在右侧 **Inspector** 面板中找到 `Tree Root` 属性
+2. 当前显示 `AnimationNodeStateMachine`
+3. **点击** 该属性值右侧的下拉箭头 `▼`
+4. 在弹出菜单中选择 **「新建 AnimationNodeBlendTree」**
+5. 弹出确认对话框，点击 **「确定」**（会清除现有配置）
 
-#### 2.2 更改根节点类型
-1. 在 Inspector 面板找到 `Tree Root` 属性
-2. 点击当前值（AnimationNodeStateMachine）
-3. 选择 `新建 AnimationNodeBlendTree`
-4. **警告**：这会清除现有状态机配置，确认后继续
+#### 2.2 验证
+- Inspector 中 `Tree Root` 现在显示 `AnimationNodeBlendTree`
 
-#### 2.3 进入 BlendTree 编辑器
-1. 在 Inspector 底部点击 `Tree Root` 旁的「编辑」按钮
-2. 或双击 AnimationTree 节点
-3. 会打开 AnimationTree 编辑面板（底部停靠面板）
+---
 
-#### 2.4 添加节点
-在 BlendTree 编辑面板中：
+### 步骤 3：打开 BlendTree 编辑面板
 
-**添加下半身状态机**：
-1. 右键空白处 → `Add Node...`
-2. 搜索并选择 `AnimationNodeStateMachine`
-3. 节点会出现在面板中，点击选中
-4. 在 Inspector 中将 `Name` 改为 `lower_body_sm`
+#### 3.1 打开编辑器
+**方法 A**：在 Inspector 面板底部，找到 `Tree Root` 属性，点击旁边的 **「编辑」** 按钮
 
-**添加上半身状态机**：
-1. 右键空白处 → `Add Node...`
-2. 选择 `AnimationNodeStateMachine`
-3. 将 `Name` 改为 `upper_body_sm`
+**方法 B**：在场景树中 **双击** `AnimationTree` 节点
 
-**添加混合节点**：
-1. 右键空白处 → `Add Node...`
-2. 搜索并选择 `AnimationNodeBlend2`
-3. 将 `Name` 改为 `blend`
+#### 3.2 验证
+- 编辑器底部出现 **AnimationTree** 停靠面板
+- 面板中显示一个 `Output` 节点（绿色方块）
+- 这就是 BlendTree 编辑界面
 
-#### 2.5 连接节点
-1. 从 `lower_body_sm` 的输出端口拖线到 `blend` 的 `in` 端口
-2. 从 `upper_body_sm` 的输出端口拖线到 `blend` 的 `blend` 端口
-3. 从 `blend` 的输出端口拖线到 `Output` 节点
+---
 
-**最终连接图**：
+### 步骤 4：添加 lower_body_sm 节点
+
+#### 4.1 添加节点
+1. 在 AnimationTree 编辑面板的 **空白区域** 点击 **鼠标右键**
+2. 弹出菜单直接显示节点类型列表
+3. 选择 **「StateMachine」**
+4. 节点立即创建
+
+#### 4.2 重命名节点
+1. 新节点出现在面板中，**单击选中它**
+2. 在右侧 Inspector 面板顶部找到 `Name` 属性
+3. 将值改为 `lower_body_sm`
+4. 按 **Enter** 确认
+
+#### 4.3 移动节点位置
+1. **鼠标左键按住** 节点标题栏
+2. **拖动** 到面板左侧区域
+3. 释放鼠标
+
+---
+
+### 步骤 5：添加 upper_body_sm 节点
+
+#### 5.1 添加节点
+1. 在空白区域 **右键**
+2. 选择 **「StateMachine」**
+
+#### 5.2 重命名并移动
+1. 选中新节点
+2. Inspector 中将 `Name` 改为 `upper_body_sm`
+3. 拖动到 `lower_body_sm` 下方
+
+---
+
+### 步骤 6：添加 blend 混合节点
+
+#### 6.1 添加节点
+1. 空白区域 **右键**
+2. 选择 **「Blend2」**
+
+#### 6.2 重命名并移动
+1. 选中新节点
+2. Inspector 中将 `Name` 改为 `blend`
+3. 拖动到中间位置（两个状态机右侧）
+
+#### 6.3 当前布局
 ```
-lower_body_sm ──→ blend (in)
-                      ├──→ Output
-upper_body_sm ──→ blend (blend)
+┌─────────────────┐
+│ lower_body_sm   │───○ (输出端口)
+└─────────────────┘
+                        ┌─────────┐
+                        │  blend  │───○ (输出端口)
+                        │         │
+                        │ ○ in    │
+                        │ ○ blend │
+                        └─────────┘     ┌──────────┐
+┌─────────────────┐                     │  Output  │
+│ upper_body_sm   │───○                 └──────────┘
+└─────────────────┘
 ```
 
 ---
 
-### 步骤 3：配置骨骼过滤器
+### 步骤 7：连接节点
 
-#### 3.1 选中 blend 节点
-在 BlendTree 编辑面板中点击 `blend` 节点
+#### 7.1 连接 lower_body_sm → blend (in)
+1. 将鼠标移动到 `lower_body_sm` 节点右侧的 **输出端口**（小圆圈）
+2. 鼠标变成 **十字光标**
+3. **按住鼠标左键** 从输出端口开始拖动
+4. 出现一条连线跟随鼠标
+5. 拖动到 `blend` 节点左侧的 **「in」端口**
+6. 端口高亮时 **释放鼠标**
+7. 连线建立成功
 
-#### 3.2 启用过滤器
-1. 在 Inspector 面板找到 `Filter` 部分
-2. 勾选 `Enable` 启用过滤器
-3. 点击 `Edit Filters` 按钮打开骨骼选择窗口
+#### 7.2 连接 upper_body_sm → blend (blend)
+1. 从 `upper_body_sm` 的 **输出端口** 开始拖动
+2. 拖动到 `blend` 节点的 **「blend」端口**（`in` 下方的那个端口）
+3. 释放鼠标建立连线
 
-#### 3.3 选择上半身骨骼
-在弹出的骨骼列表中，**勾选以下骨骼**（Mixamo 标准骨骼名）：
+#### 7.3 连接 blend → Output
+1. 从 `blend` 节点的 **输出端口** 开始拖动
+2. 拖动到 `Output` 节点的 **输入端口**
+3. 释放鼠标建立连线
 
-**躯干**：
-- [ ] Hips（不勾选，作为共享根骨骼）
-- [x] Spine
-- [x] Spine1
-- [x] Spine2
+#### 7.4 验证连接
+最终连线图：
+```
+lower_body_sm ──────→ blend (in)
+                          │
+                          ├──────→ Output
+                          │
+upper_body_sm ──────→ blend (blend)
+```
+
+---
+
+### 步骤 8：配置骨骼过滤器
+
+#### 8.1 选中 blend 节点
+1. 在 AnimationTree 面板中 **单击** `blend` 节点
+2. 右侧 Inspector 显示其属性
+
+#### 8.2 启用过滤器
+1. 在 Inspector 中找到 **「Filter」** 部分（可能需要滚动）
+2. 勾选 **「Filter Enabled」** 复选框 ☑
+3. 点击 **「Set Filters」** 按钮（或「Edit Filters」）
+
+#### 8.3 打开过滤器编辑窗口
+1. 弹出骨骼选择窗口，显示所有骨骼列表
+2. 骨骼按层级结构排列
+
+#### 8.4 勾选上半身骨骼
+**逐个勾选以下骨骼**（点击骨骼名称左侧的复选框）：
+
+**躯干（从 Spine 开始，不勾选 Hips）**：
+- ☑ `Spine`
 
 **头部**：
-- [x] Neck
-- [x] Head
-- [x] HeadTop_End（如有）
+- ☑ `Neck`
+- ☑ `Head`
+- ☑ `HeadTop_End`（如果存在）
 
-**左臂**：
-- [x] LeftShoulder
-- [x] LeftArm
-- [x] LeftForeArm
-- [x] LeftHand
-- [x] LeftHandThumb1, LeftHandThumb2, LeftHandThumb3, LeftHandThumb4
-- [x] LeftHandIndex1, LeftHandIndex2, LeftHandIndex3, LeftHandIndex4
-- [x] LeftHandMiddle1, LeftHandMiddle2, LeftHandMiddle3, LeftHandMiddle4
-- [x] LeftHandRing1, LeftHandRing2, LeftHandRing3, LeftHandRing4
-- [x] LeftHandPinky1, LeftHandPinky2, LeftHandPinky3, LeftHandPinky4
+**左臂（全部勾选）**：
+- ☑ `LeftShoulder`
+- ☑ `LeftArm`
+- ☑ `LeftForeArm`
+- ☑ `LeftHand`
+- ☑ `LeftHandThumb1` ~ `LeftHandThumb4`
+- ☑ `LeftHandIndex1` ~ `LeftHandIndex4`
+- ☑ `LeftHandMiddle1` ~ `LeftHandMiddle4`
+- ☑ `LeftHandRing1` ~ `LeftHandRing4`
+- ☑ `LeftHandPinky1` ~ `LeftHandPinky4`
 
-**右臂**：
-- [x] RightShoulder
-- [x] RightArm
-- [x] RightForeArm
-- [x] RightHand
-- [x] RightHandThumb1-4
-- [x] RightHandIndex1-4
-- [x] RightHandMiddle1-4
-- [x] RightHandRing1-4
-- [x] RightHandPinky1-4
+**右臂（全部勾选）**：
+- ☑ `RightShoulder`
+- ☑ `RightArm`
+- ☑ `RightForeArm`
+- ☑ `RightHand`
+- ☑ `RightHandThumb1` ~ `RightHandThumb4`
+- ☑ `RightHandIndex1` ~ `RightHandIndex4`
+- ☑ `RightHandMiddle1` ~ `RightHandMiddle4`
+- ☑ `RightHandRing1` ~ `RightHandRing4`
+- ☑ `RightHandPinky1` ~ `RightHandPinky4`
 
-**不勾选（下半身）**：
-- [ ] Hips
-- [ ] LeftUpLeg, LeftLeg, LeftFoot, LeftToeBase
-- [ ] RightUpLeg, RightLeg, RightFoot, RightToeBase
+**不要勾选（保持为空）**：
+- ☐ `Hips`
+- ☐ `LeftUpLeg`, `LeftLeg`, `LeftFoot`, `LeftToeBase`, `LeftToe_End`
+- ☐ `RightUpLeg`, `RightLeg`, `RightFoot`, `RightToeBase`, `RightToe_End`
 
-#### 3.4 设置混合量
-1. 关闭过滤器窗口
-2. 在 Inspector 中找到 `Blend Amount` 参数路径：`parameters/blend/blend_amount`
-3. 初始值设为 `1.0`（表示上半身完全由 upper_body_sm 控制）
+#### 8.5 关闭窗口
+点击窗口右上角 **「X」** 或 **「Close」** 关闭
 
 ---
 
-### 步骤 4：配置下半身状态机 (lower_body_sm)
+### 步骤 9：设置 blend_amount 参数
 
-#### 4.1 进入状态机编辑
-1. 在 BlendTree 面板中双击 `lower_body_sm` 节点
-2. 进入子状态机编辑界面
+#### 9.1 定位参数
+1. 在 AnimationTree 面板中确保 `blend` 节点选中
+2. 在 Inspector 中找到 **「Blend Amount」** 滑块
 
-#### 4.2 添加动画状态
-右键添加 `AnimationNodeAnimation` 节点，配置如下：
+#### 9.2 设置初始值
+1. 将滑块拖到最右边，或直接输入 `1.0`
+2. 这表示上半身 100% 由 `upper_body_sm` 控制
 
-| 节点名 | Animation 属性 | 说明 |
-|--------|----------------|------|
-| Idle | Unarmed/Idle | 站立 |
-| Walk | Unarmed/Walking | 行走 |
-| Run | Unarmed/Walking（暂用） | 跑步 |
-| Jump | Unarmed/Jump | 跳跃 |
-| Roll | （待添加）| 翻滚（全身） |
-
-#### 4.3 配置状态转换
-1. 从 `Start` 节点拖线到 `Idle`（设为默认状态）
-2. 配置转换：
-   - `Idle` ↔ `Walk`（双向）
-   - `Walk` ↔ `Run`（双向）
-   - `Idle/Walk/Run` → `Jump`
-   - `Jump` → `Idle`
-   - `Any` → `Roll`（全身动画优先）
-
-#### 4.4 设置转换参数
-选中转换连线，在 Inspector 中设置：
-- `Switch Mode`: `Immediate` 或 `Sync`
-- `Advance Condition`:（可选，用于代码触发）
-- `Xfade Time`: `0.1` ~ `0.2`（过渡时间）
+**参数说明**：
+- `0.0` = 全身由 `lower_body_sm` 控制（全身模式）
+- `1.0` = 上半身由 `upper_body_sm` 覆盖（分离模式）
 
 ---
 
-### 步骤 5：配置上半身状态机 (upper_body_sm)
+### 步骤 10：配置 lower_body_sm 子状态机
 
-#### 5.1 进入状态机编辑
-返回 BlendTree 面板，双击 `upper_body_sm` 节点
+#### 10.1 进入子状态机
+1. 在 AnimationTree 面板中 **双击** `lower_body_sm` 节点
+2. 面板切换到子状态机编辑界面
+3. 顶部面包屑显示 `AnimationTree > lower_body_sm`
 
-#### 5.2 添加动画状态
+#### 10.2 添加 Idle 状态
+1. **右键** 空白区域 → **「Add Animation」**
+2. 弹出动画选择窗口
+3. 选择 **「Unarmed/Idle」**
+4. 点击 **「Create」**
+5. 节点名自动为 `Idle`，拖到左侧
 
-| 节点名 | Animation 属性 | 说明 |
-|--------|----------------|------|
-| Idle | Unarmed/Idle | 空闲（手臂自然下垂） |
-| Idle_Armed | SwordAndShield/Idle | 持武器空闲 |
-| Attack_Light_1 | （待添加）| 轻攻击1 |
-| Attack_Light_2 | （待添加）| 轻攻击2 |
-| DrawSword | SwordAndShield/DrawSword | 拔剑 |
-| SheathSword | SwordAndShield/SheathSword.1 | 收剑 |
+#### 10.3 添加 Walk 状态
+1. **右键** → **「Add Animation」**
+2. 选择 **「Unarmed/Walking」**
+3. 创建后重命名为 `Walk`（Inspector 中修改 Name）
+4. 拖到 Idle 右侧
 
-#### 5.3 配置状态转换
-- `Start` → `Idle`
-- `Idle` ↔ `Idle_Armed`
-- `Idle/Idle_Armed` → `Attack_Light_1` → `Attack_Light_2` → `Idle_Armed`
+#### 10.4 添加 Jump 状态
+1. **右键** → **「Add Animation」**
+2. 选择 **「Unarmed/Jump」**
+3. 创建后节点名为 `Jump`
+4. 拖到下方
+
+#### 10.5 设置默认状态
+1. **右键** `Idle` 节点
+2. 选择 **「Set as Start」**（设为起始状态）
+3. `Start` 节点会自动连接到 `Idle`
+
+#### 10.6 添加状态转换
+**Idle → Walk**：
+1. 将鼠标移到 `Idle` 节点边缘
+2. **按住鼠标左键** 从 `Idle` 拖向 `Walk`
+3. 出现箭头连线，释放鼠标
+4. 创建了 `Idle` → `Walk` 的转换
+
+**Walk → Idle**：
+1. 同样方法从 `Walk` 拖向 `Idle`
+2. 创建双向转换
+
+**Idle/Walk → Jump**：
+1. 从 `Idle` 拖向 `Jump`
+2. 从 `Walk` 拖向 `Jump`
+
+**Jump → Idle**：
+1. 从 `Jump` 拖向 `Idle`
+
+#### 10.7 配置转换参数
+1. **单击** 某条转换箭头选中它
+2. 在 Inspector 中设置：
+   - **Switch Mode**: `Immediate`（立即切换）
+   - **Xfade Time**: `0.1`（过渡时间 0.1 秒）
+
+#### 10.8 返回上层
+1. 点击面板顶部面包屑中的 **「AnimationTree」**
+2. 返回 BlendTree 编辑界面
+
+---
+
+### 步骤 11：配置 upper_body_sm 子状态机
+
+#### 11.1 进入子状态机
+1. **双击** `upper_body_sm` 节点
+2. 进入上半身状态机编辑界面
+
+#### 11.2 添加状态
+按照步骤 10 的方法添加：
+
+| 操作 | 选择动画 | 节点名 |
+|------|----------|--------|
+| Add Animation | Unarmed/Idle | Idle |
+| Add Animation | SwordAndShield/Idle | Idle_Armed |
+| Add Animation | SwordAndShield/DrawSword | DrawSword |
+| Add Animation | SwordAndShield/SheathSword.1 | SheathSword |
+
+#### 11.3 设置默认状态
+- **右键** `Idle` → **「Set as Start」**
+
+#### 11.4 添加状态转换
 - `Idle` → `DrawSword` → `Idle_Armed`
 - `Idle_Armed` → `SheathSword` → `Idle`
+- `Idle` ↔ `Idle_Armed`（用于代码直接切换）
+
+#### 11.5 返回上层
+- 点击面包屑 **「AnimationTree」**
+
+---
+
+### 步骤 12：保存场景
+
+#### 12.1 保存
+1. 按 **Ctrl + S**
+2. 或菜单 **Scene → Save Scene**
+
+#### 12.2 验证
+1. 在 FileSystem 面板中，`Player.tscn` 应无 `*` 标记
+2. AnimationTree 配置已保存
 
 ---
 
