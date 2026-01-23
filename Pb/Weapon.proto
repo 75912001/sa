@@ -24,10 +24,15 @@ enum WeaponType {
   WeaponType_Max = 5; // 武器类型-最大值
 }
 
+// 武器-装备栏
+enum WeaponEquipSlot {
+  WeaponEquipSlot_Unknow = 0; // 未知
+  WeaponEquipSlot_MAX = 4; // 装备栏-最大值
+}
+
 // 武器-记录
 message WeaponRecord {
   uint64 UUID = 1; // 唯一ID
-  uint32 WeaponID = 2; // 配置ID
   map<uint32, uint64> RecordBaseMap = 10; // 资产表 key: WeaponAssetIDRecord value: 数值
   map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: WeaponRecordPrimary
 }
@@ -35,8 +40,6 @@ message WeaponRecord {
 // 武器-资产-ID-记录
 enum WeaponAssetIDRecordBase {
   WeaponAssetIDRecordBase_Unknow = 0; // 未知
-  WeaponAssetIDRecordBase_CreateTimestamp = 1; // 创建时间戳
-  WeaponAssetIDRecordBase_Exp = 2; // 经验值
 
   WeaponAssetIDRecordBase_DamagePercent = 10000; // 伤害百分比(0,100]
   WeaponAssetIDRecordBase_CritRate = 10001; // 暴击概率 范围(0,100]
@@ -51,4 +54,13 @@ enum WeaponRecordPrimary {
 enum WeaponRecordSecondary {
   WeaponRecordSecondary_Unknow = 0; // 未知
   WeaponRecordSecondary_Slot_Data = 1; // 孔数据
+}
+
+// 武器-装备数据
+message WeaponEquippedData {
+  repeated uint64 LeftHandBackupWeaponUUIDList = 1; // 左手备选武器UUID列表 [固定数值 WeaponEquipSlot_MAX]
+  repeated uint64 RightHandBackupWeaponUUIDList = 2; // 右手备选武器UUID列表 [固定数值 WeaponEquipSlot_MAX]
+  uint64  LeftHandWeaponUUID = 3; // 左手武器UUID [0表示空手] [是 LeftHandBackupWeaponUUIDList 中的一个]
+  uint64  RightHandWeaponUUID = 4; // 右手武器UUID [0表示空手] [是 RightHandBackupWeaponUUIDList 中的一个]
+  bool IsDualWield = 5; // 是否双持
 }

@@ -76,17 +76,18 @@ enum AssetIDRecord {
   AssetIDRecord_Unknow = 0; // 未知
 
   // 通用 [1,1000]
-  AssetIDRecord_Exp = 1; // 经验值
-  AssetIDRecord_HP = 2; // 生命值
-  AssetIDRecord_MP = 3; // 魔法值
-  AssetIDRecord_CreateTimestamp = 4; // 创建时间戳
-  AssetIDRecord_MapID = 5; // 所在地图ID
-  AssetIDRecord_X = 6; // 当前位置x
-  AssetIDRecord_Y = 7; // 当前位置y
-  AssetIDRecord_Z = 8; // 当前位置z
-  AssetIDRecord_Orientation = 10; // 当前朝向
-  AssetIDRecord_RebirthCount = 13; // 转生次数 [0, 配置表最大值]
-  AssetIDRecord_AssetID = 14; // 资产ID
+  AssetIDRecord_AssetID = 1; // 资产ID
+  AssetIDRecord_CreateTimestamp = 2; // 创建时间戳
+
+  AssetIDRecord_Exp = 50; // 经验值
+  AssetIDRecord_HP = 51; // 生命值
+  AssetIDRecord_MP = 52; // 魔法值
+  AssetIDRecord_MapID = 53; // 所在地图ID
+  AssetIDRecord_X = 54; // 当前位置x
+  AssetIDRecord_Y = 55; // 当前位置y
+  AssetIDRecord_Z = 56; // 当前位置z
+  AssetIDRecord_Orientation = 57; // 当前朝向
+  AssetIDRecord_RebirthCount = 58; // 转生次数 [0, 配置表最大值]
 
   AssetIDRecord_ElementalEarth = 101; // 元素属性-土
   AssetIDRecord_ElementalWater = 102; // 元素属性-水
