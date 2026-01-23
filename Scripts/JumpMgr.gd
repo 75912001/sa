@@ -1,6 +1,7 @@
-extends Node
 # 跳跃-管理器
 class_name JumpMgr
+
+extends Node
 
 # --- 配置 ---
 @export var jump_velocity: float = 2.9 # 向上速度
