@@ -841,10 +841,10 @@ class RecordSecondary:
 		service.field = __SecondaryID
 		data[__SecondaryID.tag] = service
 		
-		__timestamp = PBField.new("timestamp", PB_DATA_TYPE.INT64, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT64])
+		__Timestamp = PBField.new("Timestamp", PB_DATA_TYPE.INT64, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT64])
 		service = PBServiceField.new()
-		service.field = __timestamp
-		data[__timestamp.tag] = service
+		service.field = __Timestamp
+		data[__Timestamp.tag] = service
 		
 		var __Data_default: Array[int] = []
 		__Data = PBField.new("Data", PB_DATA_TYPE.UINT64, PB_RULE.REPEATED, 3, true, __Data_default)
@@ -873,18 +873,18 @@ class RecordSecondary:
 	func set_SecondaryID(value : int) -> void:
 		__SecondaryID.value = value
 	
-	var __timestamp: PBField
-	func has_timestamp() -> bool:
-		if __timestamp.value != null:
+	var __Timestamp: PBField
+	func has_Timestamp() -> bool:
+		if __Timestamp.value != null:
 			return true
 		return false
-	func get_timestamp() -> int:
-		return __timestamp.value
-	func clear_timestamp() -> void:
+	func get_Timestamp() -> int:
+		return __Timestamp.value
+	func clear_Timestamp() -> void:
 		data[2].state = PB_SERVICE_STATE.UNFILLED
-		__timestamp.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT64]
-	func set_timestamp(value : int) -> void:
-		__timestamp.value = value
+		__Timestamp.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT64]
+	func set_Timestamp(value : int) -> void:
+		__Timestamp.value = value
 	
 	var __Data: PBField
 	func get_Data() -> Array[int]:
