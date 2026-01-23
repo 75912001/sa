@@ -876,6 +876,12 @@ class CharacterRecord:
 		service.func_ref = Callable(self, "add_empty_RecordBaseMap")
 		data[__RecordBaseMap.tag] = service
 		
+		__WeaponEquippedData = PBField.new("WeaponEquippedData", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 11, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+		service = PBServiceField.new()
+		service.field = __WeaponEquippedData
+		service.func_ref = Callable(self, "new_WeaponEquippedData")
+		data[__WeaponEquippedData.tag] = service
+		
 		var __RecordMap_default: Array = []
 		__RecordMap = PBField.new("RecordMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 1000, true, __RecordMap_default)
 		service = PBServiceField.new()
@@ -889,6 +895,13 @@ class CharacterRecord:
 		service.field = __PetRecordMap
 		service.func_ref = Callable(self, "add_empty_PetRecordMap")
 		data[__PetRecordMap.tag] = service
+		
+		var __WeaponRecordMap_default: Array = []
+		__WeaponRecordMap = PBField.new("WeaponRecordMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 3000, true, __WeaponRecordMap_default)
+		service = PBServiceField.new()
+		service.field = __WeaponRecordMap
+		service.func_ref = Callable(self, "add_empty_WeaponRecordMap")
+		data[__WeaponRecordMap.tag] = service
 		
 	var data = {}
 	
@@ -944,6 +957,20 @@ class CharacterRecord:
 		else:
 			__RecordBaseMap.value.append(element)
 	
+	var __WeaponEquippedData: PBField
+	func has_WeaponEquippedData() -> bool:
+		if __WeaponEquippedData.value != null:
+			return true
+		return false
+	func get_WeaponEquippedData() -> PbCharacter.WeaponEquippedData:
+		return __WeaponEquippedData.value
+	func clear_WeaponEquippedData() -> void:
+		data[11].state = PB_SERVICE_STATE.UNFILLED
+		__WeaponEquippedData.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+	func new_WeaponEquippedData() -> PbCharacter.WeaponEquippedData:
+		__WeaponEquippedData.value = WeaponEquippedData.new()
+		return __WeaponEquippedData.value
+	
 	var __RecordMap: PBField
 	func get_raw_RecordMap():
 		return __RecordMap.value
@@ -994,6 +1021,32 @@ class CharacterRecord:
 			__PetRecordMap.value[idx] = element
 		else:
 			__PetRecordMap.value.append(element)
+		return element.new_value()
+	
+	var __WeaponRecordMap: PBField
+	func get_raw_WeaponRecordMap():
+		return __WeaponRecordMap.value
+	func get_WeaponRecordMap():
+		return PBPacker.construct_map(__WeaponRecordMap.value)
+	func clear_WeaponRecordMap():
+		data[3000].state = PB_SERVICE_STATE.UNFILLED
+		__WeaponRecordMap.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MAP]
+	func add_empty_WeaponRecordMap() -> CharacterRecord.map_type_WeaponRecordMap:
+		var element = CharacterRecord.map_type_WeaponRecordMap.new()
+		__WeaponRecordMap.value.append(element)
+		return element
+	func add_WeaponRecordMap(a_key) -> PbCharacter.WeaponRecord:
+		var idx = -1
+		for i in range(__WeaponRecordMap.value.size()):
+			if __WeaponRecordMap.value[i].get_key() == a_key:
+				idx = i
+				break
+		var element = CharacterRecord.map_type_WeaponRecordMap.new()
+		element.set_key(a_key)
+		if idx != -1:
+			__WeaponRecordMap.value[idx] = element
+		else:
+			__WeaponRecordMap.value.append(element)
 		return element.new_value()
 	
 	class map_type_RecordBaseMap:
@@ -1195,6 +1248,73 @@ class CharacterRecord:
 				return PB_ERR.PARSE_INCOMPLETE
 			return result
 		
+	class map_type_WeaponRecordMap:
+		func _init():
+			var service
+			
+			__key = PBField.new("key", PB_DATA_TYPE.UINT64, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64])
+			__key.is_map_field = true
+			service = PBServiceField.new()
+			service.field = __key
+			data[__key.tag] = service
+			
+			__value = PBField.new("value", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+			__value.is_map_field = true
+			service = PBServiceField.new()
+			service.field = __value
+			service.func_ref = Callable(self, "new_value")
+			data[__value.tag] = service
+			
+		var data = {}
+		
+		var __key: PBField
+		func has_key() -> bool:
+			if __key.value != null:
+				return true
+			return false
+		func get_key() -> int:
+			return __key.value
+		func clear_key() -> void:
+			data[1].state = PB_SERVICE_STATE.UNFILLED
+			__key.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64]
+		func set_key(value : int) -> void:
+			__key.value = value
+		
+		var __value: PBField
+		func has_value() -> bool:
+			if __value.value != null:
+				return true
+			return false
+		func get_value() -> PbCharacter.WeaponRecord:
+			return __value.value
+		func clear_value() -> void:
+			data[2].state = PB_SERVICE_STATE.UNFILLED
+			__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		func new_value() -> PbCharacter.WeaponRecord:
+			__value.value = WeaponRecord.new()
+			return __value.value
+		
+		func _to_string() -> String:
+			return PBPacker.message_to_string(data)
+			
+		func to_bytes() -> PackedByteArray:
+			return PBPacker.pack_message(data)
+			
+		func from_bytes(bytes : PackedByteArray, offset : int = 0, limit : int = -1) -> int:
+			var cur_limit = bytes.size()
+			if limit != -1:
+				cur_limit = limit
+			var result = PBPacker.unpack_message(data, bytes, offset, cur_limit)
+			if result == cur_limit:
+				if PBPacker.check_required(data):
+					if limit == -1:
+						return PB_ERR.NO_ERRORS
+				else:
+					return PB_ERR.REQUIRED_FIELDS
+			elif limit == -1 && result > 0:
+				return PB_ERR.PARSE_INCOMPLETE
+			return result
+		
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)
 		
@@ -1229,7 +1349,8 @@ enum CharacterAssetIDRecordBase {
 }
 
 enum CharacterRecordPrimary {
-	CharacterRecordPrimary_Unknow = 0
+	CharacterRecordPrimary_Unknow = 0,
+	CharacterRecordPrimary_Weapon = 1000
 }
 
 enum CharacterRecordSecondary {
@@ -1789,4 +1910,389 @@ enum PetRecordSecondary {
 	PetRecordSecondary_Unknow = 0
 }
 
+enum WeaponType {
+	WeaponType_Unarmed = 0,
+	WeaponType_Dagger = 1,
+	WeaponType_Sword = 2,
+	WeaponType_GreatSword = 3,
+	WeaponType_ColossalSword = 4,
+	WeaponType_Max = 5
+}
+
+enum WeaponEquipSlot {
+	WeaponEquipSlot_Unknow = 0,
+	WeaponEquipSlot_MAX = 4
+}
+
+class WeaponRecord:
+	func _init():
+		var service
+		
+		__UUID = PBField.new("UUID", PB_DATA_TYPE.UINT64, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64])
+		service = PBServiceField.new()
+		service.field = __UUID
+		data[__UUID.tag] = service
+		
+		var __RecordBaseMap_default: Array = []
+		__RecordBaseMap = PBField.new("RecordBaseMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 10, true, __RecordBaseMap_default)
+		service = PBServiceField.new()
+		service.field = __RecordBaseMap
+		service.func_ref = Callable(self, "add_empty_RecordBaseMap")
+		data[__RecordBaseMap.tag] = service
+		
+		var __RecordMap_default: Array = []
+		__RecordMap = PBField.new("RecordMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 1000, true, __RecordMap_default)
+		service = PBServiceField.new()
+		service.field = __RecordMap
+		service.func_ref = Callable(self, "add_empty_RecordMap")
+		data[__RecordMap.tag] = service
+		
+	var data = {}
+	
+	var __UUID: PBField
+	func has_UUID() -> bool:
+		if __UUID.value != null:
+			return true
+		return false
+	func get_UUID() -> int:
+		return __UUID.value
+	func clear_UUID() -> void:
+		data[1].state = PB_SERVICE_STATE.UNFILLED
+		__UUID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64]
+	func set_UUID(value : int) -> void:
+		__UUID.value = value
+	
+	var __RecordBaseMap: PBField
+	func get_raw_RecordBaseMap():
+		return __RecordBaseMap.value
+	func get_RecordBaseMap():
+		return PBPacker.construct_map(__RecordBaseMap.value)
+	func clear_RecordBaseMap():
+		data[10].state = PB_SERVICE_STATE.UNFILLED
+		__RecordBaseMap.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MAP]
+	func add_empty_RecordBaseMap() -> WeaponRecord.map_type_RecordBaseMap:
+		var element = WeaponRecord.map_type_RecordBaseMap.new()
+		__RecordBaseMap.value.append(element)
+		return element
+	func add_RecordBaseMap(a_key, a_value) -> void:
+		var idx = -1
+		for i in range(__RecordBaseMap.value.size()):
+			if __RecordBaseMap.value[i].get_key() == a_key:
+				idx = i
+				break
+		var element = WeaponRecord.map_type_RecordBaseMap.new()
+		element.set_key(a_key)
+		element.set_value(a_value)
+		if idx != -1:
+			__RecordBaseMap.value[idx] = element
+		else:
+			__RecordBaseMap.value.append(element)
+	
+	var __RecordMap: PBField
+	func get_raw_RecordMap():
+		return __RecordMap.value
+	func get_RecordMap():
+		return PBPacker.construct_map(__RecordMap.value)
+	func clear_RecordMap():
+		data[1000].state = PB_SERVICE_STATE.UNFILLED
+		__RecordMap.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MAP]
+	func add_empty_RecordMap() -> WeaponRecord.map_type_RecordMap:
+		var element = WeaponRecord.map_type_RecordMap.new()
+		__RecordMap.value.append(element)
+		return element
+	func add_RecordMap(a_key) -> PbCharacter.RecordPrimary:
+		var idx = -1
+		for i in range(__RecordMap.value.size()):
+			if __RecordMap.value[i].get_key() == a_key:
+				idx = i
+				break
+		var element = WeaponRecord.map_type_RecordMap.new()
+		element.set_key(a_key)
+		if idx != -1:
+			__RecordMap.value[idx] = element
+		else:
+			__RecordMap.value.append(element)
+		return element.new_value()
+	
+	class map_type_RecordBaseMap:
+		func _init():
+			var service
+			
+			__key = PBField.new("key", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
+			__key.is_map_field = true
+			service = PBServiceField.new()
+			service.field = __key
+			data[__key.tag] = service
+			
+			__value = PBField.new("value", PB_DATA_TYPE.UINT64, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64])
+			__value.is_map_field = true
+			service = PBServiceField.new()
+			service.field = __value
+			data[__value.tag] = service
+			
+		var data = {}
+		
+		var __key: PBField
+		func has_key() -> bool:
+			if __key.value != null:
+				return true
+			return false
+		func get_key() -> int:
+			return __key.value
+		func clear_key() -> void:
+			data[1].state = PB_SERVICE_STATE.UNFILLED
+			__key.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
+		func set_key(value : int) -> void:
+			__key.value = value
+		
+		var __value: PBField
+		func has_value() -> bool:
+			if __value.value != null:
+				return true
+			return false
+		func get_value() -> int:
+			return __value.value
+		func clear_value() -> void:
+			data[2].state = PB_SERVICE_STATE.UNFILLED
+			__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64]
+		func set_value(value : int) -> void:
+			__value.value = value
+		
+		func _to_string() -> String:
+			return PBPacker.message_to_string(data)
+			
+		func to_bytes() -> PackedByteArray:
+			return PBPacker.pack_message(data)
+			
+		func from_bytes(bytes : PackedByteArray, offset : int = 0, limit : int = -1) -> int:
+			var cur_limit = bytes.size()
+			if limit != -1:
+				cur_limit = limit
+			var result = PBPacker.unpack_message(data, bytes, offset, cur_limit)
+			if result == cur_limit:
+				if PBPacker.check_required(data):
+					if limit == -1:
+						return PB_ERR.NO_ERRORS
+				else:
+					return PB_ERR.REQUIRED_FIELDS
+			elif limit == -1 && result > 0:
+				return PB_ERR.PARSE_INCOMPLETE
+			return result
+		
+	class map_type_RecordMap:
+		func _init():
+			var service
+			
+			__key = PBField.new("key", PB_DATA_TYPE.UINT64, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64])
+			__key.is_map_field = true
+			service = PBServiceField.new()
+			service.field = __key
+			data[__key.tag] = service
+			
+			__value = PBField.new("value", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+			__value.is_map_field = true
+			service = PBServiceField.new()
+			service.field = __value
+			service.func_ref = Callable(self, "new_value")
+			data[__value.tag] = service
+			
+		var data = {}
+		
+		var __key: PBField
+		func has_key() -> bool:
+			if __key.value != null:
+				return true
+			return false
+		func get_key() -> int:
+			return __key.value
+		func clear_key() -> void:
+			data[1].state = PB_SERVICE_STATE.UNFILLED
+			__key.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64]
+		func set_key(value : int) -> void:
+			__key.value = value
+		
+		var __value: PBField
+		func has_value() -> bool:
+			if __value.value != null:
+				return true
+			return false
+		func get_value() -> PbCharacter.RecordPrimary:
+			return __value.value
+		func clear_value() -> void:
+			data[2].state = PB_SERVICE_STATE.UNFILLED
+			__value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		func new_value() -> PbCharacter.RecordPrimary:
+			__value.value = RecordPrimary.new()
+			return __value.value
+		
+		func _to_string() -> String:
+			return PBPacker.message_to_string(data)
+			
+		func to_bytes() -> PackedByteArray:
+			return PBPacker.pack_message(data)
+			
+		func from_bytes(bytes : PackedByteArray, offset : int = 0, limit : int = -1) -> int:
+			var cur_limit = bytes.size()
+			if limit != -1:
+				cur_limit = limit
+			var result = PBPacker.unpack_message(data, bytes, offset, cur_limit)
+			if result == cur_limit:
+				if PBPacker.check_required(data):
+					if limit == -1:
+						return PB_ERR.NO_ERRORS
+				else:
+					return PB_ERR.REQUIRED_FIELDS
+			elif limit == -1 && result > 0:
+				return PB_ERR.PARSE_INCOMPLETE
+			return result
+		
+	func _to_string() -> String:
+		return PBPacker.message_to_string(data)
+		
+	func to_bytes() -> PackedByteArray:
+		return PBPacker.pack_message(data)
+		
+	func from_bytes(bytes : PackedByteArray, offset : int = 0, limit : int = -1) -> int:
+		var cur_limit = bytes.size()
+		if limit != -1:
+			cur_limit = limit
+		var result = PBPacker.unpack_message(data, bytes, offset, cur_limit)
+		if result == cur_limit:
+			if PBPacker.check_required(data):
+				if limit == -1:
+					return PB_ERR.NO_ERRORS
+			else:
+				return PB_ERR.REQUIRED_FIELDS
+		elif limit == -1 && result > 0:
+			return PB_ERR.PARSE_INCOMPLETE
+		return result
+	
+enum WeaponAssetIDRecordBase {
+	WeaponAssetIDRecordBase_Unknow = 0,
+	WeaponAssetIDRecordBase_DamagePercent = 10000,
+	WeaponAssetIDRecordBase_CritRate = 10001,
+	WeaponAssetIDRecordBase_CritDamageBonusRate = 10002
+}
+
+enum WeaponRecordPrimary {
+	WeaponRecordPrimary_Unknow = 0,
+	WeaponRecordPrimary_Slot = 1
+}
+
+enum WeaponRecordSecondary {
+	WeaponRecordSecondary_Unknow = 0,
+	WeaponRecordSecondary_Slot_Data = 1
+}
+
+class WeaponEquippedData:
+	func _init():
+		var service
+		
+		var __LeftHandBackupWeaponUUIDList_default: Array[int] = []
+		__LeftHandBackupWeaponUUIDList = PBField.new("LeftHandBackupWeaponUUIDList", PB_DATA_TYPE.UINT64, PB_RULE.REPEATED, 1, true, __LeftHandBackupWeaponUUIDList_default)
+		service = PBServiceField.new()
+		service.field = __LeftHandBackupWeaponUUIDList
+		data[__LeftHandBackupWeaponUUIDList.tag] = service
+		
+		var __RightHandBackupWeaponUUIDList_default: Array[int] = []
+		__RightHandBackupWeaponUUIDList = PBField.new("RightHandBackupWeaponUUIDList", PB_DATA_TYPE.UINT64, PB_RULE.REPEATED, 2, true, __RightHandBackupWeaponUUIDList_default)
+		service = PBServiceField.new()
+		service.field = __RightHandBackupWeaponUUIDList
+		data[__RightHandBackupWeaponUUIDList.tag] = service
+		
+		__LeftHandWeaponUUID = PBField.new("LeftHandWeaponUUID", PB_DATA_TYPE.UINT64, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64])
+		service = PBServiceField.new()
+		service.field = __LeftHandWeaponUUID
+		data[__LeftHandWeaponUUID.tag] = service
+		
+		__RightHandWeaponUUID = PBField.new("RightHandWeaponUUID", PB_DATA_TYPE.UINT64, PB_RULE.OPTIONAL, 4, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64])
+		service = PBServiceField.new()
+		service.field = __RightHandWeaponUUID
+		data[__RightHandWeaponUUID.tag] = service
+		
+		__IsDualWield = PBField.new("IsDualWield", PB_DATA_TYPE.BOOL, PB_RULE.OPTIONAL, 5, true, DEFAULT_VALUES_3[PB_DATA_TYPE.BOOL])
+		service = PBServiceField.new()
+		service.field = __IsDualWield
+		data[__IsDualWield.tag] = service
+		
+	var data = {}
+	
+	var __LeftHandBackupWeaponUUIDList: PBField
+	func get_LeftHandBackupWeaponUUIDList() -> Array[int]:
+		return __LeftHandBackupWeaponUUIDList.value
+	func clear_LeftHandBackupWeaponUUIDList() -> void:
+		data[1].state = PB_SERVICE_STATE.UNFILLED
+		__LeftHandBackupWeaponUUIDList.value.clear()
+	func add_LeftHandBackupWeaponUUIDList(value : int) -> void:
+		__LeftHandBackupWeaponUUIDList.value.append(value)
+	
+	var __RightHandBackupWeaponUUIDList: PBField
+	func get_RightHandBackupWeaponUUIDList() -> Array[int]:
+		return __RightHandBackupWeaponUUIDList.value
+	func clear_RightHandBackupWeaponUUIDList() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__RightHandBackupWeaponUUIDList.value.clear()
+	func add_RightHandBackupWeaponUUIDList(value : int) -> void:
+		__RightHandBackupWeaponUUIDList.value.append(value)
+	
+	var __LeftHandWeaponUUID: PBField
+	func has_LeftHandWeaponUUID() -> bool:
+		if __LeftHandWeaponUUID.value != null:
+			return true
+		return false
+	func get_LeftHandWeaponUUID() -> int:
+		return __LeftHandWeaponUUID.value
+	func clear_LeftHandWeaponUUID() -> void:
+		data[3].state = PB_SERVICE_STATE.UNFILLED
+		__LeftHandWeaponUUID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64]
+	func set_LeftHandWeaponUUID(value : int) -> void:
+		__LeftHandWeaponUUID.value = value
+	
+	var __RightHandWeaponUUID: PBField
+	func has_RightHandWeaponUUID() -> bool:
+		if __RightHandWeaponUUID.value != null:
+			return true
+		return false
+	func get_RightHandWeaponUUID() -> int:
+		return __RightHandWeaponUUID.value
+	func clear_RightHandWeaponUUID() -> void:
+		data[4].state = PB_SERVICE_STATE.UNFILLED
+		__RightHandWeaponUUID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT64]
+	func set_RightHandWeaponUUID(value : int) -> void:
+		__RightHandWeaponUUID.value = value
+	
+	var __IsDualWield: PBField
+	func has_IsDualWield() -> bool:
+		if __IsDualWield.value != null:
+			return true
+		return false
+	func get_IsDualWield() -> bool:
+		return __IsDualWield.value
+	func clear_IsDualWield() -> void:
+		data[5].state = PB_SERVICE_STATE.UNFILLED
+		__IsDualWield.value = DEFAULT_VALUES_3[PB_DATA_TYPE.BOOL]
+	func set_IsDualWield(value : bool) -> void:
+		__IsDualWield.value = value
+	
+	func _to_string() -> String:
+		return PBPacker.message_to_string(data)
+		
+	func to_bytes() -> PackedByteArray:
+		return PBPacker.pack_message(data)
+		
+	func from_bytes(bytes : PackedByteArray, offset : int = 0, limit : int = -1) -> int:
+		var cur_limit = bytes.size()
+		if limit != -1:
+			cur_limit = limit
+		var result = PBPacker.unpack_message(data, bytes, offset, cur_limit)
+		if result == cur_limit:
+			if PBPacker.check_required(data):
+				if limit == -1:
+					return PB_ERR.NO_ERRORS
+			else:
+				return PB_ERR.REQUIRED_FIELDS
+		elif limit == -1 && result > 0:
+			return PB_ERR.PARSE_INCOMPLETE
+		return result
+	
 ################ USER DATA END #################

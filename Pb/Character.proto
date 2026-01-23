@@ -6,6 +6,7 @@ option go_package = "saClient/proto";
 
 import "Record.proto";
 import "Pet.proto";
+import "Weapon.proto";
 
 ////////////////////////////////////////////////////////////
 // 用户 Player

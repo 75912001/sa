@@ -42,6 +42,8 @@ func _load_from_file() -> void:
 
 func _create_new_save() -> void:
 	print("SaveMgr: 未找到存档或解析失败，创建新存档...")
+	
+	var timestamp = int(Time.get_unix_time_from_system())
 
 	# 初始化 UUID 管理器
 	GUuidMgr.init_counter(0)
@@ -55,9 +57,29 @@ func _create_new_save() -> void:
 	# 设置资产表
 	characterRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_AssetID, 1000001)
 	characterRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_Exp, 0)
-	characterRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_CreateTimestamp, int(Time.get_unix_time_from_system()))
-	characterRecord.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_LastLoginTimestamp, int(Time.get_unix_time_from_system()))
+	characterRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_CreateTimestamp, timestamp)
+	characterRecord.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_LastLoginTimestamp, timestamp)
 	characterRecord.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_AvailablePoint, 20)
+	# 武器
+	for weaponID in [11000001,11000002,11000003,11000004]:
+		new_uuid = GUuidMgr.get_new_uuid()
+		player_record.set_UUID(new_uuid)
+
+		var weaponRecord = characterRecord.add_WeaponRecordMap(new_uuid)
+		weaponRecord.set_UUID(new_uuid)
+		weaponRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_AssetID, weaponID)
+		weaponRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_Exp, 0)
+		weaponRecord.add_RecordBaseMap(PbWeapon.WeaponAssetIDRecordBase.WeaponAssetIDRecordBase_DamagePercent, 10)
+		weaponRecord.add_RecordBaseMap(PbWeapon.WeaponAssetIDRecordBase.WeaponAssetIDRecordBase_CritRate, 20)
+		weaponRecord.add_RecordBaseMap(PbWeapon.WeaponAssetIDRecordBase.WeaponAssetIDRecordBase_CritDamageBonusRate, 30)
+		
+		var recordPrimary = weaponRecord.add_RecordMap(PbWeapon.WeaponRecordPrimary.WeaponRecordPrimary_Slot)
+		recordPrimary.set_PrimaryID(PbWeapon.WeaponRecordPrimary.WeaponRecordPrimary_Slot)
+		var recordSecondary = recordPrimary.add_RecordElementMap(PbWeapon.WeaponRecordSecondary.WeaponRecordSecondary_Slot_Data)
+		recordSecondary.set_SecondaryID(PbWeapon.WeaponRecordSecondary.WeaponRecordSecondary_Slot_Data)
+		recordSecondary.set_Timestamp(timestamp)
+		weaponRecord.add_RecordMap(PbWeapon.WeaponRecordPrimary.WeaponRecordPrimary_Slot, recordSecondary)
+	# 武器-装备
 
 	save()
 
@@ -119,6 +141,20 @@ func _debug_print_player_record() -> void:
 			print("  PetRecordMap: %d 项  # 宠物记录表" % pet_map.size())
 			for key in pet_map.keys():
 				print("    [%d] PetRecord" % key)
+
+		# WeaponRecordMap 武器记录表
+		var weapon_map = char_record.get_WeaponRecordMap()
+		if weapon_map.size() > 0:
+			print("  WeaponRecordMap: %d 项  # 武器记录表" % weapon_map.size())
+			for weapon_uuid in weapon_map.keys():
+				var weapon_record = weapon_map[weapon_uuid]
+				print("    ---- WeaponRecord [UUID=%d] ----" % weapon_uuid)
+				print("      UUID: %d" % weapon_record.get_UUID())
+				var weapon_base_map = weapon_record.get_RecordBaseMap()
+				for wkey in weapon_base_map.keys():
+					var wvalue = weapon_base_map[wkey]
+					var wkey_name = _get_record_base_key_name(wkey)
+					print("      [%d] %s = %d" % [wkey, wkey_name, wvalue])
 
 	print("============================================\n")
 
