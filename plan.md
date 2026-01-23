@@ -13,424 +13,338 @@
     如若有更好的方案, 请一并给出.并给出理由和对比.
     可以完全访问当前项目的代码和资源.
 # 背景
-      切换武器时,没有拔剑的动作,直接切换
+      当前有 idle, walking, running, jumping, attacking, 切换武器 等动作.
+      比如 站立时, 切换武器, 或者攻击. 
+      或者 行走的时候, 切换武器, 或者攻击.
+      当前的 Player-> animationTree 是 AnimationNodeStateMachine. 是否需要改成 AnimationNodeBlendTree?
 # 问题
-      切换武器时,动作不自然,需要增加拔剑动作.
-      Unarmed -> Sword
-      Sword -> Sword
+      状态机如何设计? 才能支持 上半身, 下半身 动作分离?
 # 当前想法
-      Unarmed -> Sword : 空手->持剑
-         播放拔剑动作
-            D:\sa\Assets\Animations\Library\Unarmed\DrawSword.res 空手,去握剑柄
-         播放拔剑动作
-            D:\sa\Assets\Animations\Library\SwordAndShield\DrawSword.res 拔剑动作,动画播放开始时装备武器
-      Sword -> Sword : 持剑->持剑
-         播放收剑动作
-         D:\sa\Assets\Animations\Library\SwordAndShield\SheathSword.1.res 收剑动作,动画播放结束时-卸下武器
-         播放拔剑动作
-         D:\sa\Assets\Animations\Library\SwordAndShield\DrawSword.res 拔剑动作,动画播放开始时-装备武器
-      Sword -> Unarmed : 持剑->空手
-         播放收剑动作
-         D:\sa\Assets\Animations\Library\SwordAndShield\SheathSword.1.res 收剑动作,动画播放结束时-卸下武器
-         恢复空手状态
-         D:\sa\Assets\Animations\Library\SwordAndShield\SheathSword.2.res
 # 可参考资料
 # 任务
+    在任务没有完全完成之前, 不要停止回答. 持续思考, 找到最佳方案. 在提问和回答中不断完善方案.
     非常详细的一步步指引我完成.
     给出方案. 将解决方案分步骤列出.写入 plan.md 下方的 "# 解决方案" 处.
 # 解决方案
 
-## 分析总结
+## 一、问题分析
 
-### 动画资源（已存在 ✓）
-| 动画 | 路径 | 用途 |
-|------|------|------|
-| Unarmed_DrawSword | `Unarmed/DrawSword.res` | 空手去握剑柄 |
-| SwordAndShield_DrawSword | `SwordAndShield/DrawSword.res` | 拔剑动画 |
-| SwordAndShield_SheathSword_1 | `SwordAndShield/SheathSword.1.res` | 收剑阶段1 |
-| SwordAndShield_SheathSword_2 | `SwordAndShield/SheathSword.2.res` | 收剑阶段2（手臂归位）|
+### 1.1 当前架构
+```
+AnimationTree (root: AnimationNodeStateMachine)
+├── Unarmed_Idle
+├── Unarmed_Walking
+├── Unarmed_Jump
+├── SwordAndShield_Idle
+├── SwordAndShield_Walk
+├── SwordAndShield_DrawSword
+└── ...
+```
 
-### 当前系统限制
-- AnimationMgr：无动画队列、无完成回调
-- WeaponMgr：立即装备/卸下，无动画协调
-- 无切换过程中的输入锁定
+**局限性**：
+- 状态机同一时刻只能处于一个状态
+- 无法实现「边走边攻击」「边跑边切换武器」等复合动作
+- 全身动画互斥，不支持上下半身分离
 
-### 当前想法评审
-用户的动画流程设计合理：
-- ✓ 拔剑分两阶段（空手握柄 → 持剑拔出）
-- ✓ 收剑分两阶段（收入剑鞘 → 手臂归位）
-- ✓ 武器模型在动画特定时机出现/消失
+### 1.2 目标需求
+| 下半身 | 上半身 | 场景示例 |
+|--------|--------|----------|
+| Idle | Attack | 站立攻击 |
+| Walk | Attack | 行走攻击 |
+| Run | WeaponSwitch | 跑步中切换武器 |
+| Jump | Idle | 跳跃（上半身保持姿态） |
 
 ---
 
-## 架构设计
+## 二、方案对比
 
-### 新增组件：WeaponSwitchMgr（武器切换管理器）
+### 方案A：AnimationNodeBlendTree + 骨骼过滤器（推荐）
 
-遵循现有的 Manager Pattern，新增一个专门处理武器切换动画序列的管理器：
+**原理**：使用 BlendTree 作为根节点，内含两个子状态机（上半身/下半身），通过骨骼过滤器混合。
 
 ```
-Player (协调者)
-├── MovementMgr      - 移动（已有 lock/unlock）
-├── JumpMgr          - 跳跃
-├── AnimationMgr     - 动画（需增强：队列 + 回调）
-├── WeaponMgr        - 武器（需增强：延迟装备）
-└── WeaponSwitchMgr  - 【新增】切换动画编排
+AnimationNodeBlendTree (Root)
+├── LowerBodySM (AnimationNodeStateMachine) → 下半身状态机
+│   ├── Locomotion_Idle
+│   ├── Locomotion_Walk
+│   ├── Locomotion_Run
+│   └── Locomotion_Jump
+├── UpperBodySM (AnimationNodeStateMachine) → 上半身状态机
+│   ├── Upper_Idle
+│   ├── Upper_Attack
+│   ├── Upper_WeaponSwitch
+│   └── Upper_DrawSword
+└── Blend2 (AnimationNodeBlend2) → 混合节点，带骨骼过滤器
+    ├── Input A: LowerBodySM
+    ├── Input B: UpperBodySM
+    └── Filter: 上半身骨骼 (Spine → Head, Arms)
 ```
+
+**优点**：
+- 上下半身完全独立控制
+- 状态切换逻辑清晰
+- 易于扩展新动作
+- Godot 原生支持，性能好
+
+**缺点**：
+- 需要重构 AnimationTree
+- 动画可能需要重新调整
 
 ---
 
-## 实施步骤
+### 方案B：AnimationNodeAdd2 叠加式
 
-### 第一步：增强 AnimationMgr
+**原理**：下半身播全身动画，上半身用 Add2 叠加差异动画。
 
-**文件**: `Scripts/Animation.gd`
+```
+AnimationNodeBlendTree (Root)
+├── BaseAnimation (全身基础动画)
+├── UpperOverlay (上半身叠加动画)
+└── Add2 → 叠加混合
+```
 
-**新增内容**:
+**优点**：
+- 可复用现有全身动画
+
+**缺点**：
+- 需要制作专门的叠加动画（Additive Animation）
+- 调试复杂
+- 不适合大幅度上半身动作
+
+---
+
+### 方案C：多 AnimationPlayer 方案
+
+**原理**：使用两个 AnimationPlayer，分别控制不同骨骼。
+
+**缺点**：
+- Godot 4 不推荐
+- 骨骼冲突难处理
+- 不推荐使用
+
+---
+
+## 三、推荐方案详解（方案A）
+
+### 3.1 骨骼分组
+
+基于 Mixamo 标准骨骼（SkeletonProfileHumanoid）：
+
+| 分组 | 骨骼名称 |
+|------|----------|
+| **下半身** | Hips, LeftUpLeg, LeftLeg, LeftFoot, LeftToeBase, RightUpLeg, RightLeg, RightFoot, RightToeBase |
+| **上半身** | Spine, Spine1, Spine2, Neck, Head, LeftShoulder, LeftArm, LeftForeArm, LeftHand, RightShoulder, RightArm, RightForeArm, RightHand |
+| **共享** | Hips（作为根骨骼，两边都需要） |
+
+### 3.2 AnimationTree 新结构
+
+```
+AnimationTree
+└── AnimationNodeBlendTree (Root)
+    ├── [Node] lower_body_sm: AnimationNodeStateMachine
+    │   └── States: Idle, Walk, Run, Jump_Start, Jump_Loop, Jump_Land
+    │
+    ├── [Node] upper_body_sm: AnimationNodeStateMachine
+    │   └── States: Idle, Attack_1, Attack_2, DrawSword, SheathSword, WeaponSwitch
+    │
+    ├── [Node] blend: AnimationNodeBlend2
+    │   ├── Input 0 (in): lower_body_sm
+    │   ├── Input 1 (add): upper_body_sm
+    │   ├── blend_amount: 1.0 (完全使用上半身覆盖)
+    │   └── filter: 启用，勾选上半身骨骼
+    │
+    └── [Output] → blend
+```
+
+### 3.3 动画命名规范
+
+```
+# 下半身动画（全身动画，但只取下半身部分）
+Locomotion/Idle
+Locomotion/Walk
+Locomotion/Run
+Locomotion/Jump_Start
+Locomotion/Jump_Loop
+Locomotion/Jump_Land
+
+# 上半身动画（全身动画，但只取上半身部分）
+Upper/Idle
+Upper/Attack_Light_1
+Upper/Attack_Light_2
+Upper/Attack_Heavy
+Upper/DrawSword
+Upper/SheathSword
+Upper/Block
+```
+
+### 3.4 代码架构调整
+
+#### 3.4.1 新增 AnimationMgr 接口
+
 ```gdscript
-# --- 信号 ---
-signal animation_finished(animation_name: String)
-signal sequence_finished()
-
-# --- 变量 ---
-var _animation_queue: Array[String] = []
-var _is_playing_sequence := false
-
-func _ready() -> void:
-    # ... 原有代码 ...
-    # 连接 AnimationTree 的动画完成信号
-    _animation_tree.animation_finished.connect(_on_animation_finished)
-
-# 播放动画序列
-func play_sequence(animations: Array[String]) -> void:
-    _animation_queue = animations.duplicate()
-    _is_playing_sequence = true
-    _play_next_in_queue()
-
-# 内部：播放队列中下一个动画
-func _play_next_in_queue() -> void:
-    if _animation_queue.is_empty():
-        _is_playing_sequence = false
-        sequence_finished.emit()
-        return
-    var next_anim = _animation_queue.pop_front()
-    play(next_anim)
-
-# 内部：动画完成回调
-func _on_animation_finished(anim_name: StringName) -> void:
-    animation_finished.emit(str(anim_name))
-    if _is_playing_sequence:
-        _play_next_in_queue()
-
-# 是否正在播放序列
-func is_in_sequence() -> bool:
-    return _is_playing_sequence
-```
-
----
-
-### 第二步：增强 WeaponMgr
-
-**文件**: `Scripts/Weapon/WeaponMgr.gd`
-
-**新增内容**:
-```gdscript
-# --- 变量 ---
-var _is_switch_locked := false  # 切换锁定
-
-# 锁定/解锁输入
-func lock_input() -> void:
-    _is_switch_locked = true
-
-func unlock_input() -> void:
-    _is_switch_locked = false
-
-# 仅装备武器模型（不处理输入，供 WeaponSwitchMgr 调用）
-func equip_weapon_model(slot: int) -> void:
-    if not _weapon_configs.has(slot):
-        return
-    var config: WeaponData = _weapon_configs[slot]
-    var weapon_scene: PackedScene = load(config.scene_path)
-    if not weapon_scene:
-        return
-    var weapon_instance: Weapon = weapon_scene.instantiate()
-    weapon_instance.weapon_data = config
-    _weapon_attachment.add_child(weapon_instance)
-    _current_weapon = weapon_instance
-    _current_slot = slot
-    weapon_equipped.emit(config.weapon_name)
-
-# 仅卸下武器模型
-func unequip_weapon_model() -> void:
-    if _current_weapon:
-        _current_weapon.queue_free()
-        _current_weapon = null
-        _current_slot = 0
-        weapon_unequipped.emit()
-
-# 获取切换类型
-func get_switch_type(target_slot: int) -> String:
-    var has_current = has_weapon()
-    var has_target = target_slot > 0 and _weapon_configs.has(target_slot)
-
-    if not has_current and has_target:
-        return "unarmed_to_sword"
-    elif has_current and has_target and target_slot != _current_slot:
-        return "sword_to_sword"
-    elif has_current and (target_slot == 0 or target_slot == _current_slot):
-        return "sword_to_unarmed"
-    return ""
-
-# 修改 handle_input
-func handle_input() -> void:
-    if _input_cooldown or _is_switch_locked:  # 新增锁定检查
-        return
-    # ... 原有代码 ...
-```
-
----
-
-### 第三步：创建 WeaponSwitchMgr
-
-**新建文件**: `Scripts/Weapon/WeaponSwitchMgr.gd`
-
-```gdscript
+# Scripts/Animation.gd
+class_name AnimationMgr
 extends Node
-class_name WeaponSwitchMgr
-## 武器切换管理器 - 编排切换动画序列
 
-# --- 信号 ---
-signal switch_started()
-signal switch_completed()
-
-# --- 状态 ---
-enum State { IDLE, SWITCHING }
-var _state: State = State.IDLE
-var _target_slot: int = 0
-
-# --- 引用（在 Player.gd 中设置）---
-var animation_mgr: AnimationMgr
-var weapon_mgr: WeaponMgr
-var movement_mgr: MovementMgr
-
-# --- 时序配置（秒）---
-const SHEATH_UNEQUIP_DELAY := 0.6  # 收剑动画多久后卸下武器
-
-## 开始武器切换
-func start_switch(target_slot: int) -> bool:
-    if _state != State.IDLE:
-        return false
-
-    var switch_type = weapon_mgr.get_switch_type(target_slot)
-    if switch_type.is_empty():
-        return false
-
-    _state = State.SWITCHING
-    _target_slot = target_slot
-
-    # 锁定输入
-    movement_mgr.lock()
-    weapon_mgr.lock_input()
-    switch_started.emit()
-
-    # 根据类型执行对应流程
-    match switch_type:
-        "unarmed_to_sword":
-            _do_unarmed_to_sword()
-        "sword_to_sword":
-            _do_sword_to_sword()
-        "sword_to_unarmed":
-            _do_sword_to_unarmed()
-
-    return true
-
-## 流程：空手 → 持剑
-func _do_unarmed_to_sword() -> void:
-    # 1. 空手去握剑柄
-    animation_mgr.play("Unarmed_DrawSword")
-    await animation_mgr.animation_finished
-
-    # 2. 装备武器模型
-    weapon_mgr.equip_weapon_model(_target_slot)
-
-    # 3. 拔剑动画
-    animation_mgr.play("SwordAndShield_DrawSword")
-    await animation_mgr.animation_finished
-
-    _finish_switch()
-
-## 流程：持剑 → 持剑（换武器）
-func _do_sword_to_sword() -> void:
-    # 1. 收剑动画
-    animation_mgr.play("SwordAndShield_SheathSword_1")
-
-    # 2. 延迟后卸下当前武器
-    await get_tree().create_timer(SHEATH_UNEQUIP_DELAY).timeout
-    weapon_mgr.unequip_weapon_model()
-
-    await animation_mgr.animation_finished
-
-    # 3. 装备新武器
-    weapon_mgr.equip_weapon_model(_target_slot)
-
-    # 4. 拔剑动画
-    animation_mgr.play("SwordAndShield_DrawSword")
-    await animation_mgr.animation_finished
-
-    _finish_switch()
-
-## 流程：持剑 → 空手
-func _do_sword_to_unarmed() -> void:
-    # 1. 收剑动画
-    animation_mgr.play("SwordAndShield_SheathSword_1")
-
-    # 2. 延迟后卸下武器
-    await get_tree().create_timer(SHEATH_UNEQUIP_DELAY).timeout
-    weapon_mgr.unequip_weapon_model()
-
-    await animation_mgr.animation_finished
-
-    # 3. 手臂归位动画
-    animation_mgr.play("SwordAndShield_SheathSword_2")
-    await animation_mgr.animation_finished
-
-    _finish_switch()
-
-## 完成切换
-func _finish_switch() -> void:
-    _state = State.IDLE
-    movement_mgr.unlock()
-    weapon_mgr.unlock_input()
-    switch_completed.emit()
-
-## 是否正在切换
-func is_switching() -> bool:
-    return _state == State.SWITCHING
-```
-
----
-
-### 第四步：修改 Player 场景和脚本
-
-**4.1 修改 Player.tscn**
-
-1. 在 Player 节点下添加子节点 `WeaponSwitchMgr` (类型: Node)
-2. 附加脚本 `Scripts/Weapon/WeaponSwitchMgr.gd`
-
-**4.2 修改 Player.gd**
-
-```gdscript
-# --- 组件引用 ---
-@onready var weapon_switch_mgr: WeaponSwitchMgr = $WeaponSwitchMgr
+var _animation_tree: AnimationTree
+var _lower_body_sm: AnimationNodeStateMachinePlayback
+var _upper_body_sm: AnimationNodeStateMachinePlayback
 
 func _ready() -> void:
-    _init_jump_mgr()
-    _init_weapon_mgr()
-    _init_weapon_switch_mgr()  # 新增
+    _animation_tree = get_node(animation_tree_path)
+    _lower_body_sm = _animation_tree.get("parameters/lower_body_sm/playback")
+    _upper_body_sm = _animation_tree.get("parameters/upper_body_sm/playback")
 
-func _init_weapon_switch_mgr() -> void:
-    # 设置引用
-    weapon_switch_mgr.animation_mgr = animation_mgr
-    weapon_switch_mgr.weapon_mgr = weapon_mgr
-    weapon_switch_mgr.movement_mgr = movement_mgr
-    # 连接信号
-    weapon_switch_mgr.switch_started.connect(_on_weapon_switch_started)
-    weapon_switch_mgr.switch_completed.connect(_on_weapon_switch_completed)
+# 播放下半身动画
+func play_lower(animation_name: String) -> void:
+    _lower_body_sm.travel(animation_name)
 
-func _on_weapon_switch_started() -> void:
-    prints("weapon switch started")
+# 播放上半身动画
+func play_upper(animation_name: String) -> void:
+    _upper_body_sm.travel(animation_name)
 
-func _on_weapon_switch_completed() -> void:
-    prints("weapon switch completed")
+# 同时播放
+func play_full_body(lower: String, upper: String) -> void:
+    play_lower(lower)
+    play_upper(upper)
+
+# 获取当前状态
+func get_lower_state() -> String:
+    return _lower_body_sm.get_current_node()
+
+func get_upper_state() -> String:
+    return _upper_body_sm.get_current_node()
 ```
 
----
-
-### 第五步：修改武器输入处理
-
-**修改 WeaponMgr.handle_input()**，改为通过 WeaponSwitchMgr 处理：
-
-**方案 A**：在 WeaponMgr 中直接调用 WeaponSwitchMgr（需要引用）
-
-**方案 B（推荐）**：在 Player.gd 中拦截武器输入
+#### 3.4.2 状态机调整
 
 ```gdscript
-# Player.gd
-func _physics_process(delta: float) -> void:
-    movement_mgr.handle_input(delta)
-    jump_mgr.handle_input()
-    _handle_weapon_input()  # 替换 weapon_mgr.handle_input()
-    # ... 其余代码 ...
+# 移动时
+func on_move():
+    animation_mgr.play_lower("Walk")
+    # 上半身保持当前状态，不干扰
 
-func _handle_weapon_input() -> void:
-    if weapon_switch_mgr.is_switching():
-        return
+# 攻击时
+func on_attack():
+    animation_mgr.play_upper("Attack_Light_1")
+    # 下半身保持当前状态（可能是 Idle/Walk/Run）
 
-    # Alt + 数字键检测
-    if Input.is_key_pressed(KEY_ALT):
-        for i in range(10):
-            if Input.is_key_pressed(KEY_0 + i):
-                weapon_switch_mgr.start_switch(i)
-                return
+# 切换武器时
+func on_weapon_switch():
+    animation_mgr.play_upper("DrawSword")
+    # 下半身继续移动
 ```
 
 ---
 
-### 第六步：配置 AnimationTree 状态机
+## 四、实施步骤
 
-在 Godot 编辑器中为 AnimationTree 添加以下动画状态（如果尚未添加）：
+### 步骤 1：准备动画资源
+1. 将现有动画复制到新目录结构：
+   ```
+   Assets/Animations/Library/
+   ├── Locomotion/    # 下半身/移动动画
+   │   ├── Idle.res
+   │   ├── Walk.res
+   │   └── Jump.res
+   └── Upper/         # 上半身动画
+       ├── Idle.res
+       ├── Attack.res
+       └── DrawSword.res
+   ```
+2. 注意：可以复用同一个动画文件，骨骼过滤器会自动只取需要的部分
 
-1. 打开 `Scenes/Player.tscn`
-2. 选择 `XBot/AnimationTree`
-3. 在状态机中确保存在以下状态：
-   - `Unarmed_DrawSword`
-   - `SwordAndShield_DrawSword`
-   - `SwordAndShield_SheathSword_1`
-   - `SwordAndShield_SheathSword_2`
+### 步骤 2：重构 AnimationTree（在 Godot 编辑器中）
+1. 打开 `Player.tscn`
+2. 选中 `AnimationTree` 节点
+3. 将 `tree_root` 从 `AnimationNodeStateMachine` 改为 `AnimationNodeBlendTree`
+4. 在 BlendTree 中添加节点：
+   - 添加 `AnimationNodeStateMachine`，命名为 `lower_body_sm`
+   - 添加 `AnimationNodeStateMachine`，命名为 `upper_body_sm`
+   - 添加 `AnimationNodeBlend2`，命名为 `blend`
+5. 连接节点：
+   - `lower_body_sm` → `blend` (Input 0)
+   - `upper_body_sm` → `blend` (Input 1)
+   - `blend` → `Output`
 
-4. 配置转场（Transitions）：使用默认设置即可，因为我们通过代码控制播放
+### 步骤 3：配置骨骼过滤器
+1. 选中 `blend` 节点
+2. 在 Inspector 中启用 `Filter`
+3. 点击 `Edit Filters`
+4. 勾选上半身骨骼：
+   - Spine, Spine1, Spine2
+   - Neck, Head
+   - LeftShoulder, LeftArm, LeftForeArm, LeftHand, LeftHandThumb1-4, LeftHandIndex1-4...
+   - RightShoulder, RightArm, RightForeArm, RightHand...
+5. 设置 `blend_amount` 为 `1.0`
+
+### 步骤 4：配置子状态机
+1. 双击 `lower_body_sm` 进入编辑
+2. 添加状态：Idle, Walk, Run, Jump
+3. 配置状态转换
+4. 同理配置 `upper_body_sm`
+
+### 步骤 5：更新 Animation.gd
+按 3.4.1 节代码修改
+
+### 步骤 6：更新 Player.gd 和各 Manager
+- MovementMgr：调用 `play_lower()`
+- WeaponSwitchMgr：调用 `play_upper()`
+- AttackMgr（新增）：调用 `play_upper()`
+
+### 步骤 7：测试验证
+1. 站立时攻击 → 上半身攻击，下半身 Idle
+2. 行走时攻击 → 上半身攻击，下半身 Walk
+3. 行走时切换武器 → 上半身 DrawSword，下半身 Walk
+4. 跳跃时 → 下半身 Jump，上半身保持
 
 ---
 
-### 第七步：测试
+## 五、注意事项
 
-1. **测试 Unarmed → Sword**
-   - 空手状态按 Alt+1
-   - 观察：先播放握剑柄动画 → 武器出现 → 拔剑动画 → 持剑待机
+### 5.1 动画制作要求
+- 上下半身动画的 **帧率** 和 **时长** 可以不同
+- 但需要确保 **根骨骼（Hips）** 的位移在两组动画中一致，否则会出现身体撕裂
+- 建议攻击动画保持 Hips 位置不动（原地攻击）
 
-2. **测试 Sword → Sword**
-   - 持剑状态按 Alt+2（切换到另一把剑）
-   - 观察：收剑动画 → 武器消失 → 新武器出现 → 拔剑动画 → 持剑待机
+### 5.2 状态同步问题
+- 某些动作可能需要锁定另一半身体（如翻滚、受击硬直）
+- 可在 AnimationMgr 中增加 `lock_upper()` / `lock_lower()` 方法
 
-3. **测试 Sword → Unarmed**
-   - 持剑状态按 Alt+0 或再按 Alt+1
-   - 观察：收剑动画 → 武器消失 → 手臂归位动画 → 空手待机
-
-4. **测试输入锁定**
-   - 切换过程中尝试移动/跳跃
-   - 应该被锁定，无响应
+### 5.3 过渡平滑度
+- 在状态机中配置 `transition` 时间（0.1-0.2秒）
+- 避免动画切换生硬
 
 ---
 
-## 文件清单
+## 六、扩展建议
 
-| 操作 | 文件 |
-|------|------|
-| 修改 | `Scripts/Animation.gd` - 添加队列和回调 |
-| 修改 | `Scripts/Weapon/WeaponMgr.gd` - 添加延迟装备/锁定 |
-| 修改 | `Scripts/Player.gd` - 集成 WeaponSwitchMgr |
-| 修改 | `Scenes/Player.tscn` - 添加 WeaponSwitchMgr 节点 |
-| 新建 | `Scripts/Weapon/WeaponSwitchMgr.gd` - 切换动画编排 |
-
----
-
-## 时序参数调整
-
-如果动画时机不准确，调整 `WeaponSwitchMgr` 中的常量：
-
-```gdscript
-const SHEATH_UNEQUIP_DELAY := 0.6  # 收剑后多久卸下武器（秒）
+### 6.1 三层混合（可选）
+如果未来需要更精细控制，可扩展为三层：
+```
+Lower (腿部) + Core (躯干) + Upper (手臂/头部)
 ```
 
-可根据实际动画长度微调此值。
+### 6.2 IK 支持
+结合 `SkeletonIK3D` 实现：
+- 脚部 IK（地形适应）
+- 手部 IK（抓取物体）
+- 头部 IK（看向目标）
 
+---
+
+## 七、总结
+
+| 项目 | 当前 | 改进后 |
+|------|------|--------|
+| 根节点类型 | AnimationNodeStateMachine | AnimationNodeBlendTree |
+| 状态机数量 | 1 个 | 2 个（上/下半身） |
+| 动作分离 | 不支持 | 支持 |
+| 代码复杂度 | 简单 | 中等 |
+| 动画控制 | play(anim) | play_lower(anim) / play_upper(anim) |
+
+**核心改动**：
+1. AnimationTree 根节点改为 `AnimationNodeBlendTree`
+2. 添加两个子 `AnimationNodeStateMachine`
+3. 使用 `AnimationNodeBlend2` + 骨骼过滤器混合
+4. Animation.gd 提供分层播放接口
