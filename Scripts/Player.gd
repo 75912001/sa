@@ -3,9 +3,6 @@ extends CharacterBody3D
 
 @export var character_id: int = 1000001
 
-# todo menglc 替换成 武器 uuid
-@export var right_hand_weapon_ids: Array[int] = [0, 11000002,11000003,11000004]
-
 # --- 组件引用 ---
 @onready var movement_mgr: MovementMgr = $MovementMgr
 @onready var jump_mgr: JumpMgr = $JumpMgr
@@ -15,8 +12,6 @@ extends CharacterBody3D
 
 # 配置-角色-条目
 var cfg_character_entry: CfgCharacterMgr.CfgCharacterEntry
-# 当前-右手-序号
-var current_right_hand_index: int = 0
 
 func _ready() -> void:
 	GGameMgr.player = self
@@ -25,8 +20,7 @@ func _ready() -> void:
 	_init_jump_mgr()
 	_init_weapon_mgr()
 	_init_weapon_switch_mgr()
-	
-	
+
 
 func _physics_process(delta: float) -> void:
 	jump_mgr.handle_input()
@@ -69,8 +63,9 @@ func _init_weapon_mgr() -> void:
 	weapon_mgr.weapon_equipped.connect(_on_weapon_equipped)
 	weapon_mgr.weapon_unequipped.connect(_on_weapon_unequipped)
 
-func _on_weapon_equipped(_weapon_name: String) -> void:
-	prints("weapon equipped:", _weapon_name)
+func _on_weapon_equipped(weapon_uuid: int) -> void:
+	var cfg = GPlayerData.get_weapon_cfg_by_uuid(weapon_uuid)
+	prints("weapon equipped: UUID=%d, Name=%s" % [weapon_uuid, cfg.name if cfg else "unknown"])
 
 func _on_weapon_unequipped() -> void:
 	prints("weapon unequipped")
@@ -92,8 +87,3 @@ func _on_weapon_switch_started() -> void:
 
 func _on_weapon_switch_completed() -> void:
 	prints("weapon switch completed")
-
-# 获取-右手-下一个id
-func get_right_hand_next_id() -> int:
-	current_right_hand_index = (current_right_hand_index+1)%right_hand_weapon_ids.size()
-	return right_hand_weapon_ids[current_right_hand_index]

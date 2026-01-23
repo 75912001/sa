@@ -10,14 +10,14 @@ signal switch_started()
 signal switch_completed()
 
 # --- 状态 ---
-enum State { 
+enum State {
 	IDLE, # 空闲
-	SWITCHING, # 切换中 
+	SWITCHING, # 切换中
 }
 
 # --- 变量 ---
 var _state: State = State.IDLE
-var _target_slot: int = 0
+var _target_weapon_uuid: int = 0  # 目标武器 UUID
 var _switch_id: int = 0  # 用于检测打断
 
 # --- 引用（在 Player.gd 中设置）---
@@ -28,31 +28,21 @@ var movement_mgr: MovementMgr
 # --- 时序配置（秒）---
 const SHEATH_UNEQUIP_DELAY := 0.6  # 收剑动画多久后卸下武器
 
-func _process(delta: float) -> void:
-	if input_mgr.get_switch_left_hand_pressed():
-		_handle_switch_left_hand()
+func handle_input() -> void:
 	if input_mgr.get_switch_right_hand_pressed():
 		_handle_switch_right_hand()
-		
-func _handle_switch_left_hand() -> void:
-	return
 
 func _handle_switch_right_hand() -> void:
-	var next_id = GGameMgr.player.get_right_hand_next_id()
-	prints("WeaponSwitchMgr 切换-右手:", next_id)
-	weapon_mgr.equip_weapon(next_id)
-	return
-
-func handle_input() -> void:
-	if Input.is_key_pressed(KEY_ALT): # Alt
-		var number_key = _get_number_key_pressed()
-		if number_key == -1: # 没有按数字键
-			return
-		_start_switch(number_key)
+	var next_uuid = GPlayerData.get_next_right_hand_weapon_uuid()
+	if next_uuid == 0:
+		prints("WeaponSwitchMgr: 没有可切换的武器")
+		return
+	prints("WeaponSwitchMgr 切换-右手 UUID:", next_uuid)
+	_start_switch(next_uuid)
 
 ## 开始武器切换
-func _start_switch(target_slot: int) -> bool:
-	var switch_type = _get_switch_type(target_slot)
+func _start_switch(target_uuid: int) -> bool:
+	var switch_type = _get_switch_type(target_uuid)
 	if switch_type.is_empty(): # 没有切换类型
 		return false
 
@@ -61,7 +51,7 @@ func _start_switch(target_slot: int) -> bool:
 	var current_id = _switch_id
 
 	_state = State.SWITCHING
-	_target_slot = target_slot
+	_target_weapon_uuid = target_uuid
 	switch_started.emit()
 
 	# 根据类型执行对应流程
@@ -89,7 +79,9 @@ func _do_unarmed_to_sword(id: int) -> void:
 	if _is_interrupted(id): return
 
 	# 2. 装备武器模型
-	weapon_mgr.equip_weapon(_target_slot)
+	weapon_mgr.equip_weapon_by_uuid(_target_weapon_uuid)
+	# 更新存档中的当前右手武器
+	GPlayerData.set_right_hand_weapon_uuid(_target_weapon_uuid)
 
 	# 3. 拔剑动画
 	animation_mgr.play("SwordAndShield_DrawSword")
@@ -112,7 +104,9 @@ func _do_sword_to_sword(id: int) -> void:
 	if _is_interrupted(id): return
 
 	# 3. 装备新武器
-	weapon_mgr.equip_weapon(_target_slot)
+	weapon_mgr.equip_weapon_by_uuid(_target_weapon_uuid)
+	# 更新存档中的当前右手武器
+	GPlayerData.set_right_hand_weapon_uuid(_target_weapon_uuid)
 
 	# 4. 拔剑动画
 	animation_mgr.play("SwordAndShield_DrawSword")
@@ -132,6 +126,8 @@ func _do_sword_to_unarmed(id: int) -> void:
 		return
 	if _is_interrupted(id): return
 	weapon_mgr.unequip_weapon()
+	# 更新存档中的当前右手武器为空
+	GPlayerData.set_right_hand_weapon_uuid(0)
 
 	await animation_mgr.animation_finished
 	if _is_interrupted(id): return
@@ -153,38 +149,30 @@ func is_switching() -> bool:
 	return _state == State.SWITCHING
 
 ## 获取切换类型
-func _get_switch_type(target_slot: int) -> String:
+func _get_switch_type(target_uuid: int) -> String:
 	var has_current = weapon_mgr.has_weapon()
-	var has_target := false
-	if target_slot <= 0:
-		has_target = false
-	else:
-		if weapon_mgr.has_slot(target_slot):
-			has_target = true
-		else:
-			has_target = false
-	if not has_current and has_target:
-		return "unarmed_to_sword"
-	if has_current and has_target:
-		if weapon_mgr.get_current_slot() == target_slot:# 当前的 == 目标的
-			return "sword_to_unarmed"
-		# 当前的 != 目标的
-		return "sword_to_sword"
-	if has_current and not has_target:
-		return "sword_to_unarmed"
-	push_warning("weapon switch no case")
-	return ""
+	var current_uuid = weapon_mgr.get_current_weapon_uuid()
 
-## 检测按下的数字键，返回 0-9，未按下返回 -1
-func _get_number_key_pressed() -> int:
-	if Input.is_key_pressed(KEY_0): return 0
-	if Input.is_key_pressed(KEY_1): return 1
-	if Input.is_key_pressed(KEY_2): return 2
-	if Input.is_key_pressed(KEY_3): return 3
-	if Input.is_key_pressed(KEY_4): return 4
-	if Input.is_key_pressed(KEY_5): return 5
-	if Input.is_key_pressed(KEY_6): return 6
-	if Input.is_key_pressed(KEY_7): return 7
-	if Input.is_key_pressed(KEY_8): return 8
-	if Input.is_key_pressed(KEY_9): return 9
-	return -1
+	# 目标为空手
+	if target_uuid == 0:
+		if has_current:
+			return "sword_to_unarmed"
+		return ""  # 空手→空手，无需切换
+
+	# 目标有武器
+	var target_asset_id = GPlayerData.get_weapon_asset_id_by_uuid(target_uuid)
+	var has_target_config = weapon_mgr.has_asset_config(target_asset_id)
+
+	if not has_target_config:
+		push_warning("目标武器配置不存在, UUID: %d, AssetID: %d" % [target_uuid, target_asset_id])
+		return ""
+
+	if not has_current:
+		return "unarmed_to_sword"
+
+	if current_uuid == target_uuid:
+		# 当前武器 == 目标武器，切换为空手
+		return "sword_to_unarmed"
+
+	# 当前武器 != 目标武器
+	return "sword_to_sword"
