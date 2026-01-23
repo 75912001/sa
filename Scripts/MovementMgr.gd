@@ -7,7 +7,7 @@ extends Node
 
 # --- 变量 ---
 var character_body: CharacterBody3D
-var _is_locked: bool = false  # 锁定移动（如跳跃蓄力时）
+var _is_locked: bool = false  # 锁定移动（如跳跃蓄力时） todo menglc 这个锁是放在这里, 还是放在 Input.gd 比较合适?
 
 func _ready() -> void:
 	character_body = get_parent() as CharacterBody3D

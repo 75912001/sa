@@ -6,7 +6,8 @@ extends Node
 
 const SAVE_PATH = "res://Save/Player.save"
 
-var player_record = null
+var player_record = null # 用户记录
+var character_record = null # 当前角色记录
 
 func _ready() -> void:
 	var dir = DirAccess.open("res://")
@@ -15,9 +16,9 @@ func _ready() -> void:
 
 	player_record = PbCharacter.PlayerRecord.new()
 
-	load_game()
+	_load_game()
 
-func load_game() -> void:
+func _load_game() -> void:
 	if FileAccess.file_exists(SAVE_PATH): # 有存档
 		_load_from_file()
 	else: # 无存档
@@ -51,15 +52,15 @@ func _create_new_save() -> void:
 	var new_uuid = GUuidMgr.get_new_uuid()
 	player_record.set_UUID(new_uuid)
 	# 创建第一个默认角色
-	var characterRecord = player_record.add_CharacterRecordMap(new_uuid)
-	characterRecord.set_UUID(new_uuid)
-	characterRecord.set_Nick("CharacterID-1000001")
+	character_record = player_record.add_CharacterRecordMap(new_uuid)
+	character_record.set_UUID(new_uuid)
+	character_record.set_Nick("CharacterID-1000001")
 	# 设置资产表
-	characterRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_AssetID, 1000001)
-	characterRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_Exp, 0)
-	characterRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_CreateTimestamp, timestamp)
-	characterRecord.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_LastLoginTimestamp, timestamp)
-	characterRecord.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_AvailablePoint, 20)
+	character_record.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_AssetID, 1000001)
+	character_record.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_Exp, 0)
+	character_record.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_CreateTimestamp, timestamp)
+	character_record.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_LastLoginTimestamp, timestamp)
+	character_record.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_AvailablePoint, 20)
 	# 武器
 	var weaponUUIDList: Array[int] = []
 	for weaponID in [11000001,11000002,11000003,11000004]:
@@ -67,7 +68,7 @@ func _create_new_save() -> void:
 		player_record.set_UUID(new_uuid)
 		weaponUUIDList.append(new_uuid)
 
-		var weaponRecord = characterRecord.add_WeaponRecordMap(new_uuid)
+		var weaponRecord = character_record.add_WeaponRecordMap(new_uuid)
 		weaponRecord.set_UUID(new_uuid)
 		weaponRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_AssetID, weaponID)
 		weaponRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_Exp, 0)
@@ -89,7 +90,7 @@ func _create_new_save() -> void:
 		recordSecondary.add_StrData("str2")
 		recordSecondary.add_StrData("str3")
 	# 武器-装备
-	var weaponEquippedData = characterRecord.new_WeaponEquippedData()
+	var weaponEquippedData = character_record.new_WeaponEquippedData()
 	for weaponUUID in weaponUUIDList:
 		weaponEquippedData.add_RightHandBackupWeaponUUIDList(weaponUUID)
 	weaponEquippedData.set_RightHandWeaponUUID(weaponUUIDList[0])
@@ -100,14 +101,12 @@ func _init_systems_with_data() -> void:
 	GUuidMgr.init_counter(player_record.get_UUID())
 
 	# --- 更新登录时间戳 ---
-	var current_time = int(Time.get_unix_time_from_system())
+	var timestamp = int(Time.get_unix_time_from_system())
 	var character_map = player_record.get_CharacterRecordMap()
 	for character_uuid in character_map.keys():
-		var character_record = character_map[character_uuid]
-		character_record.add_RecordBaseMap(
-			PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_LastLoginTimestamp,
-			current_time
-		)
+		character_record = character_map[character_uuid]
+		character_record.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_LastLoginTimestamp, timestamp)
+		break # 只取第一个角色
 	save()
 
 	GDebug.print_player_record(player_record)

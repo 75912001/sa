@@ -22,6 +22,7 @@ GCfgMgr="*res://Scripts/Cfg/Mgr.gd"
 GUuidMgr="*res://Scripts/System/UuidMgr.gd"
 GGameMgr="*res://Scripts/GameMgr.gd"
 GSave="*res://Scripts/System/Save.gd"
+GPlayerData="*res://Scripts/System/PlayerData.gd"
 GDebug="*res://Scripts/Debug/GDebug.gd"
 
 [display]
