@@ -46,32 +46,26 @@ func _create_new_save() -> void:
 	# 初始化 UUID 管理器
 	GUuidMgr.init_counter(0)
 
-	# 创建第一个默认角色 (使用 add_ 方法获取内部引用)
 	var new_uuid = GUuidMgr.get_new_uuid()
+	player_record.set_UUID(new_uuid)
+	# 创建第一个默认角色
 	var characterRecord = player_record.add_CharacterRecordMap(new_uuid)
 	characterRecord.set_UUID(new_uuid)
-	characterRecord.set_CharacterID(1000001)
 	characterRecord.set_Nick("CharacterID-1000001")
-
-	# 设置资产表 (使用 add_ 方法直接设置键值)
-	characterRecord.add_AssetIDRecordMap(PbAsset.AssetIDRecord.AssetIDRecord_Exp, 0)
-	characterRecord.add_AssetIDRecordMap(PbAsset.AssetIDRecord.AssetIDRecord_UUID, new_uuid)
+	# 设置资产表
+	characterRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_AssetID, 1000001)
+	characterRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_Exp, 0)
+	characterRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_CreateTimestamp, int(Time.get_unix_time_from_system()))
+	characterRecord.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_LastLoginTimestamp, int(Time.get_unix_time_from_system()))
+	characterRecord.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_AvailablePoint, 20)
 
 	save()
 
 func _init_systems_with_data() -> void:
 	# --- UUID ---
-	var uuid = 0
-	var characterRecordMap = player_record.get_CharacterRecordMap()
-	for characterUUID in characterRecordMap.keys():
-		var characterRecord = characterRecordMap[characterUUID]
-		var assetIDRecordMap = characterRecord.get_AssetIDRecordMap()
-		var val = assetIDRecordMap[PbAsset.AssetIDRecord.AssetIDRecord_UUID]
-		if uuid < val:
-			uuid = val
-	GUuidMgr.init_counter(uuid)
-	
-	print("SaveMgr: 系统初始化完成，UUID计数器已同步至: ", uuid)
+	GUuidMgr.init_counter(player_record.get_UUID())
+
+	print("SaveMgr: 系统初始化完成，UUID计数器已同步至: ", player_record.get_UUID())
 
 func save() -> void:
 	var bytes = player_record.to_bytes()

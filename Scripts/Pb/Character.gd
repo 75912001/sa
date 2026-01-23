@@ -869,12 +869,12 @@ class CharacterRecord:
 		service.field = __Nick
 		data[__Nick.tag] = service
 		
-		var __AssetIDRecordMap_default: Array = []
-		__AssetIDRecordMap = PBField.new("AssetIDRecordMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 10, true, __AssetIDRecordMap_default)
+		var __RecordBaseMap_default: Array = []
+		__RecordBaseMap = PBField.new("RecordBaseMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 10, true, __RecordBaseMap_default)
 		service = PBServiceField.new()
-		service.field = __AssetIDRecordMap
-		service.func_ref = Callable(self, "add_empty_AssetIDRecordMap")
-		data[__AssetIDRecordMap.tag] = service
+		service.field = __RecordBaseMap
+		service.func_ref = Callable(self, "add_empty_RecordBaseMap")
+		data[__RecordBaseMap.tag] = service
 		
 		var __RecordMap_default: Array = []
 		__RecordMap = PBField.new("RecordMap", PB_DATA_TYPE.MAP, PB_RULE.REPEATED, 1000, true, __RecordMap_default)
@@ -918,31 +918,31 @@ class CharacterRecord:
 	func set_Nick(value : String) -> void:
 		__Nick.value = value
 	
-	var __AssetIDRecordMap: PBField
-	func get_raw_AssetIDRecordMap():
-		return __AssetIDRecordMap.value
-	func get_AssetIDRecordMap():
-		return PBPacker.construct_map(__AssetIDRecordMap.value)
-	func clear_AssetIDRecordMap():
+	var __RecordBaseMap: PBField
+	func get_raw_RecordBaseMap():
+		return __RecordBaseMap.value
+	func get_RecordBaseMap():
+		return PBPacker.construct_map(__RecordBaseMap.value)
+	func clear_RecordBaseMap():
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__AssetIDRecordMap.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MAP]
-	func add_empty_AssetIDRecordMap() -> CharacterRecord.map_type_AssetIDRecordMap:
-		var element = CharacterRecord.map_type_AssetIDRecordMap.new()
-		__AssetIDRecordMap.value.append(element)
+		__RecordBaseMap.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MAP]
+	func add_empty_RecordBaseMap() -> CharacterRecord.map_type_RecordBaseMap:
+		var element = CharacterRecord.map_type_RecordBaseMap.new()
+		__RecordBaseMap.value.append(element)
 		return element
-	func add_AssetIDRecordMap(a_key, a_value) -> void:
+	func add_RecordBaseMap(a_key, a_value) -> void:
 		var idx = -1
-		for i in range(__AssetIDRecordMap.value.size()):
-			if __AssetIDRecordMap.value[i].get_key() == a_key:
+		for i in range(__RecordBaseMap.value.size()):
+			if __RecordBaseMap.value[i].get_key() == a_key:
 				idx = i
 				break
-		var element = CharacterRecord.map_type_AssetIDRecordMap.new()
+		var element = CharacterRecord.map_type_RecordBaseMap.new()
 		element.set_key(a_key)
 		element.set_value(a_value)
 		if idx != -1:
-			__AssetIDRecordMap.value[idx] = element
+			__RecordBaseMap.value[idx] = element
 		else:
-			__AssetIDRecordMap.value.append(element)
+			__RecordBaseMap.value.append(element)
 	
 	var __RecordMap: PBField
 	func get_raw_RecordMap():
@@ -996,7 +996,7 @@ class CharacterRecord:
 			__PetRecordMap.value.append(element)
 		return element.new_value()
 	
-	class map_type_AssetIDRecordMap:
+	class map_type_RecordBaseMap:
 		func _init():
 			var service
 			

@@ -49,7 +49,7 @@ enum CharacterActionType {
 message CharacterRecord {
   uint64 UUID = 1; // 角色UUID 每个用户的角色唯一ID
   string Nick = 2; // 昵称
-  map<uint32, uint64> AssetIDRecordMap = 10; // 资产表 key: CharacterAssetIDRecordBase value: 数值
+  map<uint32, uint64> RecordBaseMap = 10; // 资产表 key: CharacterAssetIDRecordBase value: 数值
   map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: CharacterRecordPrimary
   map<uint64, PetRecord> PetRecordMap = 2000; // 宠物记录表 key: 宠物UUID
 }
