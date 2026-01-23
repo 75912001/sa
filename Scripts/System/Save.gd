@@ -65,6 +65,17 @@ func _init_systems_with_data() -> void:
 	# --- UUID ---
 	GUuidMgr.init_counter(player_record.get_UUID())
 
+	# --- 更新登录时间戳 ---
+	var current_time = int(Time.get_unix_time_from_system())
+	var character_map = player_record.get_CharacterRecordMap()
+	for character_uuid in character_map.keys():
+		var character_record = character_map[character_uuid]
+		character_record.add_RecordBaseMap(
+			PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_LastLoginTimestamp,
+			current_time
+		)
+	save()
+
 	_debug_print_player_record()
 
 func save() -> void:
@@ -137,6 +148,3 @@ func _get_record_base_key_name(key: int) -> String:
 		PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_AttributesAgility: return "敏捷"
 		PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_AttributesStamina: return "体力"
 		_: return "未知字段"
-
-
-
