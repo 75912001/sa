@@ -121,7 +121,7 @@ func print_weapon_equipped_data(record, indent: int = 0) -> void:
 	print("%s  RightHandWeaponUUID: %d  # 右手武器UUID (0=空手)" % [pre, right_uuid])
 
 	# IsDualWield
-	var is_dual = record.get_IsDualWield()
+	var is_dual = record.get_DualWield()
 	print("%s  IsDualWield: %s  # 是否双持" % [pre, str(is_dual)])
 
 

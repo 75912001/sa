@@ -561,30 +561,23 @@ upper_body_sm ──────→ blend (blend)
 3. 顶部面包屑显示 `AnimationTree > lower_body_sm`
 
 #### 10.2 添加 Idle 状态
-1. **右键** 空白区域 → **「Add Animation」**
+1. **右键** 空白区域 → **「动画」**
 2. 弹出动画选择窗口
-3. 选择 **「Unarmed/Idle」**
-4. 点击 **「Create」**
-5. 节点名自动为 `Idle`，拖到左侧
+3. 选择 **「Unarmed_Idle」**
+4. 节点创建，拖到左侧
 
 #### 10.3 添加 Walk 状态
-1. **右键** → **「Add Animation」**
-2. 选择 **「Unarmed/Walking」**
+1. **右键** → **「动画」**
+2. 选择 **「Unarmed_Walking」**
 3. 创建后重命名为 `Walk`（Inspector 中修改 Name）
 4. 拖到 Idle 右侧
 
-#### 10.4 添加 Jump 状态
-1. **右键** → **「Add Animation」**
-2. 选择 **「Unarmed/Jump」**
-3. 创建后节点名为 `Jump`
-4. 拖到下方
-
-#### 10.5 设置默认状态
-1. **右键** `Idle` 节点
+#### 10.4 设置默认状态
+1. **右键** `Idle` 节点（或 Unarmed_Idle 节点）
 2. 选择 **「Set as Start」**（设为起始状态）
 3. `Start` 节点会自动连接到 `Idle`
 
-#### 10.6 添加状态转换
+#### 10.5 添加状态转换
 **Idle → Walk**：
 1. 将鼠标移到 `Idle` 节点边缘
 2. **按住鼠标左键** 从 `Idle` 拖向 `Walk`
@@ -595,20 +588,15 @@ upper_body_sm ──────→ blend (blend)
 1. 同样方法从 `Walk` 拖向 `Idle`
 2. 创建双向转换
 
-**Idle/Walk → Jump**：
-1. 从 `Idle` 拖向 `Jump`
-2. 从 `Walk` 拖向 `Jump`
-
-**Jump → Idle**：
-1. 从 `Jump` 拖向 `Idle`
-
-#### 10.7 配置转换参数
+#### 10.6 配置转换参数
 1. **单击** 某条转换箭头选中它
 2. 在 Inspector 中设置：
+   - **Advance → Mode**: `Enabled`（通过代码控制转换）
    - **Switch Mode**: `Immediate`（立即切换）
    - **Xfade Time**: `0.1`（过渡时间 0.1 秒）
+3. 对所有转换线都这样设置
 
-#### 10.8 返回上层
+#### 10.7 返回上层
 1. 点击面板顶部面包屑中的 **「AnimationTree」**
 2. 返回 BlendTree 编辑界面
 
@@ -765,8 +753,6 @@ func _on_animation_finished(anim_name: StringName) -> void:
 
 ```gdscript
 func _physics_process(delta: float) -> void:
-    jump_mgr.handle_input()
-    jump_mgr.handle_gravity(delta)
     weapon_switch_mgr.handle_input()
     move_and_slide()
 
@@ -776,9 +762,7 @@ func _physics_process(delta: float) -> void:
         _update_upper_animation()
 
 func _update_lower_animation() -> void:
-    if jump_mgr.is_in_air():
-        animation_mgr.play_lower("Jump")
-    elif movement_mgr.is_moving():
+    if movement_mgr.is_moving():
         animation_mgr.play_lower("Walk")
     else:
         animation_mgr.play_lower("Idle")
@@ -802,9 +786,6 @@ func _update_upper_animation() -> void:
 func can_switch_weapon() -> bool:
     # 跑步时不允许换武器
     if movement_mgr.is_running():
-        return false
-    # 跳跃时不允许换武器
-    if jump_mgr.is_in_air():
         return false
     # 正在切换中不允许
     if is_switching():

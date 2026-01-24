@@ -14,3 +14,9 @@ message KV {
 }
 
 
+enum HandType {
+  HandType_Unknow = 0; // 未知参数
+
+  HandType_Left = 1; // 左手
+  HandType_Right = 2; // 右手
+}

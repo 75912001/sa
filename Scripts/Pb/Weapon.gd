@@ -689,7 +689,7 @@ class PBPacker:
 
 enum WeaponType {
 	WeaponType_Unarmed = 0,
-	WeaponType_Dagger = 1,
+	WeaponType_ShortSword = 1,
 	WeaponType_Sword = 2,
 	WeaponType_GreatSword = 3,
 	WeaponType_ColossalSword = 4,
@@ -698,7 +698,7 @@ enum WeaponType {
 
 enum WeaponEquipSlot {
 	WeaponEquipSlot_Unknow = 0,
-	WeaponEquipSlot_MAX = 4
+	WeaponEquipSlot_MAX = 3
 }
 
 class WeaponRecord:
@@ -987,10 +987,10 @@ class WeaponEquippedData:
 		service.field = __RightHandWeaponUUID
 		data[__RightHandWeaponUUID.tag] = service
 		
-		__IsDualWield = PBField.new("IsDualWield", PB_DATA_TYPE.BOOL, PB_RULE.OPTIONAL, 5, true, DEFAULT_VALUES_3[PB_DATA_TYPE.BOOL])
+		__DualWield = PBField.new("DualWield", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 5, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
 		service = PBServiceField.new()
-		service.field = __IsDualWield
-		data[__IsDualWield.tag] = service
+		service.field = __DualWield
+		data[__DualWield.tag] = service
 		
 	var data = {}
 	
@@ -1038,18 +1038,18 @@ class WeaponEquippedData:
 	func set_RightHandWeaponUUID(value : int) -> void:
 		__RightHandWeaponUUID.value = value
 	
-	var __IsDualWield: PBField
-	func has_IsDualWield() -> bool:
-		if __IsDualWield.value != null:
+	var __DualWield: PBField
+	func has_DualWield() -> bool:
+		if __DualWield.value != null:
 			return true
 		return false
-	func get_IsDualWield() -> bool:
-		return __IsDualWield.value
-	func clear_IsDualWield() -> void:
+	func get_DualWield() -> int:
+		return __DualWield.value
+	func clear_DualWield() -> void:
 		data[5].state = PB_SERVICE_STATE.UNFILLED
-		__IsDualWield.value = DEFAULT_VALUES_3[PB_DATA_TYPE.BOOL]
-	func set_IsDualWield(value : bool) -> void:
-		__IsDualWield.value = value
+		__DualWield.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
+	func set_DualWield(value : int) -> void:
+		__DualWield.value = value
 	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)
@@ -1072,6 +1072,75 @@ class WeaponEquippedData:
 			return PB_ERR.PARSE_INCOMPLETE
 		return result
 	
+class KV:
+	func _init():
+		var service
+		
+		__Key = PBField.new("Key", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
+		service = PBServiceField.new()
+		service.field = __Key
+		data[__Key.tag] = service
+		
+		__Value = PBField.new("Value", PB_DATA_TYPE.UINT32, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32])
+		service = PBServiceField.new()
+		service.field = __Value
+		data[__Value.tag] = service
+		
+	var data = {}
+	
+	var __Key: PBField
+	func has_Key() -> bool:
+		if __Key.value != null:
+			return true
+		return false
+	func get_Key() -> int:
+		return __Key.value
+	func clear_Key() -> void:
+		data[1].state = PB_SERVICE_STATE.UNFILLED
+		__Key.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
+	func set_Key(value : int) -> void:
+		__Key.value = value
+	
+	var __Value: PBField
+	func has_Value() -> bool:
+		if __Value.value != null:
+			return true
+		return false
+	func get_Value() -> int:
+		return __Value.value
+	func clear_Value() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__Value.value = DEFAULT_VALUES_3[PB_DATA_TYPE.UINT32]
+	func set_Value(value : int) -> void:
+		__Value.value = value
+	
+	func _to_string() -> String:
+		return PBPacker.message_to_string(data)
+		
+	func to_bytes() -> PackedByteArray:
+		return PBPacker.pack_message(data)
+		
+	func from_bytes(bytes : PackedByteArray, offset : int = 0, limit : int = -1) -> int:
+		var cur_limit = bytes.size()
+		if limit != -1:
+			cur_limit = limit
+		var result = PBPacker.unpack_message(data, bytes, offset, cur_limit)
+		if result == cur_limit:
+			if PBPacker.check_required(data):
+				if limit == -1:
+					return PB_ERR.NO_ERRORS
+			else:
+				return PB_ERR.REQUIRED_FIELDS
+		elif limit == -1 && result > 0:
+			return PB_ERR.PARSE_INCOMPLETE
+		return result
+	
+enum HandType {
+	HandType_Unknow = 0,
+	HandType_Left = 1,
+	HandType_Right = 2
+}
+
 class RecordPrimary:
 	func _init():
 		var service

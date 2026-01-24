@@ -750,4 +750,10 @@ class KV:
 			return PB_ERR.PARSE_INCOMPLETE
 		return result
 	
+enum HandType {
+	HandType_Unknow = 0,
+	HandType_Left = 1,
+	HandType_Right = 2
+}
+
 ################ USER DATA END #################

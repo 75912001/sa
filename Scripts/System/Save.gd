@@ -91,8 +91,14 @@ func _create_new_save() -> void:
 		recordSecondary.add_StrData("str3")
 	# 武器-装备
 	var weaponEquippedData = character_record.new_WeaponEquippedData()
-	for weaponUUID in weaponUUIDList:
-		weaponEquippedData.add_RightHandBackupWeaponUUIDList(weaponUUID)
+	for idx in PbWeapon.WeaponEquipSlot.WeaponEquipSlot_MAX:
+		weaponEquippedData.add_LeftHandBackupWeaponUUIDList(0)
+		weaponEquippedData.add_RightHandBackupWeaponUUIDList(0)
+	
+	var rightHandBackupWeaponUUIDList = weaponEquippedData.get_RightHandBackupWeaponUUIDList()
+	rightHandBackupWeaponUUIDList[0] = weaponUUIDList[0]
+	#for weaponUUID in weaponUUIDList:
+	#	weaponEquippedData.add_RightHandBackupWeaponUUIDList(weaponUUID)
 	weaponEquippedData.set_RightHandWeaponUUID(weaponUUIDList[0])
 	save()
 

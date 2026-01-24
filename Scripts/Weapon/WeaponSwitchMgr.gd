@@ -144,6 +144,9 @@ func _finish_switch() -> void:
 	_state = State.IDLE
 	switch_completed.emit()
 
+func can_switch_weapon() -> bool:
+	return true
+
 ## 是否正在切换
 func is_switching() -> bool:
 	return _state == State.SWITCHING

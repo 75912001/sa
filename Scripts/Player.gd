@@ -4,9 +4,8 @@ extends CharacterBody3D
 @export var character_id: int = 1000001
 
 # --- 组件引用 ---
-@onready var movement_mgr: MovementMgr = $MovementMgr
-@onready var jump_mgr: JumpMgr = $JumpMgr
 @onready var animation_mgr: AnimationMgr = $AnimationMgr
+@onready var movement_mgr: MovementMgr = $MovementMgr
 @onready var weapon_mgr: WeaponMgr = $WeaponMgr
 @onready var weapon_switch_mgr: WeaponSwitchMgr = $WeaponSwitchMgr
 
@@ -17,44 +16,29 @@ func _ready() -> void:
 	GGameMgr.player = self
 	cfg_character_entry = GCfgMgr.cfg_character_mgr.get_character(character_id)
 	assert(cfg_character_entry != null, "角色配置不存在: %d" % character_id)
-	_init_jump_mgr()
 	_init_weapon_mgr()
 	_init_weapon_switch_mgr()
 
-
 func _physics_process(delta: float) -> void:
-	jump_mgr.handle_input()
-	# 处理重力
-	jump_mgr.handle_gravity(delta)
 	weapon_switch_mgr.handle_input()
-	# 移动
 	move_and_slide()
-	# 更新动画（切换过程中跳过自动更新）
+	# 更新动画
+	_update_lower_animation()
+	_update_upper_animation()
+
+func _update_lower_animation() -> void:
+	if movement_mgr.is_moving():
+		animation_mgr.play_lower("Unarmed_Walking")
+	else:
+		animation_mgr.play_lower("Unarmed_Idle")
+
+func _update_upper_animation() -> void:
+	# 如果没有上半身动作在播放，根据武器状态更新
 	if not weapon_switch_mgr.is_switching():
-		animation_mgr.update(
-			movement_mgr.is_moving(),
-			weapon_mgr.has_weapon(),
-			jump_mgr.is_jumping(),
-			jump_mgr.is_in_air()
-		)
-
-############################################################
-# JumpMgr
-############################################################
-func _init_jump_mgr() -> void:
-	jump_mgr.jump_started.connect(_on_jump_started)
-	jump_mgr.jump_executed.connect(_on_jump_executed)
-	jump_mgr.jump_landed.connect(_on_jump_landed)
-
-func _on_jump_started() -> void:
-	movement_mgr.lock()
-	animation_mgr.play("Unarmed_Jump")
-
-func _on_jump_executed() -> void:
-	movement_mgr.unlock()
-
-func _on_jump_landed() -> void:
-	movement_mgr.unlock()
+		if weapon_mgr.has_weapon():
+			animation_mgr.play_upper("SwordAndShield_Idle")
+		else:
+			animation_mgr.play_upper("Unarmed_Idle")
 
 ############################################################
 # WeaponMgr

@@ -28,7 +28,7 @@ func load(path: String) -> void:
 		entry.name = item.get("name", "")
 		assert(not entry.name.is_empty(), "武器名称为空: ID:%d" % entry.id)
 		entry.type = item.get("type", 0)
-		assert(PbWeapon.WeaponType.WeaponType_Dagger <= entry.type and entry.type < PbWeapon.WeaponType.WeaponType_Max,
+		assert(PbWeapon.WeaponType.WeaponType_ShortSword <= entry.type and entry.type < PbWeapon.WeaponType.WeaponType_Max,
 			"武器类型无效: ID:%d, type:%d" % [entry.id, entry.type])
 		entry.attack = item.get("attack", 0)
 		assert(0 < entry.attack, "武器攻击力非法: ID:%d " % entry.id)

@@ -4,6 +4,7 @@ package pb;
 
 option go_package = "saClient/proto";
 
+import "Common.proto";
 import "Record.proto";
 
 ////////////////////////////////////////////////////////////
@@ -12,7 +13,7 @@ import "Record.proto";
 // 武器-类型
 enum WeaponType {
   WeaponType_Unarmed = 0; // 赤手空拳
-  WeaponType_Dagger = 1; // 匕首
+  WeaponType_ShortSword = 1; // 短剑
   WeaponType_Sword = 2; // 剑
   WeaponType_GreatSword = 3; // 大剑
   WeaponType_ColossalSword = 4; // 特大剑
@@ -29,7 +30,7 @@ enum WeaponType {
 // 武器-装备栏
 enum WeaponEquipSlot {
   WeaponEquipSlot_Unknow = 0; // 未知
-  WeaponEquipSlot_MAX = 4; // 装备栏-最大值
+  WeaponEquipSlot_MAX = 3; // 装备栏-最大值
 }
 
 // 武器-记录
@@ -64,5 +65,5 @@ message WeaponEquippedData {
   repeated uint64 RightHandBackupWeaponUUIDList = 2; // 右手备选武器UUID列表 [固定数值 WeaponEquipSlot_MAX]
   uint64  LeftHandWeaponUUID = 3; // 左手武器UUID [0表示空手] [是 LeftHandBackupWeaponUUIDList 中的一个]
   uint64  RightHandWeaponUUID = 4; // 右手武器UUID [0表示空手] [是 RightHandBackupWeaponUUIDList 中的一个]
-  bool IsDualWield = 5; // 是否双持
+  uint32 DualWield = 5; // 双持 [ 0: 未双持, 1: 双持-左手武器, 2: 双持-右手武器 ]
 }
