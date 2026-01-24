@@ -47,6 +47,7 @@ func _start_switch(target_uuid: int) -> bool:
 	if switch_type == PbWeapon.WeaponSwitchType.WeaponSwitchType_Unarmed_To_Unarmed: # 空->空
 		return false
 
+	animation_mgr.set_mode(AnimationMgr.AnimMode.SPLIT)
 	# 递增 ID，之前的协程检测到 ID 变化后会停止
 	_switch_id += 1
 	var current_id = _switch_id

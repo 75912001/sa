@@ -102,23 +102,31 @@ func _on_animation_finished(anim_name: StringName) -> void:
 
 
 func update_lower_animation() -> void:
-	if movement_mgr.is_moving():
-		if GPlayerData.get_right_hand_weapon_uuid() == 0 && GPlayerData.get_left_hand_weapon_uuid() == 0:
+	# 双手-空
+	var is_all_unarmed = GPlayerData.get_right_hand_weapon_uuid() == 0 && GPlayerData.get_left_hand_weapon_uuid() == 0
+	if movement_mgr.is_moving(): # 移动
+		if is_all_unarmed: # 双手-空
 			set_mode(AnimationMgr.AnimMode.FULL_BODY)
 			play_lower("Unarmed_Walking")
-		else:
+		else: # 手持武器
 			set_mode(AnimationMgr.AnimMode.SPLIT)
 			play_lower("Unarmed_Walking")
+		return
+	if weapon_switch_mgr.is_switching(): # 换武器
+		set_mode(AnimationMgr.AnimMode.SPLIT)
+		play_lower("Unarmed_Idle")
+		return
+	#idle
+	if is_all_unarmed:
+		set_mode(AnimationMgr.AnimMode.FULL_BODY)
+		play_lower("Unarmed_Idle")
 	else:
-		if GPlayerData.get_right_hand_weapon_uuid() == 0 && GPlayerData.get_left_hand_weapon_uuid() == 0:
-			set_mode(AnimationMgr.AnimMode.FULL_BODY)
-			play_lower("Unarmed_Idle")
-		else:
-			set_mode(AnimationMgr.AnimMode.SPLIT)
-			play_lower("Unarmed_Idle")
+		set_mode(AnimationMgr.AnimMode.SPLIT)
+		play_lower("Unarmed_Idle")
+	return
 
 func update_upper_animation() -> void:
-	if is_full_body_mode():
+	if is_full_body_mode(): # 全身模式
 		return
 	# 如果没有上半身动作在播放，根据武器状态更新
 	if not weapon_switch_mgr.is_switching():
