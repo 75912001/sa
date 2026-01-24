@@ -91,7 +91,7 @@ func _create_new_save() -> void:
 		recordSecondary.add_StrData("str3")
 	# 武器-装备
 	var weaponEquippedData = character_record.new_WeaponEquippedData()
-	for idx in PbWeapon.WeaponEquipSlot.WeaponEquipSlot_MAX:
+	for idx in PbWeapon.WeaponBackup.WeaponBackup_MAX:
 		weaponEquippedData.add_LeftHandBackupWeaponUUIDList(0)
 		weaponEquippedData.add_RightHandBackupWeaponUUIDList(0)
 	

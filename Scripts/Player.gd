@@ -28,14 +28,24 @@ func _physics_process(delta: float) -> void:
 
 func _update_lower_animation() -> void:
 	if movement_mgr.is_moving():
-		animation_mgr.play_lower("Unarmed_Walking")
+		if GPlayerData.get_right_hand_weapon_uuid() == 0 && GPlayerData.get_left_hand_weapon_uuid() == 0:
+			animation_mgr.set_mode(AnimationMgr.AnimMode.FULL_BODY)
+			animation_mgr.play_lower("Unarmed_Walking")
+		else:
+			animation_mgr.set_mode(AnimationMgr.AnimMode.SPLIT)
+			animation_mgr.play_lower("Unarmed_Walking")
 	else:
-		animation_mgr.play_lower("Unarmed_Idle")
+		if GPlayerData.get_right_hand_weapon_uuid() == 0 && GPlayerData.get_left_hand_weapon_uuid() == 0:
+			animation_mgr.set_mode(AnimationMgr.AnimMode.FULL_BODY)
+			animation_mgr.play_lower("Unarmed_Idle")
+		else:
+			animation_mgr.set_mode(AnimationMgr.AnimMode.SPLIT)
+			animation_mgr.play_lower("Unarmed_Idle")
 
 func _update_upper_animation() -> void:
 	# 如果没有上半身动作在播放，根据武器状态更新
 	if not weapon_switch_mgr.is_switching():
-		if weapon_mgr.has_weapon():
+		if GPlayerData.get_right_hand_weapon_uuid() != 0:
 			animation_mgr.play_upper("SwordAndShield_Idle")
 		else:
 			animation_mgr.play_upper("Unarmed_Idle")
@@ -46,6 +56,10 @@ func _update_upper_animation() -> void:
 func _init_weapon_mgr() -> void:
 	weapon_mgr.weapon_equipped.connect(_on_weapon_equipped)
 	weapon_mgr.weapon_unequipped.connect(_on_weapon_unequipped)
+	# 根据存档初始化武器
+	var right_hand_weapon_uuid = GPlayerData.get_right_hand_weapon_uuid()
+	if right_hand_weapon_uuid != 0:
+		weapon_mgr.equip_weapon_by_uuid(right_hand_weapon_uuid)
 
 func _on_weapon_equipped(weapon_uuid: int) -> void:
 	var cfg = GPlayerData.get_weapon_cfg_by_uuid(weapon_uuid)

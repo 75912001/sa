@@ -27,10 +27,19 @@ enum WeaponType {
   WeaponType_Max = 5; // 武器类型-最大值
 }
 
-// 武器-装备栏
-enum WeaponEquipSlot {
-  WeaponEquipSlot_Unknow = 0; // 未知
-  WeaponEquipSlot_MAX = 3; // 装备栏-最大值
+// 武器-备选
+enum WeaponBackup {
+  WeaponBackup_Unknow = 0; // 未知
+  WeaponBackup_MAX = 3; // 武器-备选-最大值
+}
+
+// 武器-切换
+enum WeaponSwitchType {
+  WeaponSwitchType_Unknow = 0; // 未知
+  WeaponSwitchType_Unarmed_To_Unarmed = 1; // 空手->空手
+  WeaponSwitchType_Unarmed_To_Weapon = 2; // 空手->武器
+  WeaponSwitchType_Weapon_To_Unarmed = 3; // 武器->空手
+  WeaponSwitchType_Weapon_To_Weapon = 4; // 武器->武器
 }
 
 // 武器-记录

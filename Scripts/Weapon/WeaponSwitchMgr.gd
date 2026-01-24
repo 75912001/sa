@@ -34,7 +34,8 @@ func handle_input() -> void:
 
 func _handle_switch_right_hand() -> void:
 	var next_uuid = GPlayerData.get_next_right_hand_weapon_uuid()
-	if next_uuid == 0:
+	if next_uuid == 0: # 切换->空
+		_start_switch(next_uuid)
 		prints("WeaponSwitchMgr: 没有可切换的武器")
 		return
 	prints("WeaponSwitchMgr 切换-右手 UUID:", next_uuid)
@@ -43,7 +44,7 @@ func _handle_switch_right_hand() -> void:
 ## 开始武器切换
 func _start_switch(target_uuid: int) -> bool:
 	var switch_type = _get_switch_type(target_uuid)
-	if switch_type.is_empty(): # 没有切换类型
+	if switch_type == PbWeapon.WeaponSwitchType.WeaponSwitchType_Unarmed_To_Unarmed: # 空->空
 		return false
 
 	# 递增 ID，之前的协程检测到 ID 变化后会停止
@@ -56,12 +57,12 @@ func _start_switch(target_uuid: int) -> bool:
 
 	# 根据类型执行对应流程
 	match switch_type:
-		"unarmed_to_sword":
-			_do_unarmed_to_sword(current_id)
-		"sword_to_sword":
-			_do_sword_to_sword(current_id)
-		"sword_to_unarmed":
-			_do_sword_to_unarmed(current_id)
+		PbWeapon.WeaponSwitchType.WeaponSwitchType_Unarmed_To_Weapon:
+			_do_unarmed_to_weapon(current_id)
+		PbWeapon.WeaponSwitchType.WeaponSwitchType_Weapon_To_Weapon:
+			_do_weapon_to_weapon(current_id)
+		PbWeapon.WeaponSwitchType.WeaponSwitchType_Weapon_To_Unarmed:
+			_do_weapon_to_unarmed(current_id)
 
 	return true
 
@@ -70,9 +71,9 @@ func _is_interrupted(id: int) -> bool:
 	return id != _switch_id
 
 ## 流程：空手 → 持剑
-func _do_unarmed_to_sword(id: int) -> void:
+func _do_unarmed_to_weapon(id: int) -> void:
 	# 1. 空手去握剑柄
-	animation_mgr.play("Unarmed_DrawSword")
+	animation_mgr.play_upper("Unarmed_DrawSword")
 	await animation_mgr.animation_finished
 	if not is_instance_valid(self):
 		return
@@ -84,14 +85,14 @@ func _do_unarmed_to_sword(id: int) -> void:
 	GPlayerData.set_right_hand_weapon_uuid(_target_weapon_uuid)
 
 	# 3. 拔剑动画
-	animation_mgr.play("SwordAndShield_DrawSword")
+	animation_mgr.play_upper("SwordAndShield_DrawSword")
 	await animation_mgr.animation_finished
 	if _is_interrupted(id): return
 
 	_finish_switch()
 
 ## 流程：持剑 → 持剑（换武器）
-func _do_sword_to_sword(id: int) -> void:
+func _do_weapon_to_weapon(id: int) -> void:
 	# 1. 收剑动画
 	animation_mgr.play("SwordAndShield_SheathSword_1")
 
@@ -116,9 +117,9 @@ func _do_sword_to_sword(id: int) -> void:
 	_finish_switch()
 
 ## 流程：持剑 → 空手
-func _do_sword_to_unarmed(id: int) -> void:
+func _do_weapon_to_unarmed(id: int) -> void:
 	# 1. 收剑动画
-	animation_mgr.play("SwordAndShield_SheathSword_1")
+	animation_mgr.play_upper("SwordAndShield_SheathSword_1")
 
 	# 2. 延迟后卸下武器
 	await get_tree().create_timer(SHEATH_UNEQUIP_DELAY).timeout
@@ -133,7 +134,7 @@ func _do_sword_to_unarmed(id: int) -> void:
 	if _is_interrupted(id): return
 
 	# 3. 手臂归位动画
-	animation_mgr.play("SwordAndShield_SheathSword_2")
+	animation_mgr.play_upper("SwordAndShield_SheathSword_2")
 	await animation_mgr.animation_finished
 	if _is_interrupted(id): return
 
@@ -152,30 +153,15 @@ func is_switching() -> bool:
 	return _state == State.SWITCHING
 
 ## 获取切换类型
-func _get_switch_type(target_uuid: int) -> String:
-	var has_current = weapon_mgr.has_weapon()
-	var current_uuid = weapon_mgr.get_current_weapon_uuid()
-
-	# 目标为空手
-	if target_uuid == 0:
-		if has_current:
-			return "sword_to_unarmed"
-		return ""  # 空手→空手，无需切换
-
-	# 目标有武器
-	var target_asset_id = GPlayerData.get_weapon_asset_id_by_uuid(target_uuid)
-	var has_target_config = weapon_mgr.has_asset_config(target_asset_id)
-
-	if not has_target_config:
-		push_warning("目标武器配置不存在, UUID: %d, AssetID: %d" % [target_uuid, target_asset_id])
-		return ""
-
-	if not has_current:
-		return "unarmed_to_sword"
-
-	if current_uuid == target_uuid:
-		# 当前武器 == 目标武器，切换为空手
-		return "sword_to_unarmed"
-
+func _get_switch_type(target_uuid: int) -> PbWeapon.WeaponSwitchType:
+	var right_hand_weapon_uuid = GPlayerData.get_right_hand_weapon_uuid()
+	if target_uuid == 0: # 目标为空手
+		if right_hand_weapon_uuid != 0:
+			return PbWeapon.WeaponSwitchType.WeaponSwitchType_Weapon_To_Unarmed
+		return PbWeapon.WeaponSwitchType.WeaponSwitchType_Unarmed_To_Unarmed
+	if right_hand_weapon_uuid == 0: # 当前为空手
+		return PbWeapon.WeaponSwitchType.WeaponSwitchType_Unarmed_To_Weapon
+	if right_hand_weapon_uuid == target_uuid: # 当前武器 == 目标武器，切换为空手
+		return PbWeapon.WeaponSwitchType.WeaponSwitchType_Weapon_To_Unarmed
 	# 当前武器 != 目标武器
-	return "sword_to_sword"
+	return PbWeapon.WeaponSwitchType.WeaponSwitchType_Weapon_To_Weapon

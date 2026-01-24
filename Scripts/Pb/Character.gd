@@ -1919,9 +1919,17 @@ enum WeaponType {
 	WeaponType_Max = 5
 }
 
-enum WeaponEquipSlot {
-	WeaponEquipSlot_Unknow = 0,
-	WeaponEquipSlot_MAX = 3
+enum WeaponBackup {
+	WeaponBackup_Unknow = 0,
+	WeaponBackup_MAX = 3
+}
+
+enum WeaponSwitchType {
+	WeaponSwitchType_Unknow = 0,
+	WeaponSwitchType_Unarmed_To_Unarmed = 1,
+	WeaponSwitchType_Unarmed_To_Weapon = 2,
+	WeaponSwitchType_Weapon_To_Unarmed = 3,
+	WeaponSwitchType_Weapon_To_Weapon = 4
 }
 
 class WeaponRecord:

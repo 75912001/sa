@@ -68,10 +68,6 @@ func unequip_weapon() -> void:
 		_current_weapon_uuid = 0
 		weapon_unequipped.emit()
 
-## 是否持有武器
-func has_weapon() -> bool:
-	return _current_weapon != null
-
 ## 获取当前武器 UUID
 func get_current_weapon_uuid() -> int:
 	return _current_weapon_uuid
