@@ -27,6 +27,20 @@ func get_weapon_cfg_by_uuid(weapon_uuid: int) -> CfgWeaponMgr.CfgWeaponEntry:
 	var asset_id = get_weapon_asset_id_by_uuid(weapon_uuid)
 	return GCfgMgr.cfg_weapon_mgr.get_weapon(asset_id)
 
+# 获取-左手-武器配置
+func get_left_weapon_cfg() -> CfgWeaponMgr.CfgWeaponEntry:
+	var uuid = get_left_hand_weapon_uuid()
+	if uuid == 0:
+		return null
+	return get_weapon_cfg_by_uuid(uuid)
+
+# 获取-右手-武器配置
+func get_right_weapon_cfg() -> CfgWeaponMgr.CfgWeaponEntry:
+	var uuid = get_right_hand_weapon_uuid()
+	if uuid == 0:
+		return null
+	return get_weapon_cfg_by_uuid(uuid)
+
 # ==================== 武器装备数据 ====================
 # 获取武器装备数据
 func _get_weapon_equipped_data():

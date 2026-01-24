@@ -128,9 +128,38 @@ func update_lower_animation() -> void:
 func update_upper_animation() -> void:
 	if is_full_body_mode(): # 全身模式
 		return
-	# 如果没有上半身动作在播放，根据武器状态更新
-	if not weapon_switch_mgr.is_switching():
-		if GPlayerData.get_right_hand_weapon_uuid() != 0:
-			play_upper("SwordAndShield_Idle")
-		else:
-			play_upper("Unarmed_Idle")
+	if weapon_switch_mgr.is_switching(): # 换武器
+		return
+	
+	# idle
+	var left_weapon_type = PbWeapon.WeaponType.WeaponType_Unarmed
+	var right_weapon_type = PbWeapon.WeaponType.WeaponType_Unarmed
+	
+	var left_weapon_cfg = GPlayerData.get_left_weapon_cfg()
+	var right_weapon_cfg = GPlayerData.get_right_weapon_cfg()
+	if left_weapon_cfg != null:
+		left_weapon_type = left_weapon_cfg.type
+	if right_weapon_cfg != null:
+		right_weapon_type = right_weapon_cfg.type
+
+	var left_is_pose_neutral_weapon = _pose_neutral_weapon(left_weapon_type)
+	var right_is_pose_neutral_weapon = _pose_neutral_weapon(right_weapon_type)
+	
+	if left_is_pose_neutral_weapon && right_is_pose_neutral_weapon: # 武器不影响上半身动作
+		play_upper("Unarmed_Idle")
+		return
+	else:
+		play_upper("SwordAndShield_Idle")
+		return
+
+# 姿势-中立的武器 (对姿势没有影响)
+func _pose_neutral_weapon(weapon_type: PbWeapon.WeaponType) -> bool:
+	match weapon_type:
+		PbWeapon.WeaponType.WeaponType_Unarmed:
+			return true
+		PbWeapon.WeaponType.WeaponType_ShortSword:
+			return true
+		PbWeapon.WeaponType.WeaponType_Sword:
+			return true
+	return false
+	
