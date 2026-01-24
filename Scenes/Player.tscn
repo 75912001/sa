@@ -43,6 +43,7 @@ _data = {
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lslt6"]
 resource_name = "blend"
+filter_enabled = true
 filters = ["%GeneralSkeleton:Chest", "%GeneralSkeleton:Head", "%GeneralSkeleton:LeftHand", "%GeneralSkeleton:LeftIndexDistal", "%GeneralSkeleton:LeftIndexIntermediate", "%GeneralSkeleton:LeftIndexProximal", "%GeneralSkeleton:LeftLittleDistal", "%GeneralSkeleton:LeftLittleIntermediate", "%GeneralSkeleton:LeftLittleProximal", "%GeneralSkeleton:LeftLowerArm", "%GeneralSkeleton:LeftMiddleDistal", "%GeneralSkeleton:LeftMiddleIntermediate", "%GeneralSkeleton:LeftMiddleProximal", "%GeneralSkeleton:LeftRingDistal", "%GeneralSkeleton:LeftRingIntermediate", "%GeneralSkeleton:LeftRingProximal", "%GeneralSkeleton:LeftShoulder", "%GeneralSkeleton:LeftThumbDistal", "%GeneralSkeleton:LeftThumbMetacarpal", "%GeneralSkeleton:LeftThumbProximal", "%GeneralSkeleton:LeftUpperArm", "%GeneralSkeleton:Neck", "%GeneralSkeleton:RightHand", "%GeneralSkeleton:RightIndexDistal", "%GeneralSkeleton:RightIndexIntermediate", "%GeneralSkeleton:RightIndexProximal", "%GeneralSkeleton:RightLittleDistal", "%GeneralSkeleton:RightLittleIntermediate", "%GeneralSkeleton:RightLittleProximal", "%GeneralSkeleton:RightLowerArm", "%GeneralSkeleton:RightMiddleDistal", "%GeneralSkeleton:RightMiddleIntermediate", "%GeneralSkeleton:RightMiddleProximal", "%GeneralSkeleton:RightRingDistal", "%GeneralSkeleton:RightRingIntermediate", "%GeneralSkeleton:RightRingProximal", "%GeneralSkeleton:RightShoulder", "%GeneralSkeleton:RightThumbDistal", "%GeneralSkeleton:RightThumbMetacarpal", "%GeneralSkeleton:RightThumbProximal", "%GeneralSkeleton:RightUpperArm", "%GeneralSkeleton:Spine", "%GeneralSkeleton:UpperChest"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lslt6"]
@@ -126,6 +127,7 @@ states/Unarmed_Idle/position = Vector2(461, 100)
 transitions = ["Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_qidb7"), "Unarmed_Idle", "Unarmed_DrawSword", SubResource("AnimationNodeStateMachineTransition_70hv0"), "Unarmed_DrawSword", "SwordAndShield_Idle", SubResource("AnimationNodeStateMachineTransition_8flut"), "SwordAndShield_Idle", "SwordAndShield_SheathSword_1", SubResource("AnimationNodeStateMachineTransition_u7x0b"), "SwordAndShield_SheathSword_1", "SwordAndShield_SheathSword_2", SubResource("AnimationNodeStateMachineTransition_utwlt"), "SwordAndShield_SheathSword_2", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_kih0c")]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_m0x7a"]
+graph_offset = Vector2(-153.23145, -29.297516)
 nodes/output/position = Vector2(740, 140)
 nodes/lower_body_sm/node = SubResource("AnimationNodeStateMachine_ulo2v")
 nodes/lower_body_sm/position = Vector2(180, 100)
@@ -137,7 +139,6 @@ node_connections = [&"output", 0, &"blend", &"blend", 0, &"lower_body_sm", &"ble
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_script")
-character_id = null
 
 [node name="InputMgr" type="Node" parent="."]
 script = ExtResource("2_m0x7a")
@@ -170,11 +171,21 @@ input_mgr = NodePath("../InputMgr")
 [node name="XBot" parent="." instance=ExtResource("1_mdl7e")]
 
 [node name="GeneralSkeleton" parent="XBot/Skeleton" index="0"]
+bones/0/position = Vector3(-0.0011289911, 1.02832, 0.018613053)
+bones/0/rotation = Quaternion(0.032643925, -0.0329924, -0.0028144273, 0.9989184)
 bones/14/scale = Vector3(1.0005782, 1.0004865, 1.0001515)
 bones/38/scale = Vector3(1.0005782, 1.0004864, 1.0001515)
+bones/55/rotation = Quaternion(-0.08097943, 0.0749318, 0.99200654, 0.061243523)
+bones/56/rotation = Quaternion(0.023961067, 0.9985486, -0.045897406, 0.014834246)
+bones/57/rotation = Quaternion(0.05680521, 0.7058037, -0.7033325, -0.062752575)
+bones/58/rotation = Quaternion(5.412128e-05, 0.99999, -0.002384172, -0.0038092535)
+bones/60/rotation = Quaternion(0.11507932, 0.06972524, 0.98817444, -0.07352901)
+bones/61/rotation = Quaternion(-0.0220887, 0.9966175, -0.0670514, 0.042069126)
+bones/62/rotation = Quaternion(-0.056003403, 0.6948419, -0.71426433, 0.062329005)
+bones/63/rotation = Quaternion(-2.636854e-05, 0.9999899, -0.002251685, 0.0039076097)
 
 [node name="RightHandAttachment" type="BoneAttachment3D" parent="XBot/Skeleton/GeneralSkeleton" index="2"]
-transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -0.7133314, 1.4405689, -0.055485006)
+transform = Transform3D(-0.06609717, -0.99780715, -0.0034687633, -0.06503152, 0.007776769, -0.9978529, 0.9956918, -0.06572968, -0.06540293, -0.7068214, 1.4354966, -0.07297406)
 bone_name = "RightHand"
 bone_idx = 10
 
