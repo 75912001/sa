@@ -18,37 +18,14 @@ func _ready() -> void:
 	assert(cfg_character_entry != null, "角色配置不存在: %d" % character_id)
 	_init_weapon_mgr()
 	_init_weapon_switch_mgr()
+	_init_aniamation_mgr()
 
 func _physics_process(delta: float) -> void:
 	weapon_switch_mgr.handle_input()
 	move_and_slide()
 	# 更新动画
-	_update_lower_animation()
-	_update_upper_animation()
-
-func _update_lower_animation() -> void:
-	if movement_mgr.is_moving():
-		if GPlayerData.get_right_hand_weapon_uuid() == 0 && GPlayerData.get_left_hand_weapon_uuid() == 0:
-			animation_mgr.set_mode(AnimationMgr.AnimMode.FULL_BODY)
-			animation_mgr.play_lower("Unarmed_Walking")
-		else:
-			animation_mgr.set_mode(AnimationMgr.AnimMode.SPLIT)
-			animation_mgr.play_lower("Unarmed_Walking")
-	else:
-		if GPlayerData.get_right_hand_weapon_uuid() == 0 && GPlayerData.get_left_hand_weapon_uuid() == 0:
-			animation_mgr.set_mode(AnimationMgr.AnimMode.FULL_BODY)
-			animation_mgr.play_lower("Unarmed_Idle")
-		else:
-			animation_mgr.set_mode(AnimationMgr.AnimMode.SPLIT)
-			animation_mgr.play_lower("Unarmed_Idle")
-
-func _update_upper_animation() -> void:
-	# 如果没有上半身动作在播放，根据武器状态更新
-	if not weapon_switch_mgr.is_switching():
-		if GPlayerData.get_right_hand_weapon_uuid() != 0:
-			animation_mgr.play_upper("SwordAndShield_Idle")
-		else:
-			animation_mgr.play_upper("Unarmed_Idle")
+	animation_mgr.update_lower_animation()
+	animation_mgr.update_upper_animation()
 
 ############################################################
 # WeaponMgr
@@ -85,3 +62,11 @@ func _on_weapon_switch_started() -> void:
 
 func _on_weapon_switch_completed() -> void:
 	prints("weapon switch completed")
+
+############################################################
+# AnimationMgr
+############################################################
+func _init_aniamation_mgr() -> void:
+	# 设置引用
+	animation_mgr.movement_mgr = movement_mgr
+	animation_mgr.weapon_switch_mgr = weapon_switch_mgr

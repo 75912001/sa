@@ -11,6 +11,10 @@ signal animation_finished(animation_name: String)
 signal lower_animation_finished(animation_name: String)
 signal upper_animation_finished(animation_name: String)
 
+# --- 引用（在 Player.gd 中设置）---
+var weapon_switch_mgr: WeaponSwitchMgr
+var movement_mgr: MovementMgr
+
 # --- 动画模式 ---
 enum AnimMode { 
 	SPLIT, # 分离模式
@@ -95,3 +99,30 @@ func is_upper_playing(animation_name: String) -> bool:
 # ==================== 回调 ====================
 func _on_animation_finished(anim_name: StringName) -> void:
 	animation_finished.emit(str(anim_name))
+
+
+func update_lower_animation() -> void:
+	if movement_mgr.is_moving():
+		if GPlayerData.get_right_hand_weapon_uuid() == 0 && GPlayerData.get_left_hand_weapon_uuid() == 0:
+			set_mode(AnimationMgr.AnimMode.FULL_BODY)
+			play_lower("Unarmed_Walking")
+		else:
+			set_mode(AnimationMgr.AnimMode.SPLIT)
+			play_lower("Unarmed_Walking")
+	else:
+		if GPlayerData.get_right_hand_weapon_uuid() == 0 && GPlayerData.get_left_hand_weapon_uuid() == 0:
+			set_mode(AnimationMgr.AnimMode.FULL_BODY)
+			play_lower("Unarmed_Idle")
+		else:
+			set_mode(AnimationMgr.AnimMode.SPLIT)
+			play_lower("Unarmed_Idle")
+
+func update_upper_animation() -> void:
+	if is_full_body_mode():
+		return
+	# 如果没有上半身动作在播放，根据武器状态更新
+	if not weapon_switch_mgr.is_switching():
+		if GPlayerData.get_right_hand_weapon_uuid() != 0:
+			play_upper("SwordAndShield_Idle")
+		else:
+			play_upper("Unarmed_Idle")
