@@ -100,60 +100,40 @@ func is_upper_playing(animation_name: String) -> bool:
 func _on_animation_finished(anim_name: StringName) -> void:
 	animation_finished.emit(str(anim_name))
 
+# 更新-动画模式
+func _update_mode() -> void:
+	if weapon_switch_mgr.is_switching(): # 切换武器
+		set_mode(AnimMode.SPLIT)
+		return
+	if !_pose_neutral_left_weapon() || !_pose_neutral_right_weapon(): # 左/右手武器-对姿势-有影响
+		set_mode(AnimMode.SPLIT)
+		return
+
+	set_mode(AnimMode.FULL_BODY)
+		
 # 下半身
 func update_lower_animation() -> void:
-	# 双手-空
-	var is_all_unarmed = GPlayerData.get_right_hand_weapon_uuid() == 0 && GPlayerData.get_left_hand_weapon_uuid() == 0
+	_update_mode()
 	if movement_mgr.is_moving(): # 移动
-		if is_all_unarmed: # 双手-空
-			set_mode(AnimationMgr.AnimMode.FULL_BODY)
-			play_lower("Unarmed_Walking")
-		else: # 手持武器
-			if _pose_neutral_left_weapon() && _pose_neutral_right_weapon(): # 武器不影响上半身动作
-				set_mode(AnimationMgr.AnimMode.FULL_BODY)
-				play_lower("Unarmed_Walking")
-			else: # 武器影响上半身动作
-				set_mode(AnimationMgr.AnimMode.SPLIT)
-				play_lower("Unarmed_Walking")
+		play_lower("Unarmed_Walking")
 		return
 	if weapon_switch_mgr.is_switching(): # 换武器
-		set_mode(AnimationMgr.AnimMode.SPLIT)
 		play_lower("Unarmed_Idle")
 		return
 	#idle
-	if is_all_unarmed:
-		set_mode(AnimationMgr.AnimMode.FULL_BODY)
-		play_lower("Unarmed_Idle")
-	else:
-		set_mode(AnimationMgr.AnimMode.SPLIT)
-		play_lower("Unarmed_Idle")
-	return
+	play_lower("Unarmed_Idle")
 
 # 上半身
 func update_upper_animation() -> void:
 	if is_full_body_mode(): # 全身模式
 		return
 	if weapon_switch_mgr.is_switching(): # 换武器
-		return
+		return # 由 WeaponSwitchMgr.gb 控制
 	
 	# idle
-	var left_is_pose_neutral_weapon = _pose_neutral_left_weapon()
-	var right_is_pose_neutral_weapon = _pose_neutral_right_weapon()
-	
-	if left_is_pose_neutral_weapon && right_is_pose_neutral_weapon: # 武器不影响上半身动作
-		if movement_mgr.is_moving(): # 移动
-			play_upper("Unarmed_Walking")
-			return
-		if weapon_switch_mgr.is_switching(): # 换武器
-			set_mode(AnimationMgr.AnimMode.SPLIT)
-			play_lower("Unarmed_Idle")
-			return
-		# idle
-		play_upper("Unarmed_Idle")
-		return
-	else:
-		play_upper("SwordAndShield_Idle")
-		return
+	assert(false, "todo menglc ... update_upper_animation idle...")
+	#play_upper("SwordAndShield_Idle")
+	return
 
 # 姿势-中立的武器 - 左手 (对姿势没有影响)
 func _pose_neutral_left_weapon() -> bool:
