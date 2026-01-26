@@ -14,6 +14,7 @@ signal upper_animation_finished(animation_name: String)
 # --- 引用（在 Player.gd 中设置）---
 var weapon_switch_mgr: WeaponSwitchMgr
 var movement_mgr: MovementMgr
+var attack_mgr: AttackMgr
 
 # --- 动画模式 ---
 enum AnimMode { 
@@ -129,6 +130,8 @@ func update_lower_animation() -> void:
 func update_upper_animation() -> void:
 	if is_full_body_mode(): # 全身模式
 		return
+	if attack_mgr.is_attacking(): # 攻击中
+		return # 由 AttackMgr.gd 控制
 	if weapon_switch_mgr.is_switching(): # 换武器
 		return # 由 WeaponSwitchMgr.gb 控制
 	

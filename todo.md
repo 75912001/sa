@@ -1,6 +1,8 @@
 连续按,切换武器的按键....
 
 
+check:
+	WeaponSwitchMgr.gd
 
 状态机
 角色同一时刻, 只能处于一个状态

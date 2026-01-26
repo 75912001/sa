@@ -9,6 +9,8 @@ var move_vector: Vector2 = Vector2.ZERO
 var switch_left_hand_pressed: bool = false
 # 切换-右手
 var switch_right_hand_pressed: bool = false
+# 攻击-右手
+var attack_right_pressed: bool = false
 
 func _process(delta: float) -> void:
 	# 移动输入
@@ -17,6 +19,9 @@ func _process(delta: float) -> void:
 	switch_left_hand_pressed = Input.is_action_just_pressed("switch_left_hand")
 	# 切换-右手
 	switch_right_hand_pressed = Input.is_action_just_pressed("switch_right_hand")
+	# 攻击-右手
+	attack_right_pressed = Input.is_action_just_pressed("attack_right")
+	
 
 # 如果需要阻断输入, 可以在这里加开关
 func get_move_vector() -> Vector2:
@@ -29,3 +34,7 @@ func get_switch_left_hand_pressed() -> bool:
 # 如果需要阻断输入, 可以在这里加开关
 func get_switch_right_hand_pressed() -> bool:
 	return switch_right_hand_pressed
+
+# 如果需要阻断输入, 可以在这里加开关
+func get_attack_right_pressed() -> bool:
+	return attack_right_pressed

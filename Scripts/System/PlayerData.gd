@@ -70,13 +70,13 @@ func get_right_hand_weapon_uuid() -> int:
 func set_left_hand_weapon_uuid(uuid: int) -> void:
 	var data = _get_weapon_equipped_data()
 	data.set_LeftHandWeaponUUID(uuid)
-	GSave.save()
+	#GSave.save()
 
 # 设置-右手-武器-UUID
 func set_right_hand_weapon_uuid(uuid: int) -> void:
 	var data = _get_weapon_equipped_data()
 	data.set_RightHandWeaponUUID(uuid)
-	GSave.save()
+	#GSave.save()
 
 # 获取-下一个-左手-武器-UUID (循环切换)
 # 没有武器: 空手
