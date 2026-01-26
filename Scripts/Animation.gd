@@ -37,6 +37,8 @@ func _ready() -> void:
 		_animation_tree.animation_finished.connect(_on_animation_finished)
 	_lower_body_sm = _animation_tree.get("parameters/lower_body_sm/playback")
 	_upper_body_sm = _animation_tree.get("parameters/upper_body_sm/playback")
+	# 初始化上半身状态，避免第一次切换时 T-pose
+	_upper_body_sm.start("Unarmed_Idle")
 
 # ==================== 动画模式 ====================
 # 设置动画模式
@@ -161,4 +163,3 @@ func _pose_neutral_weapon(weapon_type: PbWeapon.WeaponType) -> bool:
 		PbWeapon.WeaponType.WeaponType_Sword:
 			return true
 	return false
-	
