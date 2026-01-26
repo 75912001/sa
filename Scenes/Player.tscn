@@ -160,7 +160,7 @@ states/Unarmed_Idle/position = Vector2(371, 100)
 transitions = ["Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_qidb7"), "Unarmed_Idle", "Unarmed_DrawSword", SubResource("AnimationNodeStateMachineTransition_70hv0"), "SwordAndShield_SheathSword_1", "SwordAndShield_SheathSword_2", SubResource("AnimationNodeStateMachineTransition_utwlt"), "SwordAndShield_SheathSword_2", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_kih0c"), "Unarmed_DrawSword", "SwordAndShield_DrawSword", SubResource("AnimationNodeStateMachineTransition_lslt6"), "SwordAndShield_DrawSword", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_arntx"), "Unarmed_Idle", "SwordAndShield_Attack_Slash_2_8", SubResource("AnimationNodeStateMachineTransition_lyrkg"), "SwordAndShield_Attack_Slash_2_8", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_c43xd")]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_m0x7a"]
-graph_offset = Vector2(-80.84978, -34.704727)
+graph_offset = Vector2(-96.04378, -36.280716)
 nodes/output/position = Vector2(740, 140)
 nodes/lower_body_sm/node = SubResource("AnimationNodeStateMachine_ulo2v")
 nodes/lower_body_sm/position = Vector2(180, 100)
