@@ -13,12 +13,10 @@
     如若有更好的方案, 请一并给出.并给出理由和对比.
     可以完全访问当前项目的代码和资源.
 # 背景
-      当前有 idle, walking, running, jumping, attacking, 切换武器 等动作.
-      比如 站立时, 切换武器, 或者攻击. 
-      或者 行走的时候, 切换武器, 或者攻击.
-      当前的 Player-> animationTree 是 AnimationNodeStateMachine. 是否需要改成 AnimationNodeBlendTree?
+      当前有 idle, walking, 切换武器,动作.
+      上下半生动作分离.
 # 问题
-      状态机如何设计? 才能支持 上半身, 下半身 动作分离?
+      现在
 # 当前想法
 # 可参考资料
 # 任务
