@@ -12,6 +12,7 @@ signal lower_animation_finished(animation_name: String)
 signal upper_animation_finished(animation_name: String)
 
 # --- 引用（在 Player.gd 中设置）---
+var input_mgr: InputMgr
 var weapon_switch_mgr: WeaponSwitchMgr
 var movement_mgr: MovementMgr
 var attack_mgr: AttackMgr

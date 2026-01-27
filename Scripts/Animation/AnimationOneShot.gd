@@ -34,7 +34,7 @@ func play(action_name: String) -> void:
 # 强制停止
 func stop() -> void:
 	# 或者使用 REQUEST_ABORT (生硬切断，通常不推荐，除非是受击瞬间切入受击状态)
-	# _anim_tree.set(ANIM_PATH_REQUEST, AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
+	# _anim_tree.set(PATH_REQUEST, AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
 	_anim_tree.set(PATH_REQUEST, AnimationNodeOneShot.ONE_SHOT_REQUEST_FADE_OUT)
 	# 注意：停止后 active 会变 false，monitor_loop 会自动结束并触发 finished
 

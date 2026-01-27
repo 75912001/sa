@@ -194,23 +194,18 @@ script = ExtResource("2_m0x7a")
 script = ExtResource("3_ulo2v")
 animation_tree_path = NodePath("../AnimationTree")
 
-[node name="MovementMgr" type="Node" parent="." node_paths=PackedStringArray("input_mgr")]
+[node name="MovementMgr" type="Node" parent="."]
 script = ExtResource("2_megsn")
-input_mgr = NodePath("../InputMgr")
 
 [node name="WeaponMgr" type="Node" parent="."]
 script = ExtResource("2_52ee3")
 weapon_attachment_path = NodePath("../XBot/Skeleton/GeneralSkeleton/RightHandAttachment")
 
-[node name="WeaponSwitchMgr" type="Node" parent="." node_paths=PackedStringArray("input_mgr")]
+[node name="WeaponSwitchMgr" type="Node" parent="."]
 script = ExtResource("14_switch")
-input_mgr = NodePath("../InputMgr")
 
-[node name="AttackMgr" type="Node" parent="." node_paths=PackedStringArray("input_mgr", "anim_tree", "animation_mgr")]
+[node name="AttackMgr" type="Node" parent="."]
 script = ExtResource("7_ulo2v")
-input_mgr = NodePath("../InputMgr")
-anim_tree = NodePath("../AnimationTree")
-animation_mgr = NodePath("../AnimationMgr")
 metadata/_custom_type_script = "uid://bu0vvm1a5hov7"
 
 [node name="XBot" parent="." instance=ExtResource("1_mdl7e")]

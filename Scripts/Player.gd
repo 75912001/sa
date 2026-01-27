@@ -4,9 +4,10 @@ extends CharacterBody3D
 @export var character_id: int = 1000001
 
 # --- 组件引用 ---
+@onready var input_mgr: InputMgr = $InputMgr
+@onready var weapon_mgr: WeaponMgr = $WeaponMgr
 @onready var animation_mgr: AnimationMgr = $AnimationMgr
 @onready var movement_mgr: MovementMgr = $MovementMgr
-@onready var weapon_mgr: WeaponMgr = $WeaponMgr
 @onready var weapon_switch_mgr: WeaponSwitchMgr = $WeaponSwitchMgr
 @onready var attack_mgr: AttackMgr = $AttackMgr
 
@@ -19,8 +20,10 @@ func _ready() -> void:
 	assert(cfg_character_entry != null, "角色配置不存在: %d" % character_id)
 	_init_weapon_mgr()
 	_init_weapon_switch_mgr()
-	_init_aniamation_mgr()
 	_init_attack_mgr()
+	_init_movement_mgr()
+	_init_aniamation_mgr()
+
 
 func _physics_process(delta: float) -> void:
 	weapon_switch_mgr.handle_input()
@@ -54,7 +57,6 @@ func _init_weapon_switch_mgr() -> void:
 	# 设置引用
 	weapon_switch_mgr.animation_mgr = animation_mgr
 	weapon_switch_mgr.weapon_mgr = weapon_mgr
-	weapon_switch_mgr.movement_mgr = movement_mgr
 	# 连接信号
 	weapon_switch_mgr.switch_started.connect(_on_weapon_switch_started)
 	weapon_switch_mgr.switch_completed.connect(_on_weapon_switch_completed)
@@ -66,27 +68,36 @@ func _on_weapon_switch_completed() -> void:
 	prints("weapon switch completed")
 
 ############################################################
-# AnimationMgr
+# MovementMgr
 ############################################################
-func _init_aniamation_mgr() -> void:
-	# 设置引用
-	animation_mgr.movement_mgr = movement_mgr
-	animation_mgr.weapon_switch_mgr = weapon_switch_mgr
-	animation_mgr.attack_mgr = attack_mgr
-	
+func _init_movement_mgr() -> void:
+	movement_mgr.animation_mgr = animation_mgr
+
 ############################################################
 # AttackMgr
 ############################################################
 func _init_attack_mgr() -> void:
-	# 设置引用
-	attack_mgr.weapon_switch_mgr = weapon_switch_mgr
-	attack_mgr.movement_mgr = movement_mgr
+	attack_mgr.animation_mgr = animation_mgr
 	# 连接信号
 	attack_mgr.attack_started.connect(_on_attack_started)
 	attack_mgr.attack_ended.connect(_on_attack_ended)
+
+	attack_mgr.setup()
 
 func _on_attack_started() -> void:
 	prints("attack started")
 
 func _on_attack_ended() -> void:
 	prints("attack ended")
+
+############################################################
+# AnimationMgr
+############################################################
+func _init_aniamation_mgr() -> void:
+	# 设置引用
+	animation_mgr.input_mgr = input_mgr
+	animation_mgr.movement_mgr = movement_mgr
+	animation_mgr.weapon_switch_mgr = weapon_switch_mgr
+	animation_mgr.attack_mgr = attack_mgr
+
+	

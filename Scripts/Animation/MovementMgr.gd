@@ -3,10 +3,9 @@ class_name MovementMgr
 
 extends Node
 
-@export var input_mgr: InputMgr
-
 # --- 变量 ---
 var character_body: CharacterBody3D
+var animation_mgr: AnimationMgr
 var _movement_locks: Dictionary = {} # 使用字典作为 Set 使用, 防止重复添加同名锁
 
 func _ready() -> void:
@@ -18,7 +17,7 @@ func _physics_process(delta: float) -> void:
 		character_body.velocity.z = 0
 		return
 
-	var input_direction = input_mgr.get_move_vector()
+	var input_direction = animation_mgr.input_mgr.get_move_vector()
 	var direction = Vector3(input_direction.x, 0, input_direction.y).normalized()
 	# 旋转45度适配等距摄像机
 	direction = direction.rotated(Vector3.UP, deg_to_rad(45))

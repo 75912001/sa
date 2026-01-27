@@ -3,8 +3,6 @@ class_name WeaponSwitchMgr
 
 extends Node
 
-@export var input_mgr: InputMgr
-
 # --- 信号 ---
 signal switch_started()
 signal switch_completed()
@@ -23,13 +21,12 @@ var _switch_id: int = 0  # 用于检测打断
 # --- 引用（在 Player.gd 中设置）---
 var animation_mgr: AnimationMgr
 var weapon_mgr: WeaponMgr
-var movement_mgr: MovementMgr
 
 # --- 时序配置（秒）---
 const SHEATH_UNEQUIP_DELAY := 0.6  # 收剑动画多久后卸下武器
 
 func handle_input() -> void:
-	if input_mgr.get_switch_right_hand_pressed():
+	if animation_mgr.input_mgr.get_switch_right_hand_pressed():
 		_handle_switch_right_hand()
 
 func _handle_switch_right_hand() -> void:

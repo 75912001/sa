@@ -25,7 +25,6 @@ func _process(delta: float) -> void:
 	attack_right_pressed = Input.is_action_just_pressed("attack_right")
 	# 跳
 	jump_pressed = Input.is_action_just_pressed("jump")
-	
 
 # 如果需要阻断输入, 可以在这里加开关
 func get_move_vector() -> Vector2:
