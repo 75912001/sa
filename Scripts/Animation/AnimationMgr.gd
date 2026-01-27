@@ -11,6 +11,7 @@ signal animation_finished(animation_name: String)
 signal lower_animation_finished(animation_name: String)
 signal upper_animation_finished(animation_name: String)
 
+var character_body: CharacterBody3D
 # --- 引用（在 Player.gd 中设置）---
 var input_mgr: InputMgr
 var weapon_switch_mgr: WeaponSwitchMgr
@@ -33,6 +34,7 @@ var _current_lower := ""
 var _current_upper := ""
 
 func _ready() -> void:
+	character_body = get_parent() as CharacterBody3D
 	_animation_tree = get_node(animation_tree_path)
 	if _animation_tree:
 		_animation_tree.active = true
