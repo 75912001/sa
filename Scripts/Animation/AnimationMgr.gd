@@ -26,7 +26,7 @@ enum AnimMode {
 }
 
 # --- 变量 ---
-var _animation_tree: AnimationTree
+var animation_tree: AnimationTree
 var _lower_body_sm: AnimationNodeStateMachinePlayback
 var _upper_body_sm: AnimationNodeStateMachinePlayback
 var _current_mode := AnimMode.SPLIT
@@ -35,19 +35,19 @@ var _current_upper := ""
 
 func _ready() -> void:
 	character_body = get_parent() as CharacterBody3D
-	_animation_tree = get_node(animation_tree_path)
-	if _animation_tree:
-		_animation_tree.active = true
+	animation_tree = get_node(animation_tree_path)
+	if animation_tree:
+		animation_tree.active = true
 		# 连接动画完成信号
-		_animation_tree.animation_finished.connect(_on_animation_finished)
+		animation_tree.animation_finished.connect(_on_animation_finished)
 	# one_shot
 	one_shot = AnimationOneShot.new()
 	one_shot.name = "AnimationOneShot"
 	add_child(one_shot) # 挂载为子节点，以便它能使用 get_tree()
-	one_shot.setup(_animation_tree)
+	one_shot.setup(animation_tree)
 
-	_lower_body_sm = _animation_tree.get("parameters/lower_body_sm/playback")
-	_upper_body_sm = _animation_tree.get("parameters/upper_body_sm/playback")
+	_lower_body_sm = animation_tree.get("parameters/lower_body_sm/playback")
+	_upper_body_sm = animation_tree.get("parameters/upper_body_sm/playback")
 	# 初始化上半身状态，避免第一次切换时 T-pose
 	_upper_body_sm.start("Unarmed_Idle")
 
@@ -56,7 +56,7 @@ func _ready() -> void:
 func set_mode(mode: AnimMode) -> void:
 	_current_mode = mode
 	var amount = 1.0 if mode == AnimMode.SPLIT else 0.0
-	_animation_tree.set("parameters/blend/blend_amount", amount)
+	animation_tree.set("parameters/blend/blend_amount", amount)
 
 # 检查是否-全身模式
 func is_full_body_mode() -> bool:

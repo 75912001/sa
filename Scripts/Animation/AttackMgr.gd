@@ -26,12 +26,12 @@ func _process(delta: float) -> void:
 		attack()
 
 func setup() -> void:
-	animation_mgr.one_shot.action_ended.connect(_on_action_ended)
+	animation_mgr.one_shot.action_finished.connect(_on_action_finished)
 
 # 执行攻击 (自然播放)
 func attack() -> void:
 	animation_mgr.one_shot.play("attack")
-	print("攻击-开始")
+	print("攻击-开始 state: attacking")
 	_state = State.ATTACKING
 	animation_mgr.movement_mgr.add_lock("attack")
 	attack_started.emit()
@@ -52,14 +52,14 @@ func is_attacking() -> bool:
 	return _state == State.ATTACKING
 
 # 统一的回调：当 OneShot 结束时触发
-func _on_action_ended(action_name: String) -> void:
+func _on_action_finished(action_name: String) -> void:
 	# 只有当前是攻击状态，且结束的动作是 "attack" 时才处理
 	if _state == State.ATTACKING and action_name == "attack":
 		_finish_attack_logic()
 		
-# 结束攻击逻辑
+# 结束攻击逻辑sdsdsddsdsdsdsdsdssdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdssdsdsdssdssdsd
 func _finish_attack_logic() -> void:
-	print("攻击-结束")
+	print("攻击-结束 state: idle")
 	_state = State.IDLE
 	animation_mgr.movement_mgr.remove_lock("attack")
 	attack_ended.emit()

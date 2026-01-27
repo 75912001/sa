@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://cltl4miymivys"]
+[gd_scene load_steps=56 format=3 uid="uid://cltl4miymivys"]
 
 [ext_resource type="PackedScene" uid="uid://bqpd5cm5dcy71" path="res://Assets/Characters/XBot.glb" id="1_mdl7e"]
 [ext_resource type="Script" uid="uid://btgkhykbev6d6" path="res://Scripts/Player.gd" id="1_script"]
@@ -11,9 +11,12 @@
 [ext_resource type="Script" uid="uid://d1unb2snnejk0" path="res://Scripts/Animation/AnimationMgr.gd" id="3_ulo2v"]
 [ext_resource type="Animation" uid="uid://e3vujykiovi8" path="res://Assets/Animations/Library/Unarmed/Walking.res" id="4_cw2d6"]
 [ext_resource type="Script" uid="uid://bu0vvm1a5hov7" path="res://Scripts/Animation/AttackMgr.gd" id="7_ulo2v"]
+[ext_resource type="Script" uid="uid://btx5u8pehj2ri" path="res://Scripts/Animation/RollMgr.gd" id="8_5v66d"]
 [ext_resource type="Animation" uid="uid://ywb7kg2bg88c" path="res://Assets/Animations/Library/SwordAndShield/Walk.res" id="8_ksbbd"]
+[ext_resource type="Animation" uid="uid://boy6jxa0tqodr" path="res://Assets/Animations/Library/Roll/Roll.Left.res" id="9_m0x7a"]
 [ext_resource type="Animation" uid="uid://bm2d4g8pfoe07" path="res://Assets/Animations/Library/SwordAndShield/DrawSword.res" id="9_miouo"]
 [ext_resource type="Animation" uid="uid://dbxxuoc00n3h3" path="res://Assets/Animations/Library/SwordAndShield/SheathSword.1.res" id="10_1e7my"]
+[ext_resource type="Animation" uid="uid://tjq3u3djtwjf" path="res://Assets/Animations/Library/Roll/Roll.Right.res" id="10_5v66d"]
 [ext_resource type="Animation" uid="uid://25qcudnomvvf" path="res://Assets/Animations/Library/SwordAndShield/SheathSword.2.res" id="11_arntx"]
 [ext_resource type="Animation" uid="uid://2xm16atxaaxj" path="res://Assets/Animations/Library/SwordAndShield/Attack.Slash.2.8.res" id="13_lslt6"]
 [ext_resource type="Animation" uid="uid://o4xndrx00au6" path="res://Assets/Animations/Library/Unarmed/DrawSword.res" id="13_o3h8g"]
@@ -24,6 +27,12 @@ radius = 0.4
 height = 1.6
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qu4a1"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x63xi"]
+_data = {
+&"Roll.Left": ExtResource("9_m0x7a"),
+&"Roll.Right": ExtResource("10_5v66d")
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5ixxa"]
 _data = {
@@ -60,12 +69,43 @@ input_1/auto_advance = false
 input_1/break_loop_at_end = false
 input_1/reset = true
 
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_m0x7a"]
+input_0/name = "roll_forward"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "roll_back"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
+input_2/name = "roll_left"
+input_2/auto_advance = false
+input_2/break_loop_at_end = false
+input_2/reset = true
+input_3/name = "roll_right"
+input_3/auto_advance = false
+input_3/break_loop_at_end = false
+input_3/reset = true
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qidb7"]
 resource_name = "Animation"
 animation = &"SwordAndShield/Attack.Slash.2.8"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u7x0b"]
+resource_name = "Roll_Back"
+animation = &"Roll/Roll.Right"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_utwlt"]
+resource_name = "Roll_Forward"
+animation = &"Roll/Roll.Left"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_70hv0"]
-animation = &"Unarmed/Jump"
+resource_name = "Roll_Left"
+animation = &"Roll/Roll.Left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8flut"]
+resource_name = "Roll_Right"
+animation = &"Roll/Roll.Right"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lslt6"]
 resource_name = "blend"
@@ -160,7 +200,7 @@ states/Unarmed_Idle/position = Vector2(371, 100)
 transitions = ["Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_qidb7"), "Unarmed_Idle", "Unarmed_DrawSword", SubResource("AnimationNodeStateMachineTransition_70hv0"), "SwordAndShield_SheathSword_1", "SwordAndShield_SheathSword_2", SubResource("AnimationNodeStateMachineTransition_utwlt"), "SwordAndShield_SheathSword_2", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_kih0c"), "Unarmed_DrawSword", "SwordAndShield_DrawSword", SubResource("AnimationNodeStateMachineTransition_lslt6"), "SwordAndShield_DrawSword", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_arntx")]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_m0x7a"]
-graph_offset = Vector2(-400.59933, 139.16669)
+graph_offset = Vector2(-649.79565, -119.45265)
 nodes/output/position = Vector2(1040, 220)
 nodes/lower_body_sm/node = SubResource("AnimationNodeStateMachine_ulo2v")
 nodes/lower_body_sm/position = Vector2(180, 120)
@@ -173,10 +213,18 @@ nodes/Action_OneShot/position = Vector2(780, 220)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_qidb7")
 nodes/Animation/position = Vector2(180, 560)
 nodes/Action_Type/node = SubResource("AnimationNodeTransition_ulo2v")
-nodes/Action_Type/position = Vector2(520, 640)
-nodes/Animation_Roll/node = SubResource("AnimationNodeAnimation_70hv0")
-nodes/Animation_Roll/position = Vector2(200, 800)
-node_connections = [&"output", 0, &"Action_OneShot", &"blend", 0, &"lower_body_sm", &"blend", 1, &"upper_body_sm", &"Action_OneShot", 0, &"blend", &"Action_OneShot", 1, &"Action_Type", &"Action_Type", 0, &"Animation", &"Action_Type", 1, &"Animation_Roll"]
+nodes/Action_Type/position = Vector2(600, 640)
+nodes/Roll_Left/node = SubResource("AnimationNodeAnimation_70hv0")
+nodes/Roll_Left/position = Vector2(-60, 1240)
+nodes/Roll_Right/node = SubResource("AnimationNodeAnimation_8flut")
+nodes/Roll_Right/position = Vector2(140, 1360)
+nodes/Action_Type_Roll/node = SubResource("AnimationNodeTransition_m0x7a")
+nodes/Action_Type_Roll/position = Vector2(380, 1000)
+nodes/Roll_Forward/node = SubResource("AnimationNodeAnimation_utwlt")
+nodes/Roll_Forward/position = Vector2(-60, 860)
+nodes/Roll_Back/node = SubResource("AnimationNodeAnimation_u7x0b")
+nodes/Roll_Back/position = Vector2(-60, 1060)
+node_connections = [&"output", 0, &"Action_OneShot", &"blend", 0, &"lower_body_sm", &"blend", 1, &"upper_body_sm", &"Action_OneShot", 0, &"blend", &"Action_OneShot", 1, &"Action_Type", &"Action_Type", 0, &"Animation", &"Action_Type", 1, &"Action_Type_Roll", &"Action_Type_Roll", 0, &"Roll_Forward", &"Action_Type_Roll", 1, &"Roll_Back", &"Action_Type_Roll", 2, &"Roll_Left", &"Action_Type_Roll", 3, &"Roll_Right"]
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_script")
@@ -206,7 +254,9 @@ script = ExtResource("14_switch")
 
 [node name="AttackMgr" type="Node" parent="."]
 script = ExtResource("7_ulo2v")
-metadata/_custom_type_script = "uid://bu0vvm1a5hov7"
+
+[node name="RollMgr" type="Node" parent="."]
+script = ExtResource("8_5v66d")
 
 [node name="XBot" parent="." instance=ExtResource("1_mdl7e")]
 
@@ -222,6 +272,7 @@ bone_idx = 10
 [node name="AnimationPlayer" parent="XBot" index="1"]
 libraries = {
 &"": SubResource("AnimationLibrary_qu4a1"),
+&"Roll": SubResource("AnimationLibrary_x63xi"),
 &"SwordAndShield": SubResource("AnimationLibrary_5ixxa"),
 &"Unarmed": SubResource("AnimationLibrary_nn08x")
 }
@@ -237,5 +288,8 @@ parameters/Action_OneShot/request = 0
 parameters/Action_Type/current_state = ""
 parameters/Action_Type/transition_request = ""
 parameters/Action_Type/current_index = -1
+parameters/Action_Type_Roll/current_state = ""
+parameters/Action_Type_Roll/transition_request = ""
+parameters/Action_Type_Roll/current_index = -1
 
 [editable path="XBot"]

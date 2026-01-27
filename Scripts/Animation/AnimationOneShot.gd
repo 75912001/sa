@@ -3,7 +3,7 @@ extends Node
 
 # --- 信号 ---
 signal action_started(action_name: String)
-signal action_ended(action_name: String) # 当 OneShot 播放完毕（或被打断）时发出
+signal action_finished(action_name: String) # 当 OneShot 播放完毕（或被打断）时发出
 
 # --- 内部变量 ---
 var _anim_tree: AnimationTree
@@ -50,4 +50,4 @@ func _monitor_loop() -> void:
 	# 循环结束，说明动画播完了
 	var last_action = _current_action
 	_current_action = ""
-	action_ended.emit(last_action)
+	action_finished.emit(last_action)

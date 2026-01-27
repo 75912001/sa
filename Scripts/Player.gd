@@ -10,6 +10,7 @@ extends CharacterBody3D
 @onready var movement_mgr: MovementMgr = $MovementMgr
 @onready var weapon_switch_mgr: WeaponSwitchMgr = $WeaponSwitchMgr
 @onready var attack_mgr: AttackMgr = $AttackMgr
+@onready var roll_mgr: RollMgr = $RollMgr
 
 # 配置-角色-条目
 var cfg_character_entry: CfgCharacterMgr.CfgCharacterEntry
@@ -22,6 +23,7 @@ func _ready() -> void:
 	_init_weapon_switch_mgr()
 	_init_attack_mgr()
 	_init_movement_mgr()
+	_init_roll_mgr()
 	_init_aniamation_mgr()
 
 
@@ -81,14 +83,23 @@ func _init_attack_mgr() -> void:
 	# 连接信号
 	attack_mgr.attack_started.connect(_on_attack_started)
 	attack_mgr.attack_ended.connect(_on_attack_ended)
-
 	attack_mgr.setup()
 
 func _on_attack_started() -> void:
-	prints("attack started")
+	pass
+	#prints("attack started")
 
 func _on_attack_ended() -> void:
-	prints("attack ended")
+	pass
+	#prints("attack ended")
+
+############################################################
+# RollMgr
+############################################################
+func _init_roll_mgr() -> void:
+	# 设置引用
+	roll_mgr.animation_mgr = animation_mgr
+	roll_mgr.setup()
 
 ############################################################
 # AnimationMgr
@@ -99,5 +110,3 @@ func _init_aniamation_mgr() -> void:
 	animation_mgr.movement_mgr = movement_mgr
 	animation_mgr.weapon_switch_mgr = weapon_switch_mgr
 	animation_mgr.attack_mgr = attack_mgr
-
-	
