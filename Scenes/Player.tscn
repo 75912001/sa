@@ -1,23 +1,23 @@
-[gd_scene load_steps=46 format=3 uid="uid://cltl4miymivys"]
+[gd_scene load_steps=48 format=3 uid="uid://cltl4miymivys"]
 
 [ext_resource type="PackedScene" uid="uid://bqpd5cm5dcy71" path="res://Assets/Characters/XBot.glb" id="1_mdl7e"]
 [ext_resource type="Script" uid="uid://btgkhykbev6d6" path="res://Scripts/Player.gd" id="1_script"]
 [ext_resource type="Script" uid="uid://bkp6agvjjm47t" path="res://Scripts/Weapon/WeaponMgr.gd" id="2_52ee3"]
 [ext_resource type="Script" uid="uid://cgibjq8orsoge" path="res://Scripts/Input/InputMgr.gd" id="2_m0x7a"]
-[ext_resource type="Script" uid="uid://ruoxwj2thpuw" path="res://Scripts/MovementMgr.gd" id="2_megsn"]
+[ext_resource type="Script" uid="uid://ruoxwj2thpuw" path="res://Scripts/Animation/MovementMgr.gd" id="2_megsn"]
 [ext_resource type="Animation" uid="uid://cmym1cbyn4tg5" path="res://Assets/Animations/Library/Unarmed/Idle.res" id="2_qu4a1"]
 [ext_resource type="Animation" uid="uid://biyh1eubhiecd" path="res://Assets/Animations/Library/Unarmed/Jump.res" id="3_70d11"]
-[ext_resource type="Script" uid="uid://hxg50be1t0o6" path="res://Scripts/Animation.gd" id="3_bhhdu"]
 [ext_resource type="Animation" uid="uid://dygqhwo1805bn" path="res://Assets/Animations/Library/SwordAndShield/Idle.res" id="3_nn08x"]
+[ext_resource type="Script" uid="uid://d1unb2snnejk0" path="res://Scripts/Animation/AnimationMgr.gd" id="3_ulo2v"]
 [ext_resource type="Animation" uid="uid://e3vujykiovi8" path="res://Assets/Animations/Library/Unarmed/Walking.res" id="4_cw2d6"]
-[ext_resource type="Script" uid="uid://bu0vvm1a5hov7" path="res://Scripts/Combat/AttackMgr.gd" id="7_ulo2v"]
+[ext_resource type="Script" uid="uid://bu0vvm1a5hov7" path="res://Scripts/Animation/AttackMgr.gd" id="7_ulo2v"]
 [ext_resource type="Animation" uid="uid://ywb7kg2bg88c" path="res://Assets/Animations/Library/SwordAndShield/Walk.res" id="8_ksbbd"]
 [ext_resource type="Animation" uid="uid://bm2d4g8pfoe07" path="res://Assets/Animations/Library/SwordAndShield/DrawSword.res" id="9_miouo"]
 [ext_resource type="Animation" uid="uid://dbxxuoc00n3h3" path="res://Assets/Animations/Library/SwordAndShield/SheathSword.1.res" id="10_1e7my"]
 [ext_resource type="Animation" uid="uid://25qcudnomvvf" path="res://Assets/Animations/Library/SwordAndShield/SheathSword.2.res" id="11_arntx"]
-[ext_resource type="Animation" uid="uid://d2f37idr7845a" path="res://Assets/Animations/Library/SwordAndShield/Attack.Slash.2.8.res" id="13_lslt6"]
+[ext_resource type="Animation" uid="uid://2xm16atxaaxj" path="res://Assets/Animations/Library/SwordAndShield/Attack.Slash.2.8.res" id="13_lslt6"]
 [ext_resource type="Animation" uid="uid://o4xndrx00au6" path="res://Assets/Animations/Library/Unarmed/DrawSword.res" id="13_o3h8g"]
-[ext_resource type="Script" uid="uid://qat0bt2h635k" path="res://Scripts/Weapon/WeaponSwitchMgr.gd" id="14_switch"]
+[ext_resource type="Script" uid="uid://qat0bt2h635k" path="res://Scripts/Animation/WeaponSwitchMgr.gd" id="14_switch"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mdl7e"]
 radius = 0.4
@@ -46,9 +46,26 @@ _data = {
 [sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_ulo2v"]
 resource_name = "Action_OneShot"
 fadein_time = 0.1
+fadeout_time = 0.1
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_ulo2v"]
+resource_name = "Action_Type"
+xfade_time = 0.1
+input_0/name = "attack"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "roll"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qidb7"]
+resource_name = "Animation"
 animation = &"SwordAndShield/Attack.Slash.2.8"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_70hv0"]
+animation = &"Unarmed/Jump"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lslt6"]
 resource_name = "blend"
@@ -143,34 +160,38 @@ states/Unarmed_Idle/position = Vector2(371, 100)
 transitions = ["Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_qidb7"), "Unarmed_Idle", "Unarmed_DrawSword", SubResource("AnimationNodeStateMachineTransition_70hv0"), "SwordAndShield_SheathSword_1", "SwordAndShield_SheathSword_2", SubResource("AnimationNodeStateMachineTransition_utwlt"), "SwordAndShield_SheathSword_2", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_kih0c"), "Unarmed_DrawSword", "SwordAndShield_DrawSword", SubResource("AnimationNodeStateMachineTransition_lslt6"), "SwordAndShield_DrawSword", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_arntx")]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_m0x7a"]
-graph_offset = Vector2(-121.768005, -83.71626)
-nodes/output/position = Vector2(1440, 100)
+graph_offset = Vector2(-400.59933, 139.16669)
+nodes/output/position = Vector2(1040, 220)
 nodes/lower_body_sm/node = SubResource("AnimationNodeStateMachine_ulo2v")
-nodes/lower_body_sm/position = Vector2(180, 100)
+nodes/lower_body_sm/position = Vector2(180, 120)
 nodes/upper_body_sm/node = SubResource("AnimationNodeStateMachine_1iu4k")
 nodes/upper_body_sm/position = Vector2(180, 320)
 nodes/blend/node = SubResource("AnimationNodeBlend2_lslt6")
 nodes/blend/position = Vector2(520, 180)
 nodes/Action_OneShot/node = SubResource("AnimationNodeOneShot_ulo2v")
-nodes/Action_OneShot/position = Vector2(1060, 80)
+nodes/Action_OneShot/position = Vector2(780, 220)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_qidb7")
-nodes/Animation/position = Vector2(700, 340)
-node_connections = [&"output", 0, &"Action_OneShot", &"blend", 0, &"lower_body_sm", &"blend", 1, &"upper_body_sm", &"Action_OneShot", 0, &"blend", &"Action_OneShot", 1, &"Animation"]
+nodes/Animation/position = Vector2(180, 560)
+nodes/Action_Type/node = SubResource("AnimationNodeTransition_ulo2v")
+nodes/Action_Type/position = Vector2(520, 640)
+nodes/Animation_Roll/node = SubResource("AnimationNodeAnimation_70hv0")
+nodes/Animation_Roll/position = Vector2(200, 800)
+node_connections = [&"output", 0, &"Action_OneShot", &"blend", 0, &"lower_body_sm", &"blend", 1, &"upper_body_sm", &"Action_OneShot", 0, &"blend", &"Action_OneShot", 1, &"Action_Type", &"Action_Type", 0, &"Animation", &"Action_Type", 1, &"Animation_Roll"]
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_script")
 
-[node name="InputMgr" type="Node" parent="."]
-script = ExtResource("2_m0x7a")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 shape = SubResource("CapsuleShape3D_mdl7e")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="InputMgr" type="Node" parent="."]
+script = ExtResource("2_m0x7a")
 
 [node name="AnimationMgr" type="Node" parent="."]
-script = ExtResource("3_bhhdu")
+script = ExtResource("3_ulo2v")
 animation_tree_path = NodePath("../AnimationTree")
 
 [node name="MovementMgr" type="Node" parent="." node_paths=PackedStringArray("input_mgr")]
@@ -185,30 +206,21 @@ weapon_attachment_path = NodePath("../XBot/Skeleton/GeneralSkeleton/RightHandAtt
 script = ExtResource("14_switch")
 input_mgr = NodePath("../InputMgr")
 
-[node name="AttackMgr" type="Node" parent="." node_paths=PackedStringArray("input_mgr", "anim_tree")]
+[node name="AttackMgr" type="Node" parent="." node_paths=PackedStringArray("input_mgr", "anim_tree", "animation_mgr")]
 script = ExtResource("7_ulo2v")
 input_mgr = NodePath("../InputMgr")
 anim_tree = NodePath("../AnimationTree")
+animation_mgr = NodePath("../AnimationMgr")
 metadata/_custom_type_script = "uid://bu0vvm1a5hov7"
 
 [node name="XBot" parent="." instance=ExtResource("1_mdl7e")]
 
 [node name="GeneralSkeleton" parent="XBot/Skeleton" index="0"]
-bones/0/position = Vector3(-0.0009797412, 1.0282631, 0.018839626)
-bones/0/rotation = Quaternion(0.033044726, -0.032512352, -0.002613574, 0.9989215)
 bones/14/scale = Vector3(1.0005782, 1.0004865, 1.0001515)
 bones/38/scale = Vector3(1.0005782, 1.0004864, 1.0001515)
-bones/55/rotation = Quaternion(-0.08093182, 0.07542124, 0.9919609, 0.06144464)
-bones/56/rotation = Quaternion(0.024138374, 0.99857783, -0.04532299, 0.014336913)
-bones/57/rotation = Quaternion(0.057111364, 0.7055943, -0.70348525, -0.06311518)
-bones/58/rotation = Quaternion(5.7463723e-05, 0.9999895, -0.002291063, -0.003970342)
-bones/60/rotation = Quaternion(0.11490647, 0.07037129, 0.9881679, -0.073272236)
-bones/61/rotation = Quaternion(-0.021803532, 0.9966512, -0.06698283, 0.04152581)
-bones/62/rotation = Quaternion(-0.05592949, 0.6946574, -0.714456, 0.062255442)
-bones/63/rotation = Quaternion(-2.636854e-05, 0.9999899, -0.002251685, 0.0039076097)
 
 [node name="RightHandAttachment" type="BoneAttachment3D" parent="XBot/Skeleton/GeneralSkeleton" index="2"]
-transform = Transform3D(-0.065127306, -0.99787223, -0.0030727873, -0.065848224, 0.0073702345, -0.99780244, 0.99570197, -0.06478185, -0.06618812, -0.70694494, 1.4351876, -0.0717597)
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -0.7133314, 1.4405689, -0.055485006)
 bone_name = "RightHand"
 bone_idx = 10
 
@@ -227,5 +239,8 @@ parameters/blend/blend_amount = 1.0
 parameters/Action_OneShot/active = false
 parameters/Action_OneShot/internal_active = false
 parameters/Action_OneShot/request = 0
+parameters/Action_Type/current_state = ""
+parameters/Action_Type/transition_request = ""
+parameters/Action_Type/current_index = -1
 
 [editable path="XBot"]

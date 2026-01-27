@@ -79,7 +79,6 @@ func _init_aniamation_mgr() -> void:
 ############################################################
 func _init_attack_mgr() -> void:
 	# 设置引用
-	attack_mgr.animation_mgr = animation_mgr
 	attack_mgr.weapon_switch_mgr = weapon_switch_mgr
 	attack_mgr.movement_mgr = movement_mgr
 	# 连接信号
