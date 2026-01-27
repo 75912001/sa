@@ -42,9 +42,9 @@ func _ready() -> void:
 		animation_tree.animation_finished.connect(_on_animation_finished)
 	# one_shot
 	one_shot = AnimationOneShot.new()
+	one_shot.animation_mgr = self
 	one_shot.name = "AnimationOneShot"
 	add_child(one_shot) # 挂载为子节点，以便它能使用 get_tree()
-	one_shot.setup(animation_tree)
 
 	_lower_body_sm = animation_tree.get("parameters/lower_body_sm/playback")
 	_upper_body_sm = animation_tree.get("parameters/upper_body_sm/playback")
