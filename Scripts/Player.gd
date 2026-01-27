@@ -24,7 +24,6 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	weapon_switch_mgr.handle_input()
-	attack_mgr.handle_input()
 	move_and_slide()
 	# 更新动画
 	animation_mgr.update_lower_animation()
@@ -82,12 +81,13 @@ func _init_attack_mgr() -> void:
 	# 设置引用
 	attack_mgr.animation_mgr = animation_mgr
 	attack_mgr.weapon_switch_mgr = weapon_switch_mgr
+	attack_mgr.movement_mgr = movement_mgr
 	# 连接信号
 	attack_mgr.attack_started.connect(_on_attack_started)
-	attack_mgr.attack_finished.connect(_on_attack_finished)
+	attack_mgr.attack_ended.connect(_on_attack_ended)
 
 func _on_attack_started() -> void:
 	prints("attack started")
 
-func _on_attack_finished() -> void:
-	prints("attack finished")
+func _on_attack_ended() -> void:
+	prints("attack ended")

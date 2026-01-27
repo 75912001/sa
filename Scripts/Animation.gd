@@ -124,7 +124,6 @@ func update_lower_animation() -> void:
 		play_lower("Unarmed_Idle")
 		return
 	if attack_mgr.is_attacking(): # 攻击
-		play_lower("SwordAndShield_Attack_Slash_2_8")
 		return
 	#idle
 	play_lower("Unarmed_Idle")

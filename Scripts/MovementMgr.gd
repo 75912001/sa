@@ -7,13 +7,13 @@ extends Node
 
 # --- 变量 ---
 var character_body: CharacterBody3D
-var _is_locked: bool = false  # 锁定移动（如跳跃蓄力时） todo menglc 这个锁是放在这里, 还是放在 Input.gd 比较合适?
+var _movement_locks: Dictionary = {} # 使用字典作为 Set 使用, 防止重复添加同名锁
 
 func _ready() -> void:
 	character_body = get_parent() as CharacterBody3D
 
 func _physics_process(delta: float) -> void:
-	if _is_locked:
+	if is_locked():
 		character_body.velocity.x = 0
 		character_body.velocity.z = 0
 		return
@@ -39,13 +39,19 @@ func _physics_process(delta: float) -> void:
 func is_moving() -> bool:
 	return _get_horizontal_speed() > 0.1
 
-# 锁定/解锁移动
-func lock() -> void:
-	_is_locked = true
-
-func unlock() -> void:
-	_is_locked = false
-	
 # 获取水平速度
 func _get_horizontal_speed() -> float:
 	return Vector2(character_body.velocity.x, character_body.velocity.z).length()
+
+# 加锁
+func add_lock(source: String) -> void:
+	_movement_locks[source] = true
+
+# 解锁
+func remove_lock(source: String) -> void:
+	if _movement_locks.has(source):
+		_movement_locks.erase(source)
+
+# 检查是否被锁
+func is_locked() -> bool:
+	return not _movement_locks.is_empty()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://cltl4miymivys"]
+[gd_scene load_steps=46 format=3 uid="uid://cltl4miymivys"]
 
 [ext_resource type="PackedScene" uid="uid://bqpd5cm5dcy71" path="res://Assets/Characters/XBot.glb" id="1_mdl7e"]
 [ext_resource type="Script" uid="uid://btgkhykbev6d6" path="res://Scripts/Player.gd" id="1_script"]
@@ -45,15 +45,15 @@ _data = {
 
 [sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_ulo2v"]
 resource_name = "Action_OneShot"
+fadein_time = 0.1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qidb7"]
+animation = &"SwordAndShield/Attack.Slash.2.8"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lslt6"]
 resource_name = "blend"
 filter_enabled = true
 filters = ["%GeneralSkeleton:Chest", "%GeneralSkeleton:Head", "%GeneralSkeleton:LeftHand", "%GeneralSkeleton:LeftIndexDistal", "%GeneralSkeleton:LeftIndexIntermediate", "%GeneralSkeleton:LeftIndexProximal", "%GeneralSkeleton:LeftLittleDistal", "%GeneralSkeleton:LeftLittleIntermediate", "%GeneralSkeleton:LeftLittleProximal", "%GeneralSkeleton:LeftLowerArm", "%GeneralSkeleton:LeftMiddleDistal", "%GeneralSkeleton:LeftMiddleIntermediate", "%GeneralSkeleton:LeftMiddleProximal", "%GeneralSkeleton:LeftRingDistal", "%GeneralSkeleton:LeftRingIntermediate", "%GeneralSkeleton:LeftRingProximal", "%GeneralSkeleton:LeftShoulder", "%GeneralSkeleton:LeftThumbDistal", "%GeneralSkeleton:LeftThumbMetacarpal", "%GeneralSkeleton:LeftThumbProximal", "%GeneralSkeleton:LeftUpperArm", "%GeneralSkeleton:Neck", "%GeneralSkeleton:RightHand", "%GeneralSkeleton:RightIndexDistal", "%GeneralSkeleton:RightIndexIntermediate", "%GeneralSkeleton:RightIndexProximal", "%GeneralSkeleton:RightLittleDistal", "%GeneralSkeleton:RightLittleIntermediate", "%GeneralSkeleton:RightLittleProximal", "%GeneralSkeleton:RightLowerArm", "%GeneralSkeleton:RightMiddleDistal", "%GeneralSkeleton:RightMiddleIntermediate", "%GeneralSkeleton:RightMiddleProximal", "%GeneralSkeleton:RightRingDistal", "%GeneralSkeleton:RightRingIntermediate", "%GeneralSkeleton:RightRingProximal", "%GeneralSkeleton:RightShoulder", "%GeneralSkeleton:RightThumbDistal", "%GeneralSkeleton:RightThumbMetacarpal", "%GeneralSkeleton:RightThumbProximal", "%GeneralSkeleton:RightUpperArm", "%GeneralSkeleton:Spine", "%GeneralSkeleton:UpperChest"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qidb7"]
-resource_name = "SwordAndShield_Attack_Slash_2_8"
-animation = &"SwordAndShield/Attack.Slash.2.8"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lslt6"]
 resource_name = "Unarmed_Idle"
@@ -69,12 +69,6 @@ xfade_time = 0.1
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m0x7a"]
 xfade_time = 0.1
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8flut"]
-xfade_time = 0.1
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u7x0b"]
-xfade_time = 0.1
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ulo2v"]
 xfade_time = 0.1
 
@@ -82,17 +76,11 @@ xfade_time = 0.1
 resource_name = "lower_body_sm"
 states/End/position = Vector2(1291, 140)
 states/Start/position = Vector2(188, 140)
-states/SwordAndShield_Attack_Slash_2_8/node = SubResource("AnimationNodeAnimation_qidb7")
-states/SwordAndShield_Attack_Slash_2_8/position = Vector2(431, 326)
 states/Unarmed_Idle/node = SubResource("AnimationNodeAnimation_lslt6")
 states/Unarmed_Idle/position = Vector2(431, 140)
 states/Unarmed_Walking/node = SubResource("AnimationNodeAnimation_ulo2v")
 states/Unarmed_Walking/position = Vector2(745, 140)
-transitions = ["Unarmed_Walking", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_5v66d"), "Unarmed_Idle", "Unarmed_Walking", SubResource("AnimationNodeStateMachineTransition_m0x7a"), "Unarmed_Idle", "SwordAndShield_Attack_Slash_2_8", SubResource("AnimationNodeStateMachineTransition_8flut"), "SwordAndShield_Attack_Slash_2_8", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_u7x0b"), "Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_ulo2v")]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_70hv0"]
-resource_name = "SwordAndShield_Attack_Slash_2_8"
-animation = &"SwordAndShield/Attack.Slash.2.8"
+transitions = ["Unarmed_Walking", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_5v66d"), "Unarmed_Idle", "Unarmed_Walking", SubResource("AnimationNodeStateMachineTransition_m0x7a"), "Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_ulo2v")]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_arntx"]
 resource_name = "SwordAndShield_DrawSword"
@@ -136,18 +124,10 @@ xfade_time = 0.1
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_arntx"]
 xfade_time = 0.1
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lyrkg"]
-xfade_time = 0.1
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c43xd"]
-xfade_time = 0.1
-
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_1iu4k"]
 resource_name = "upper_body_sm"
 states/End/position = Vector2(1416, 399)
 states/Start/position = Vector2(70, 100)
-states/SwordAndShield_Attack_Slash_2_8/node = SubResource("AnimationNodeAnimation_70hv0")
-states/SwordAndShield_Attack_Slash_2_8/position = Vector2(266, 260)
 states/SwordAndShield_DrawSword/node = SubResource("AnimationNodeAnimation_arntx")
 states/SwordAndShield_DrawSword/position = Vector2(618, 189)
 states/SwordAndShield_Idle/node = SubResource("AnimationNodeAnimation_1iu4k")
@@ -155,16 +135,16 @@ states/SwordAndShield_Idle/position = Vector2(1238, 100)
 states/SwordAndShield_SheathSword_1/node = SubResource("AnimationNodeAnimation_m0x7a")
 states/SwordAndShield_SheathSword_1/position = Vector2(1238, 334)
 states/SwordAndShield_SheathSword_2/node = SubResource("AnimationNodeAnimation_5v66d")
-states/SwordAndShield_SheathSword_2/position = Vector2(721, 334)
+states/SwordAndShield_SheathSword_2/position = Vector2(371, 329)
 states/Unarmed_DrawSword/node = SubResource("AnimationNodeAnimation_x63xi")
 states/Unarmed_DrawSword/position = Vector2(618, 100)
 states/Unarmed_Idle/node = SubResource("AnimationNodeAnimation_i2e8t")
 states/Unarmed_Idle/position = Vector2(371, 100)
-transitions = ["Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_qidb7"), "Unarmed_Idle", "Unarmed_DrawSword", SubResource("AnimationNodeStateMachineTransition_70hv0"), "SwordAndShield_SheathSword_1", "SwordAndShield_SheathSword_2", SubResource("AnimationNodeStateMachineTransition_utwlt"), "SwordAndShield_SheathSword_2", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_kih0c"), "Unarmed_DrawSword", "SwordAndShield_DrawSword", SubResource("AnimationNodeStateMachineTransition_lslt6"), "SwordAndShield_DrawSword", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_arntx"), "Unarmed_Idle", "SwordAndShield_Attack_Slash_2_8", SubResource("AnimationNodeStateMachineTransition_lyrkg"), "SwordAndShield_Attack_Slash_2_8", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_c43xd")]
+transitions = ["Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_qidb7"), "Unarmed_Idle", "Unarmed_DrawSword", SubResource("AnimationNodeStateMachineTransition_70hv0"), "SwordAndShield_SheathSword_1", "SwordAndShield_SheathSword_2", SubResource("AnimationNodeStateMachineTransition_utwlt"), "SwordAndShield_SheathSword_2", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_kih0c"), "Unarmed_DrawSword", "SwordAndShield_DrawSword", SubResource("AnimationNodeStateMachineTransition_lslt6"), "SwordAndShield_DrawSword", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_arntx")]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_m0x7a"]
-graph_offset = Vector2(-96.04378, -36.280716)
-nodes/output/position = Vector2(1000, 20)
+graph_offset = Vector2(-121.768005, -83.71626)
+nodes/output/position = Vector2(1440, 100)
 nodes/lower_body_sm/node = SubResource("AnimationNodeStateMachine_ulo2v")
 nodes/lower_body_sm/position = Vector2(180, 100)
 nodes/upper_body_sm/node = SubResource("AnimationNodeStateMachine_1iu4k")
@@ -172,8 +152,10 @@ nodes/upper_body_sm/position = Vector2(180, 320)
 nodes/blend/node = SubResource("AnimationNodeBlend2_lslt6")
 nodes/blend/position = Vector2(520, 180)
 nodes/Action_OneShot/node = SubResource("AnimationNodeOneShot_ulo2v")
-nodes/Action_OneShot/position = Vector2(840, 180)
-node_connections = [&"output", 0, &"blend", &"blend", 0, &"lower_body_sm", &"blend", 1, &"upper_body_sm"]
+nodes/Action_OneShot/position = Vector2(1060, 80)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_qidb7")
+nodes/Animation/position = Vector2(700, 340)
+node_connections = [&"output", 0, &"Action_OneShot", &"blend", 0, &"lower_body_sm", &"blend", 1, &"upper_body_sm", &"Action_OneShot", 0, &"blend", &"Action_OneShot", 1, &"Animation"]
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_script")
@@ -203,29 +185,30 @@ weapon_attachment_path = NodePath("../XBot/Skeleton/GeneralSkeleton/RightHandAtt
 script = ExtResource("14_switch")
 input_mgr = NodePath("../InputMgr")
 
-[node name="AttackMgr" type="Node" parent="." node_paths=PackedStringArray("input_mgr")]
+[node name="AttackMgr" type="Node" parent="." node_paths=PackedStringArray("input_mgr", "anim_tree")]
 script = ExtResource("7_ulo2v")
 input_mgr = NodePath("../InputMgr")
+anim_tree = NodePath("../AnimationTree")
 metadata/_custom_type_script = "uid://bu0vvm1a5hov7"
 
 [node name="XBot" parent="." instance=ExtResource("1_mdl7e")]
 
 [node name="GeneralSkeleton" parent="XBot/Skeleton" index="0"]
-bones/0/position = Vector3(-0.0010142107, 1.0282711, 0.019030882)
-bones/0/rotation = Quaternion(0.032911718, -0.032671664, -0.0026802297, 0.9989205)
+bones/0/position = Vector3(-0.0009797412, 1.0282631, 0.018839626)
+bones/0/rotation = Quaternion(0.033044726, -0.032512352, -0.002613574, 0.9989215)
 bones/14/scale = Vector3(1.0005782, 1.0004865, 1.0001515)
 bones/38/scale = Vector3(1.0005782, 1.0004864, 1.0001515)
-bones/55/rotation = Quaternion(-0.080947615, 0.07525881, 0.991976, 0.061377898)
-bones/56/rotation = Quaternion(0.024101013, 0.9985621, -0.045697823, 0.0143064335)
-bones/57/rotation = Quaternion(0.056955833, 0.70556563, -0.70354337, -0.062927686)
-bones/58/rotation = Quaternion(5.8443104e-05, 0.9999889, -0.0023852168, -0.0040598167)
-bones/60/rotation = Quaternion(0.11496384, 0.070156895, 0.98817015, -0.073357455)
-bones/61/rotation = Quaternion(-0.021900028, 0.99662894, -0.06719003, 0.041673027)
-bones/62/rotation = Quaternion(-0.055913847, 0.6946196, -0.71449584, 0.062234078)
+bones/55/rotation = Quaternion(-0.08093182, 0.07542124, 0.9919609, 0.06144464)
+bones/56/rotation = Quaternion(0.024138374, 0.99857783, -0.04532299, 0.014336913)
+bones/57/rotation = Quaternion(0.057111364, 0.7055943, -0.70348525, -0.06311518)
+bones/58/rotation = Quaternion(5.7463723e-05, 0.9999895, -0.002291063, -0.003970342)
+bones/60/rotation = Quaternion(0.11490647, 0.07037129, 0.9881679, -0.073272236)
+bones/61/rotation = Quaternion(-0.021803532, 0.9966512, -0.06698283, 0.04152581)
+bones/62/rotation = Quaternion(-0.05592949, 0.6946574, -0.714456, 0.062255442)
 bones/63/rotation = Quaternion(-2.636854e-05, 0.9999899, -0.002251685, 0.0039076097)
 
 [node name="RightHandAttachment" type="BoneAttachment3D" parent="XBot/Skeleton/GeneralSkeleton" index="2"]
-transform = Transform3D(-0.065449215, -0.9978508, -0.0032041115, -0.065577246, 0.007505234, -0.99781924, 0.99569875, -0.06509637, -0.06592751, -0.70688903, 1.4352793, -0.071896255)
+transform = Transform3D(-0.065127306, -0.99787223, -0.0030727873, -0.065848224, 0.0073702345, -0.99780244, 0.99570197, -0.06478185, -0.06618812, -0.70694494, 1.4351876, -0.0717597)
 bone_name = "RightHand"
 bone_idx = 10
 
