@@ -65,6 +65,7 @@ const LOCK_BLOCKS: Dictionary = {
 		ACT_ATTACKING,
 		ACT_JUMPING,
 		ACT_WEAPON_SWITCH,
+		ACT_MOVE,
 	],
 	# 切换武器
 	ACT_WEAPON_SWITCH: [

@@ -1,7 +1,7 @@
 # 武器-配置
 # 任何修改此文件的行为都需要通知客户端和服务端开发人员
 
-# attack_duration_ms 攻击动画时长 毫秒
+# attack_duration_ms 攻击动画时长 毫秒 [0/default: 原速]
 # 武器 [11000001,11999999]
 weapons:
   - id: 11000001
