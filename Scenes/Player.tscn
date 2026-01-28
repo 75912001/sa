@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://cltl4miymivys"]
+[gd_scene load_steps=53 format=3 uid="uid://cltl4miymivys"]
 
 [ext_resource type="PackedScene" uid="uid://bqpd5cm5dcy71" path="res://Assets/Characters/XBot.glb" id="1_mdl7e"]
 [ext_resource type="Script" uid="uid://btgkhykbev6d6" path="res://Scripts/Player.gd" id="1_script"]
@@ -77,6 +77,9 @@ resource_name = "Attack_TimeScale"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_utwlt"]
 resource_name = "Roll"
 animation = &"Roll/Roll"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_5v66d"]
+resource_name = "Roll_TimeScale"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lslt6"]
 resource_name = "blend"
@@ -171,7 +174,7 @@ states/Unarmed_Idle/position = Vector2(371, 100)
 transitions = ["Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_qidb7"), "Unarmed_Idle", "Unarmed_DrawSword", SubResource("AnimationNodeStateMachineTransition_70hv0"), "SwordAndShield_SheathSword_1", "SwordAndShield_SheathSword_2", SubResource("AnimationNodeStateMachineTransition_utwlt"), "SwordAndShield_SheathSword_2", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_kih0c"), "Unarmed_DrawSword", "SwordAndShield_DrawSword", SubResource("AnimationNodeStateMachineTransition_lslt6"), "SwordAndShield_DrawSword", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_arntx")]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_m0x7a"]
-graph_offset = Vector2(-56.809967, 203.68591)
+graph_offset = Vector2(-65.80997, 71.68591)
 nodes/output/position = Vector2(1220, 200)
 nodes/lower_body_sm/node = SubResource("AnimationNodeStateMachine_ulo2v")
 nodes/lower_body_sm/position = Vector2(180, 120)
@@ -186,10 +189,12 @@ nodes/Animation/position = Vector2(80, 540)
 nodes/Action_Type/node = SubResource("AnimationNodeTransition_ulo2v")
 nodes/Action_Type/position = Vector2(700, 500)
 nodes/Roll/node = SubResource("AnimationNodeAnimation_utwlt")
-nodes/Roll/position = Vector2(260, 900)
+nodes/Roll/position = Vector2(220, 820)
 nodes/Attack_TimeScale/node = SubResource("AnimationNodeTimeScale_m0x7a")
 nodes/Attack_TimeScale/position = Vector2(440, 480)
-node_connections = [&"output", 0, &"Action_OneShot", &"blend", 0, &"lower_body_sm", &"blend", 1, &"upper_body_sm", &"Action_OneShot", 0, &"blend", &"Action_OneShot", 1, &"Action_Type", &"Action_Type", 0, &"Attack_TimeScale", &"Action_Type", 1, &"Roll", &"Attack_TimeScale", 0, &"Animation"]
+nodes/Roll_TimeScale/node = SubResource("AnimationNodeTimeScale_5v66d")
+nodes/Roll_TimeScale/position = Vector2(440, 780)
+node_connections = [&"output", 0, &"Action_OneShot", &"blend", 0, &"lower_body_sm", &"blend", 1, &"upper_body_sm", &"Action_OneShot", 0, &"blend", &"Action_OneShot", 1, &"Action_Type", &"Action_Type", 0, &"Attack_TimeScale", &"Action_Type", 1, &"Roll_TimeScale", &"Attack_TimeScale", 0, &"Animation", &"Roll_TimeScale", 0, &"Roll"]
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_script")
@@ -297,5 +302,6 @@ parameters/Action_Type/current_state = ""
 parameters/Action_Type/transition_request = ""
 parameters/Action_Type/current_index = -1
 parameters/Attack_TimeScale/scale = 1.0
+parameters/Roll_TimeScale/scale = 2.0
 
 [editable path="XBot"]
