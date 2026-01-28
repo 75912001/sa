@@ -40,32 +40,47 @@ const BLOCK_ALL = "*"
 # - 如果新动作阻止所有动作，设为 [BLOCK_ALL]
 # =============================================================================
 const LOCK_BLOCKS: Dictionary = {
-	# -------------------------------------------------------------------------
-	# 最高优先级 - 完全锁定，不可被任何动作打断
-	# -------------------------------------------------------------------------
-	ACT_DEATH: [BLOCK_ALL],      # 死亡：阻止所有动作（角色已死亡，不能执行任何操作）
-	ACT_STAGGER: [BLOCK_ALL],    # 硬直：阻止所有动作（受击时无法控制角色）
-
-	# -------------------------------------------------------------------------
-	# 战斗动作 - 互相阻止，保证动作完整性
-	# -------------------------------------------------------------------------
-	ACT_ROLLING: [BLOCK_ALL],    # 翻滚：阻止所有动作（翻滚是无敌帧，必须完整播放）
-	ACT_ATTACKING: [BLOCK_ALL],  # 攻击：阻止所有动作（攻击动作不可取消）
-
-	# -------------------------------------------------------------------------
-	# 移动动作 - 部分阻止，保留一定操作空间
-	# -------------------------------------------------------------------------
-	ACT_JUMPING: [               # 跳跃：
-		ACT_ROLLING,             #   - 阻止翻滚（空中不能翻滚）
-		ACT_JUMPING,             #   - 阻止再次跳跃（防止多段跳，除非特意设计）
-		ACT_WEAPON_SWITCH,       #   - 阻止切换武器（空中不能换武器）
+	# 死亡
+	ACT_DEATH: [
+		BLOCK_ALL,
 	],
-
-	# -------------------------------------------------------------------------
-	# 其他动作 - 仅阻止自身重复
-	# -------------------------------------------------------------------------
-	ACT_WEAPON_SWITCH: [         # 切换武器：
-		ACT_WEAPON_SWITCH,       #   - 仅阻止重复切换（防止动画未完成时再次切换）
+	# 硬直
+	ACT_STAGGER: [
+		ACT_ROLLING,
+		ACT_ATTACKING,
+		ACT_JUMPING,
+		ACT_WEAPON_SWITCH,
+		ACT_MOVE,
+	],
+	# 翻滚
+	ACT_ROLLING: [
+		ACT_ROLLING,
+		ACT_ATTACKING,
+		ACT_JUMPING,
+		ACT_WEAPON_SWITCH,
+	],
+	# 攻击
+	ACT_ATTACKING: [
+		ACT_ROLLING,
+		ACT_ATTACKING,
+		ACT_JUMPING,
+		ACT_WEAPON_SWITCH,
+	],
+	# 切换武器
+	ACT_WEAPON_SWITCH: [
+		ACT_ROLLING,
+		ACT_ATTACKING,
+		ACT_JUMPING,
+		ACT_WEAPON_SWITCH,
+	],
+	# 跳跃
+	ACT_JUMPING: [
+		ACT_ROLLING,
+		ACT_JUMPING,
+		ACT_WEAPON_SWITCH,
+	],
+	# 移动
+	ACT_MOVE:[
 	],
 }
 
@@ -83,6 +98,7 @@ var _active_locks: Dictionary = {}
 ## 添加锁
 ## @param action_name: 锁的名称，必须在 LOCK_BLOCKS 中定义
 func add_lock(action_name: String) -> void:
+	prints("add_lock ",action_name)
 	if not LOCK_BLOCKS.has(action_name):
 		push_warning("LockMgr: 未知的锁名称 '%s'，请在 LOCK_BLOCKS 中定义" % action_name)
 	_active_locks[action_name] = true
@@ -90,6 +106,7 @@ func add_lock(action_name: String) -> void:
 ## 移除锁
 ## @param action_name: 要移除的锁名称
 func remove_lock(action_name: String) -> void:
+	prints("remove_lock ",action_name)
 	if not LOCK_BLOCKS.has(action_name):
 		push_warning("LockMgr: 未知的锁名称 '%s'，请在 LOCK_BLOCKS 中定义" % action_name)
 	_active_locks.erase(action_name)

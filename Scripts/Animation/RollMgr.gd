@@ -10,13 +10,12 @@ func setup() -> void:
 	animation_mgr.one_shot.action_finished.connect(_on_roll_finished)
 
 func _process(_delta: float) -> void:
+	if !animation_mgr.lock_mgr.can_act(LockMgr.ACT_ROLLING):
+		return
 	if animation_mgr.input_mgr.get_roll_pressed():
 		roll()
 
 func roll() -> void:
-	# 检查是否可以翻滚
-	if not animation_mgr.lock_mgr.can_act(LockMgr.ACT_ROLLING):
-		return
 	animation_mgr.lock_mgr.add_lock(LockMgr.ACT_ROLLING)
 	animation_mgr.one_shot.play("roll")
 

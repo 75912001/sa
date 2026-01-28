@@ -64,10 +64,12 @@ func _init_weapon_switch_mgr() -> void:
 	weapon_switch_mgr.switch_finished.connect(_on_weapon_switch_finished)
 
 func _on_weapon_switch_started() -> void:
-	prints("weapon switch started")
+	pass
+	#prints("weapon switch started")
 
 func _on_weapon_switch_finished() -> void:
-	prints("weapon switch finished")
+	pass
+	#prints("weapon switch finished")
 
 ############################################################
 # MovementMgr

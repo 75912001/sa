@@ -1,6 +1,5 @@
 # 动画-管理器
 class_name AnimationMgr
-
 extends Node
 
 # --- 配置 ---
@@ -51,7 +50,9 @@ func _ready() -> void:
 
 	_lower_body_sm = animation_tree.get("parameters/lower_body_sm/playback")
 	_upper_body_sm = animation_tree.get("parameters/upper_body_sm/playback")
-	# 初始化上半身状态，避免第一次切换时 T-pose
+	
+	# 初始化状态，避免第一次切换时 T-pose
+	_lower_body_sm.start("Unarmed_Idle")
 	_upper_body_sm.start("Unarmed_Idle")
 
 # ==================== 动画模式 ====================
@@ -87,13 +88,6 @@ func play_split(lower: String, upper: String) -> void:
 	play_lower(lower)
 	play_upper(upper)
 
-# ==================== 全身模式 ====================
-# 播放全身动画（翻滚、倒地等）
-func play_full_body(animation_name: String) -> void:
-	set_mode(AnimMode.FULL_BODY)
-	_current_lower = animation_name
-	_lower_body_sm.travel(animation_name)
-
 # ==================== 状态查询 ====================
 
 # 获取当前下半身状态
@@ -118,7 +112,7 @@ func _on_animation_finished(anim_name: StringName) -> void:
 
 # 更新-动画模式
 func _update_mode() -> void:
-	if weapon_switch_mgr.is_switching(): # 切换武器
+	if lock_mgr.has_lock(LockMgr.ACT_WEAPON_SWITCH): # 正在切换武器
 		set_mode(AnimMode.SPLIT)
 		return
 	if !_pose_neutral_left_weapon() || !_pose_neutral_right_weapon(): # 左/右手武器-对姿势-有影响
@@ -133,7 +127,7 @@ func update_lower_animation() -> void:
 	if movement_mgr.is_moving(): # 移动
 		play_lower("Unarmed_Walking")
 		return
-	if weapon_switch_mgr.is_switching(): # 换武器
+	if lock_mgr.has_lock(LockMgr.ACT_WEAPON_SWITCH): # 正在换武器
 		play_lower("Unarmed_Idle")
 		return
 	if lock_mgr.has_lock(LockMgr.ACT_ATTACKING): # 攻击
@@ -147,8 +141,8 @@ func update_upper_animation() -> void:
 		return
 	if lock_mgr.has_lock(LockMgr.ACT_ATTACKING): # 攻击
 		return # 由 AttackMgr.gd 控制
-	if weapon_switch_mgr.is_switching(): # 换武器
-		return # 由 WeaponSwitchMgr.gb 控制
+	if lock_mgr.has_lock(LockMgr.ACT_WEAPON_SWITCH): # 正在换武器
+		return # 由 WeaponSwitchMgr.gd 控制
 
 	# idle
 	assert(false, "todo menglc ... update_upper_animation idle...")

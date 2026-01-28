@@ -7,7 +7,7 @@ extends Node
 var animation_mgr: AnimationMgr
 
 func _physics_process(delta: float) -> void:
-	if animation_mgr.lock_mgr.is_locked():
+	if !animation_mgr.lock_mgr.can_act(LockMgr.ACT_MOVE):
 		animation_mgr.character_body.velocity.x = 0
 		animation_mgr.character_body.velocity.z = 0
 		return
