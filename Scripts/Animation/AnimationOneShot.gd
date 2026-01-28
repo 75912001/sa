@@ -16,10 +16,15 @@ const PATH_REQUEST = "parameters/Action_OneShot/request"
 const PATH_ACTIVE = "parameters/Action_OneShot/active"
 # 动作路由节点 (Transition)
 const PATH_TRANSITION = "parameters/Action_Type/transition_request"
+# 攻击动画速度控制
+const PATH_ATTACK_TIME_SCALE = "parameters/Attack_TimeScale/scale"
 
 # 播放指定动作
-func play(action_name: String) -> void:
+func play(action_name: String, speed_scale: float = 1.0) -> void:
 	_current_action = action_name
+	# 设置攻击动画速度（只对 attack 生效）
+	if action_name == "attack":
+		animation_mgr.animation_tree.set(PATH_ATTACK_TIME_SCALE, speed_scale)
 	# 设置路由 (Transition)
 	animation_mgr.animation_tree.set(PATH_TRANSITION, action_name)
 	# 触发 OneShot

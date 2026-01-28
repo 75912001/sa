@@ -1,25 +1,30 @@
 # 武器-配置
 # 任何修改此文件的行为都需要通知客户端和服务端开发人员
 
+# attack_duration_ms 攻击动画时长 毫秒
 # 武器 [11000001,11999999]
 weapons:
   - id: 11000001
     name: "武器-11000001"
     type: 1
     attack: 10
+    attack_duration_ms: 800
     description: "description-武器-11000001"
   - id: 11000002
     name: "武器-11000002"
     type: 2
     attack: 20
+    attack_duration_ms: 1500
     description: "description-武器-11000002"
   - id: 11000003
     name: "武器-11000003"
     type: 3
     attack: 30
+    attack_duration_ms: 1500
     description: "description-武器-11000003"
   - id: 11000004
     name: "武器-11000004"
     type: 4
     attack: 40
+    attack_duration_ms: 1500
     description: "description-武器-11000004"

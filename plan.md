@@ -13,202 +13,222 @@
     如若有更好的方案, 请一并给出.并给出理由和对比.
     可以完全访问当前项目的代码和资源.
 # 背景
-      当前有 idle, walking, 切换武器,动作.
-      上下半生动作分离.
+      当前动画都是固定时间.
 # 问题
-      现在 新增了动作 SwordAndShield_Attack_Slash_2_8, 
-      D:\sa\Assets\Animations\Library\SwordAndShield\Attack.Slash.2.8.res
-      D:\sa\Assets\Animations\Raw\SwordAndShield\SheathSword.2.fbx
-      需要增加功能, 鼠标左键点击攻击, 播放该动作.
-      播放完毕, 回到 idle 状态.
+      是否可以,在代码层, 或者配置层来配置, 不同的武器, 使用相同的动作, 但是不同的动画时间.
+      例如, 现在是 SwordAndShield_Attack_Slash_2_8, 
+         使用的武器是 11000001, 原来的动画时长
+         使用的武器是 11000002, 希望动画时长变为 3.2 秒. (指定时长)
+      
 # 当前想法
 # 可参考资料
+      D:\sa\Cfg\weapon.yaml 武器配置表, 用来配置时间, 毫秒数
+      D:\sa\Scripts\Animation\AttackMgr.gd 攻击管理器
 # 任务
     在任务没有完全完成之前, 不要停止回答. 持续思考, 找到最佳方案. 在提问和回答中不断完善方案.
     非常详细的一步步指引我完成.
     给出方案. 将解决方案分步骤列出.写入 plan.md 下方的 "# 解决方案" 处.
 # 解决方案
 
-## 一、需求分析
+## 分析
 
-| 项目 | 描述 |
-|------|------|
-| 触发方式 | 鼠标左键点击 |
-| 前置条件 | 持有武器（SwordAndShield） |
-| 动画 | SwordAndShield_Attack_Slash_2_8 |
-| 模式 | SPLIT（上半身攻击，下半身可移动） |
-| 结束后 | 回到 SwordAndShield_Idle |
+**核心问题**：当前动画时长由 Animation 资源固定（如 `Attack.Slash.2.8.res` = 2.8秒），需要让不同武器使用相同动画但有不同播放时长。
 
-## 二、实现步骤
+**Godot 动画速度控制方式**：
+| 方式 | 优点 | 缺点 |
+|-----|------|------|
+| AnimationNodeTimeScale 节点 | 只影响特定动画路径，精确控制 | 需要修改 AnimationTree 结构 |
+| AnimationPlayer.speed_scale | 简单，无需改结构 | 影响所有动画（全局） |
+| 修改 Animation 资源 | 无 | 破坏原始资源，不可行 |
 
-### 步骤 1：配置输入映射
+**推荐方案**：使用 **AnimationNodeTimeScale** 节点 + 配置驱动
 
-在 Godot 编辑器中：
-1. 打开 **项目 → 项目设置 → 输入映射**
-2. 添加新动作 `attack_right`
-3. 绑定 **鼠标左键**
-
-### 步骤 2：InputMgr 添加攻击检测
-
-在 `Scripts/Input/InputMgr.gd` 中：
-
-**2.1 添加变量**（第 12 行后）：
-```gdscript
-# 攻击-右手
-var attack_right_pressed: bool = false
+**速度计算公式**：
+```
+speed_scale = 原始时长 / 目标时长
+例如：原始 2.8 秒，目标 3.2 秒 → speed_scale = 2.8 / 3.2 = 0.875
 ```
 
-**2.2 添加检测**（_process 中，第 19 行后）：
-```gdscript
-# 攻击-右手
-attack_right_pressed = Input.is_action_just_pressed("attack_right")
+---
+
+## 实现步骤
+
+### 步骤1：修改 weapon.yaml 添加动画时长配置
+
+**文件**：`Cfg/weapon.yaml`
+
+```yaml
+weapons:
+  - id: 11000001
+    name: "武器-11000001"
+    type: 1
+    attack: 10
+    description: "description-武器-11000001"
+    # 不配置 attack_duration_ms，使用原始动画时长
+
+  - id: 11000002
+    name: "武器-11000002"
+    type: 2
+    attack: 20
+    description: "description-武器-11000002"
+    attack_duration_ms: 3200  # 攻击动画时长 3.2 秒
 ```
 
-**2.3 添加获取函数**（文件末尾）：
+**设计说明**：
+- `attack_duration_ms` 为可选字段，单位毫秒
+- 不配置时使用原始动画时长（不做速度调整）
+- 毫秒单位避免浮点精度问题，与服务端对齐
+
+---
+
+### 步骤2：修改 CfgWeaponEntry 添加属性
+
+**文件**：`Scripts/Cfg/Weapon.gd`
+
+在 `CfgWeaponEntry` 类中添加：
 ```gdscript
-# 如果需要阻断输入, 可以在这里加开关
-func get_attack_right_pressed() -> bool:
-    return attack_right_pressed
+class CfgWeaponEntry extends RefCounted:
+    var id: int
+    var name: String
+    var type: PbWeapon.WeaponType
+    var attack: int
+    var description: String
+    var attack_duration_ms: int = 0  # 新增：攻击动画时长（毫秒），0 表示使用原始时长
 ```
 
-### 步骤 3：配置 AnimationTree
-
-在 `upper_body_sm` 中：
-1. 添加动画节点 `SwordAndShield_Attack`，选择 `SwordAndShield/Attack.Slash.2.8`
-2. 添加转换线：
-   - `SwordAndShield_Idle` → `SwordAndShield_Attack`（Advance Mode: Enabled）
-   - `SwordAndShield_Attack` → `SwordAndShield_Idle`（Advance Mode: Auto，动画播完自动回 Idle）
-
-### 步骤 4：创建 AttackMgr
-
-新建 `Scripts/Combat/AttackMgr.gd`：
-
-**职责**：
-- 检测攻击输入
-- 判断是否可以攻击（持有武器、不在攻击中）
-- 播放攻击动画
-- 跟踪攻击状态
-
-**完整代码**：
+在 `load()` 函数中添加解析：
 ```gdscript
-# 攻击-管理器
-class_name AttackMgr
+entry.attack_duration_ms = item.get("attack_duration_ms", 0)
+```
 
-extends Node
+---
 
-@export var input_mgr: InputMgr
+### 步骤3：修改 AnimationTree 添加 TimeScale 节点
 
-# --- 信号 ---
-signal attack_started()
-signal attack_finished()
+**文件**：`Scenes/Player.tscn`（在 Godot 编辑器中操作）
 
-# --- 状态 ---
-enum State {
-	IDLE,      # 空闲
-	ATTACKING, # 攻击中
-}
+**当前结构**：
+```
+Action_OneShot
+└── Action_Type (Transition)
+    ├── attack → Animation (Attack.Slash.2.8)
+    └── roll → Roll
+```
 
-# --- 变量 ---
-var _state: State = State.IDLE
+**修改后结构**：
+```
+Action_OneShot
+└── Action_Type (Transition)
+    ├── attack → Attack_TimeScale → Animation (Attack.Slash.2.8)
+    └── roll → Roll
+```
 
-# --- 引用（在 Player.gd 中设置）---
-var animation_mgr: AnimationMgr
-var weapon_mgr: WeaponMgr
-var weapon_switch_mgr: WeaponSwitchMgr
+**编辑器操作步骤**：
+1. 打开 `Scenes/Player.tscn`
+2. 选中 `XBot/AnimationTree`
+3. 在 BlendTree 面板中：
+   - 添加节点：`AnimationNodeTimeScale`，命名为 `Attack_TimeScale`
+   - 将原来 `Animation` 节点的输出断开
+   - 连接：`Animation` → `Attack_TimeScale` → `Action_Type` 的 `attack` 端口
+4. 保存场景
 
-# 处理输入
-func handle_input() -> void:
-	if input_mgr.get_attack_right_pressed():
-		_try_attack()
+**新增参数路径**：`parameters/Attack_TimeScale/scale`
 
-# 尝试攻击
-func _try_attack() -> void:
-	if not _can_attack():
-		return
-	_do_attack()
+---
 
-# 是否可以攻击
-func _can_attack() -> bool:
-	# 必须持有武器
-	if not weapon_mgr.has_weapon():
-		return false
-	# 不能正在攻击中
-	if is_attacking():
-		return false
-	# 不能正在切换武器
-	if weapon_switch_mgr.is_switching():
-		return false
-	return true
+### 步骤4：修改 AnimationOneShot 支持速度参数
+
+**文件**：`Scripts/Animation/AnimationOneShot.gd`
+
+添加速度控制路径和方法：
+```gdscript
+# 攻击动画速度控制
+const PATH_ATTACK_TIME_SCALE = "parameters/Attack_TimeScale/scale"
+
+# 播放指定动作（支持速度缩放）
+func play(action_name: String, speed_scale: float = 1.0) -> void:
+    _current_action = action_name
+
+    # 设置攻击动画速度（只对 attack 生效）
+    if action_name == "attack":
+        animation_mgr.animation_tree.set(PATH_ATTACK_TIME_SCALE, speed_scale)
+
+    # 设置路由 (Transition)
+    animation_mgr.animation_tree.set(PATH_TRANSITION, action_name)
+    # 触发 OneShot
+    animation_mgr.animation_tree.set(PATH_REQUEST, AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+
+    action_started.emit(action_name)
+    _monitor_loop()
+```
+
+---
+
+### 步骤5：修改 AttackMgr 计算并传递速度
+
+**文件**：`Scripts/Animation/AttackMgr.gd`
+
+```gdscript
+# 原始动画时长（秒）- 与 Animation 资源一致
+const ATTACK_ANIMATION_DURATION := 2.8
 
 # 执行攻击
-func _do_attack() -> void:
-	_state = State.ATTACKING
-	attack_started.emit()
+func attack() -> void:
+    var speed_scale = _calculate_attack_speed()
+    animation_mgr.one_shot.play("attack", speed_scale)
+    print("攻击-开始 speed_scale:", speed_scale)
+    animation_mgr.lock_mgr.add_lock(LockMgr.ACT_ATTACKING)
+    attack_started.emit()
 
-	# 播放攻击动画
-	animation_mgr.play_upper("SwordAndShield_Attack")
+# 计算攻击动画速度
+func _calculate_attack_speed() -> float:
+    var weapon_uuid = GPlayerData.get_right_hand_weapon_uuid()
+    if weapon_uuid == 0:
+        return 1.0
 
-	# 等待动画完成
-	await animation_mgr.animation_finished
+    var weapon_record = GPlayerData.get_weapon_record(weapon_uuid)
+    if weapon_record == null:
+        return 1.0
 
-	# 检查节点是否仍然有效
-	if not is_instance_valid(self):
-		return
+    var weapon_cfg = GCfgMgr.cfg_weapon_mgr.get_weapon(weapon_record.get_AssetID())
+    if weapon_cfg == null:
+        return 1.0
 
-	_state = State.IDLE
-	attack_finished.emit()
+    # 如果未配置时长，使用原始速度
+    if weapon_cfg.attack_duration_ms <= 0:
+        return 1.0
 
-# 是否正在攻击
-func is_attacking() -> bool:
-	return _state == State.ATTACKING
+    # 速度 = 原始时长 / 目标时长
+    var target_duration = weapon_cfg.attack_duration_ms / 1000.0
+    return ATTACK_ANIMATION_DURATION / target_duration
 ```
 
-**接口说明**：
-| 方法 | 说明 |
-|------|------|
-| handle_input() | 每帧调用，检测输入 |
-| is_attacking() -> bool | 是否正在攻击 |
+---
 
-**流程**：
-1. 检测鼠标左键
-2. 检查前置条件（has_weapon, not attacking, not switching）
-3. 设置状态为 ATTACKING
-4. 播放 `animation_mgr.play_upper("SwordAndShield_Attack")`
-5. await animation_finished
-6. 设置状态为 IDLE
+## 方案对比
 
-### 步骤 5：集成到 Player
+| 方案 | 描述 | 优点 | 缺点 |
+|-----|------|------|------|
+| **TimeScale 节点**（推荐） | 在 AnimationTree 中添加速度控制节点 | 精确控制单个动画，不影响其他 | 需要修改 AnimationTree |
+| AnimationPlayer.speed_scale | 全局速度调整 | 无需改结构 | 影响所有动画，需要频繁切换 |
+| 多个 Animation 资源 | 每个武器一个动画资源 | 最灵活 | 资源膨胀，维护困难 |
 
-在 `Player.gd` 中：
-1. 添加 AttackMgr 节点引用
-2. 在 `_physics_process` 中调用 `attack_mgr.handle_input()`
-3. 在 `_init_attack_mgr()` 中设置引用和连接信号
+---
 
-### 步骤 6：更新 AnimationMgr
+## 扩展考虑
 
-在 `update_upper_animation()` 中：
-- 添加攻击状态检查，攻击中不自动更新上半身
+1. **多动作支持**：如果需要支持更多动作（如 roll、skill）的速度配置，可以：
+   - 在 yaml 中添加 `action_durations` 字典
+   - 在 AnimationTree 中为每个动作添加 TimeScale 节点
 
-```gdscript
-if attack_mgr.is_attacking():
-    return
-```
+2. **武器类型默认值**：可以按武器类型设置默认动画时长，单个武器配置覆盖默认值
 
-## 三、状态优先级
+3. **攻击连招**：如果有多段攻击，每段可以独立配置时长
 
-上半身动画优先级（从高到低）：
-1. 攻击中 → 由 AttackMgr 控制
-2. 切换武器中 → 由 WeaponSwitchMgr 控制
-3. 持有武器 → SwordAndShield_Idle
-4. 空手 → Unarmed_Idle
+---
 
-## 四、扩展考虑
+## 验证方法
 
-| 功能 | 说明 |
-|------|------|
-| 连击系统 | 攻击中再按攻击，切换到下一段攻击动画 |
-| 攻击打断 | 受击时打断攻击 |
-| 攻击冷却 | 攻击后短暂冷却 |
-| 移动限制 | 攻击时是否限制移动速度 |
-
-当前先实现基础攻击，后续可扩展。
+1. 运行游戏，装备武器 11000001，观察攻击动画时长（应为原始 2.8 秒）
+2. 切换到武器 11000002，观察攻击动画时长（应为 3.2 秒）
+3. 在控制台查看 `speed_scale` 输出值是否正确
