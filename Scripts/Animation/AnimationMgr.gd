@@ -18,6 +18,7 @@ var weapon_switch_mgr: WeaponSwitchMgr
 var movement_mgr: MovementMgr
 var attack_mgr: AttackMgr
 var one_shot: AnimationOneShot
+var lock_mgr: LockMgr  # 锁管理器
 
 # --- 动画模式 ---
 enum AnimMode {
@@ -40,6 +41,8 @@ func _ready() -> void:
 		animation_tree.active = true
 		# 连接动画完成信号
 		animation_tree.animation_finished.connect(_on_animation_finished)
+	# lock_mgr
+	lock_mgr = LockMgr.new()
 	# one_shot
 	one_shot = AnimationOneShot.new()
 	one_shot.animation_mgr = self

@@ -3,15 +3,11 @@ class_name MovementMgr
 
 extends Node
 
-# --- 变量 ---
+# --- 依赖 ---
 var animation_mgr: AnimationMgr
-var _movement_locks: Dictionary = {} # 使用字典作为 Set 使用, 防止重复添加同名锁
-
-func _ready() -> void:
-	pass
 
 func _physics_process(delta: float) -> void:
-	if is_locked():
+	if animation_mgr.lock_mgr.is_locked():
 		animation_mgr.character_body.velocity.x = 0
 		animation_mgr.character_body.velocity.z = 0
 		return
@@ -40,16 +36,3 @@ func is_moving() -> bool:
 # 获取水平速度
 func _get_horizontal_speed() -> float:
 	return Vector2(animation_mgr.character_body.velocity.x, animation_mgr.character_body.velocity.z).length()
-
-# 加锁
-func add_lock(source: String) -> void:
-	_movement_locks[source] = true
-
-# 解锁
-func remove_lock(source: String) -> void:
-	if _movement_locks.has(source):
-		_movement_locks.erase(source)
-
-# 检查是否被锁
-func is_locked() -> bool:
-	return not _movement_locks.is_empty()
