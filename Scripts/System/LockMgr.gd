@@ -94,6 +94,12 @@ func remove_lock(action_name: String) -> void:
 		push_warning("LockMgr: 未知的锁名称 '%s'，请在 LOCK_BLOCKS 中定义" % action_name)
 	_active_locks.erase(action_name)
 
+# 是否有-动作-锁
+func has_lock(action_name: String) -> bool:
+	if not LOCK_BLOCKS.has(action_name):
+		push_warning("LockMgr: 未知的锁名称 '%s'，请在 LOCK_BLOCKS 中定义" % action_name)
+	return _active_locks.has(action_name)
+
 ## 检查是否可以执行某个动作
 ## @param action_name: 想要执行的动作名称
 ## @return: true 表示可以执行，false 表示被阻止

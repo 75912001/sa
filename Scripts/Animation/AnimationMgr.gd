@@ -136,7 +136,7 @@ func update_lower_animation() -> void:
 	if weapon_switch_mgr.is_switching(): # 换武器
 		play_lower("Unarmed_Idle")
 		return
-	if attack_mgr.is_attacking(): # 攻击
+	if lock_mgr.has_lock(LockMgr.ACT_ATTACKING): # 攻击
 		return
 	#idle
 	play_lower("Unarmed_Idle")
@@ -145,7 +145,7 @@ func update_lower_animation() -> void:
 func update_upper_animation() -> void:
 	if is_full_body_mode(): # 全身模式
 		return
-	if attack_mgr.is_attacking(): # 攻击中
+	if lock_mgr.has_lock(LockMgr.ACT_ATTACKING): # 攻击
 		return # 由 AttackMgr.gd 控制
 	if weapon_switch_mgr.is_switching(): # 换武器
 		return # 由 WeaponSwitchMgr.gb 控制

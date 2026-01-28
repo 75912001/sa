@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://cltl4miymivys"]
+[gd_scene load_steps=51 format=3 uid="uid://cltl4miymivys"]
 
 [ext_resource type="PackedScene" uid="uid://bqpd5cm5dcy71" path="res://Assets/Characters/XBot.glb" id="1_mdl7e"]
 [ext_resource type="Script" uid="uid://btgkhykbev6d6" path="res://Scripts/Player.gd" id="1_script"]
@@ -13,12 +13,10 @@
 [ext_resource type="Script" uid="uid://bu0vvm1a5hov7" path="res://Scripts/Animation/AttackMgr.gd" id="7_ulo2v"]
 [ext_resource type="Script" uid="uid://btx5u8pehj2ri" path="res://Scripts/Animation/RollMgr.gd" id="8_5v66d"]
 [ext_resource type="Animation" uid="uid://ywb7kg2bg88c" path="res://Assets/Animations/Library/SwordAndShield/Walk.res" id="8_ksbbd"]
-[ext_resource type="Animation" path="res://Assets/Animations/Library/Roll/Roll.Left.res" id="9_m0x7a"]
 [ext_resource type="Animation" uid="uid://bm2d4g8pfoe07" path="res://Assets/Animations/Library/SwordAndShield/DrawSword.res" id="9_miouo"]
 [ext_resource type="Animation" uid="uid://dbxxuoc00n3h3" path="res://Assets/Animations/Library/SwordAndShield/SheathSword.1.res" id="10_1e7my"]
-[ext_resource type="Animation" path="res://Assets/Animations/Library/Roll/Roll.Right.res" id="10_5v66d"]
 [ext_resource type="Animation" uid="uid://25qcudnomvvf" path="res://Assets/Animations/Library/SwordAndShield/SheathSword.2.res" id="11_arntx"]
-[ext_resource type="Animation" uid="uid://bls7lj7cgrwpt" path="res://Assets/Animations/Library/Roll/Roll.res" id="12_x63xi"]
+[ext_resource type="Animation" uid="uid://d1ladbtqebl00" path="res://Assets/Animations/Library/Roll/Roll.res" id="12_x63xi"]
 [ext_resource type="Animation" uid="uid://2xm16atxaaxj" path="res://Assets/Animations/Library/SwordAndShield/Attack.Slash.2.8.res" id="13_lslt6"]
 [ext_resource type="Animation" uid="uid://o4xndrx00au6" path="res://Assets/Animations/Library/Unarmed/DrawSword.res" id="13_o3h8g"]
 [ext_resource type="Script" uid="uid://qat0bt2h635k" path="res://Scripts/Animation/WeaponSwitchMgr.gd" id="14_switch"]
@@ -31,9 +29,7 @@ height = 1.6
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x63xi"]
 _data = {
-&"Roll": ExtResource("12_x63xi"),
-&"Roll.Left": ExtResource("9_m0x7a"),
-&"Roll.Right": ExtResource("10_5v66d")
+&"Roll": ExtResource("12_x63xi")
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5ixxa"]

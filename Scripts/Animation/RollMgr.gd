@@ -15,7 +15,7 @@ func _process(_delta: float) -> void:
 
 func roll() -> void:
 	# 检查是否可以翻滚
-	if not animation_mgr.can_roll():
+	if not animation_mgr.lock_mgr.can_act(LockMgr.ACT_ROLLING):
 		return
 	animation_mgr.lock_mgr.add_lock(LockMgr.ACT_ROLLING)
 	animation_mgr.one_shot.play("roll")
