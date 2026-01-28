@@ -5,7 +5,7 @@ extends Node
 
 # --- 信号 ---
 signal switch_started()
-signal switch_completed()
+signal switch_finished()
 
 # --- 状态 ---
 enum State {
@@ -141,7 +141,7 @@ func _do_weapon_to_unarmed(id: int) -> void:
 ## 完成切换
 func _finish_switch() -> void:
 	_state = State.IDLE
-	switch_completed.emit()
+	switch_finished.emit()
 
 func can_switch_weapon() -> bool:
 	return true

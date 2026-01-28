@@ -3,7 +3,7 @@ extends Node
 
 # --- 信号 ---
 signal attack_started()
-signal attack_ended()
+signal attack_finished()
 
 # --- 引用（在 Player.gd 中设置）---
 var animation_mgr: AnimationMgr
@@ -39,4 +39,4 @@ func _on_action_finished(action_name: String) -> void:
 	if action_name == "attack":
 		print("攻击-结束 state: idle")
 		animation_mgr.lock_mgr.remove_lock(LockMgr.ACT_ATTACKING)
-		attack_ended.emit()
+		attack_finished.emit()

@@ -61,13 +61,13 @@ func _init_weapon_switch_mgr() -> void:
 	weapon_switch_mgr.weapon_mgr = weapon_mgr
 	# 连接信号
 	weapon_switch_mgr.switch_started.connect(_on_weapon_switch_started)
-	weapon_switch_mgr.switch_completed.connect(_on_weapon_switch_completed)
+	weapon_switch_mgr.switch_finished.connect(_on_weapon_switch_finished)
 
 func _on_weapon_switch_started() -> void:
 	prints("weapon switch started")
 
-func _on_weapon_switch_completed() -> void:
-	prints("weapon switch completed")
+func _on_weapon_switch_finished() -> void:
+	prints("weapon switch finished")
 
 ############################################################
 # MovementMgr
@@ -82,16 +82,16 @@ func _init_attack_mgr() -> void:
 	attack_mgr.animation_mgr = animation_mgr
 	# 连接信号
 	attack_mgr.attack_started.connect(_on_attack_started)
-	attack_mgr.attack_ended.connect(_on_attack_ended)
+	attack_mgr.attack_finished.connect(_on_attack_finished)
 	attack_mgr.setup()
 
 func _on_attack_started() -> void:
 	pass
 	#prints("attack started")
 
-func _on_attack_ended() -> void:
+func _on_attack_finished() -> void:
 	pass
-	#prints("attack ended")
+	#prints("attack finished")
 
 ############################################################
 # RollMgr
