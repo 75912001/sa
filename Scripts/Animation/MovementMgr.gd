@@ -6,7 +6,7 @@ extends Node
 # --- 依赖 ---
 var animation_mgr: AnimationMgr
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if !animation_mgr.lock_mgr.can_act(LockMgr.ACT_MOVE):
 		animation_mgr.character_body.velocity.x = 0
 		animation_mgr.character_body.velocity.z = 0
