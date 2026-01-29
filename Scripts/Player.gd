@@ -12,3 +12,4 @@ extends Character
 
 func _ready_subclass() -> void:
 	GGameMgr.player = self
+	input_mgr = $InputMgr

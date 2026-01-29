@@ -30,7 +30,7 @@ class_name Character extends CharacterBody3D
 @export var character_id: int = 1000001
 
 # --- 组件引用 ---
-@onready var input_mgr: Node = $InputMgr
+@onready var input_mgr: IInputProvider = $InputMgr
 @onready var weapon_mgr: WeaponMgr = $WeaponMgr
 @onready var animation_mgr: AnimationMgr = $AnimationMgr
 @onready var movement_mgr: MovementMgr = $MovementMgr
