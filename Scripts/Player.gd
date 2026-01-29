@@ -28,7 +28,6 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	weapon_switch_mgr.handle_input()
 	move_and_slide()
 	# 更新动画
 	animation_mgr.update_lower_animation()

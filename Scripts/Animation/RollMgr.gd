@@ -6,7 +6,6 @@ extends Node
 var animation_mgr: AnimationMgr
 
 func setup() -> void:
-	# 监听动画结束
 	animation_mgr.one_shot.action_finished.connect(_on_roll_finished)
 
 func _process(_delta: float) -> void:
@@ -20,6 +19,5 @@ func roll() -> void:
 	animation_mgr.one_shot.play("roll")
 
 func _on_roll_finished(action_name: String) -> void:
-	# 只有结束的动作是 "roll" 时才处理
 	if action_name == "roll":
 		animation_mgr.lock_mgr.remove_lock(LockMgr.ACT_ROLLING)

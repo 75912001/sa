@@ -16,7 +16,7 @@ var weapon_mgr: WeaponMgr
 # --- 时序配置（秒）---
 const SHEATH_UNEQUIP_DELAY := 0.6  # 收剑动画多久后卸下武器
 
-func handle_input() -> void:
+func _process(_delta: float) -> void:
 	if !animation_mgr.lock_mgr.can_act(LockMgr.ACT_WEAPON_SWITCH):
 		return
 	if animation_mgr.input_mgr.get_switch_right_hand_pressed():
