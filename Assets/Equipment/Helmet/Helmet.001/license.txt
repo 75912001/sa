@@ -1,0 +1,11 @@
+Model Information:
+* title:	Helmet with Beaked Visor
+* source:	https://sketchfab.com/3d-models/helmet-with-beaked-visor-47bd6028d3244fa5b698388a9a6dda38
+* author:	The Royal Armoury (Livrustkammaren) (https://sketchfab.com/TheRoyalArmoury)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Helmet with Beaked Visor" (https://sketchfab.com/3d-models/helmet-with-beaked-visor-47bd6028d3244fa5b698388a9a6dda38) by The Royal Armoury (Livrustkammaren) (https://sketchfab.com/TheRoyalArmoury) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
