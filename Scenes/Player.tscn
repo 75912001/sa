@@ -231,8 +231,8 @@ script = ExtResource("8_5v66d")
 [node name="XBot" parent="." unique_id=520564406 instance=ExtResource("1_mdl7e")]
 
 [node name="GeneralSkeleton" parent="XBot/Skeleton" index="0"]
-bones/0/position = Vector3(-0.00096289144, 1.028263, 0.018574195)
-bones/0/rotation = Quaternion(0.033138297, -0.032400284, -0.0025666833, 0.9989222)
+bones/0/position = Vector3(-0.0009814738, 1.0282632, 0.018866919)
+bones/0/rotation = Quaternion(0.033035107, -0.032523878, -0.0026183955, 0.99892145)
 bones/1/rotation = Quaternion(0.113554806, -0.020890903, -0.023677249, 0.9930299)
 bones/2/rotation = Quaternion(0.00021336973, -0.0032482217, -0.019011322, 0.999814)
 bones/3/rotation = Quaternion(0.00021608174, -0.0026270258, -0.019084956, 0.9998144)
@@ -276,17 +276,17 @@ bones/49/rotation = Quaternion(0.67100286, -0.0077094566, -0.0069523454, 0.74138
 bones/51/rotation = Quaternion(0.754003, -0.12598102, -0.013030617, 0.64454514)
 bones/52/rotation = Quaternion(0.67797744, 9.658467e-05, 0.0007632673, 0.7350823)
 bones/53/rotation = Quaternion(0.46105516, 3.4354623e-05, 0.00053915376, 0.88737124)
-bones/55/rotation = Quaternion(-0.0809207, 0.07553549, 0.9919502, 0.061491594)
-bones/56/rotation = Quaternion(0.024131035, 0.9985982, -0.044770982, 0.014664363)
-bones/57/rotation = Quaternion(0.05730517, 0.70576805, -0.70327383, -0.063352205)
-bones/58/rotation = Quaternion(5.3505908e-05, 0.99999094, -0.0021258302, -0.0036836967)
-bones/60/rotation = Quaternion(0.11486609, 0.07052211, 0.9881663, -0.07321227)
-bones/61/rotation = Quaternion(-0.021734739, 0.9966722, -0.06674647, 0.04143851)
-bones/62/rotation = Quaternion(-0.056003366, 0.69483894, -0.7142661, 0.062342104)
+bones/55/rotation = Quaternion(-0.08093295, 0.07540948, 0.99196196, 0.061439805)
+bones/56/rotation = Quaternion(0.024139129, 0.9985757, -0.04537974, 0.01430324)
+bones/57/rotation = Quaternion(0.05709143, 0.7055764, -0.70350695, -0.063090816)
+bones/58/rotation = Quaternion(5.7870704e-05, 0.99998945, -0.0023080534, -0.0039998177)
+bones/60/rotation = Quaternion(0.1149106, 0.07035577, 0.988168, -0.07327838)
+bones/61/rotation = Quaternion(-0.021810608, 0.996649, -0.06700713, 0.041534793)
+bones/62/rotation = Quaternion(-0.05592189, 0.6946387, -0.7144755, 0.06224653)
 bones/63/rotation = Quaternion(-2.636854e-05, 0.9999899, -0.002251685, 0.0039076097)
 
 [node name="RightHandAttachment" type="BoneAttachment3D" parent="XBot/Skeleton/GeneralSkeleton" index="2" unique_id=1882066302]
-transform = Transform3D(0.09702052, 0.42200047, -0.90138954, 0.12563956, -0.90361, -0.40951693, -0.98732066, -0.073518515, -0.14068872, 0.18969123, 1.1116045, 0.16061464)
+transform = Transform3D(0.09727517, 0.42191157, -0.9014036, 0.12542719, -0.9036748, -0.40943906, -0.98732245, -0.073232055, -0.14082447, 0.18964802, 1.1116111, 0.16093674)
 bone_name = "RightHand"
 bone_idx = 10
 
