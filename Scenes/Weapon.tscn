@@ -1,10 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvrkajol8i1eb"]
+[gd_scene format=3 uid="uid://dvrkajol8i1eb"]
 
-[ext_resource type="Script" uid="uid://dbw768jl230a8" path="res://Scripts/Weapon/Weapon.gd" id="1_m5ws0"]
+[ext_resource type="Script" uid="uid://dbw768jl230a8" path="res://Scripts/Equipment/Weapon/Weapon.gd" id="1_m5ws0"]
 
-[node name="Weapon" type="Node3D"]
+[node name="Weapon" type="Node3D" unique_id=1636706197]
 script = ExtResource("1_m5ws0")
 
-[node name="Grip" type="Node3D" parent="."]
+[node name="Grip" type="Node3D" parent="." unique_id=1661080843]
 
-[node name="Model" type="Node3D" parent="Grip"]
+[node name="Model" type="Node3D" parent="Grip" unique_id=1818011019]

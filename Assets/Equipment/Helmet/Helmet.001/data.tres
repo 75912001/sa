@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ArmorData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Equipment/ArmorData.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+armor_id = 12000001
+scene_path = "res://Assets/Equipment/Helmet/Helmet.001/Helmet.tscn"
+socket_name = "Head"
+
