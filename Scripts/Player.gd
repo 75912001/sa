@@ -111,3 +111,4 @@ func _init_aniamation_mgr() -> void:
 	animation_mgr.movement_mgr = movement_mgr
 	animation_mgr.weapon_switch_mgr = weapon_switch_mgr
 	animation_mgr.attack_mgr = attack_mgr
+	animation_mgr.roll_mgr = roll_mgr

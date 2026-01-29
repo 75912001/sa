@@ -16,6 +16,7 @@ var input_mgr: InputMgr
 var weapon_switch_mgr: WeaponSwitchMgr
 var movement_mgr: MovementMgr
 var attack_mgr: AttackMgr
+var roll_mgr: RollMgr
 var one_shot: AnimationOneShot
 var lock_mgr: LockMgr  # 锁管理器
 

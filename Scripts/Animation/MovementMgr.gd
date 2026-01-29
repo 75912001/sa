@@ -10,6 +10,10 @@ func _physics_process(delta: float) -> void:
 	if !animation_mgr.lock_mgr.can_act(LockMgr.ACT_MOVE):
 		animation_mgr.character_body.velocity.x = 0
 		animation_mgr.character_body.velocity.z = 0
+		if animation_mgr.lock_mgr.has_lock(LockMgr.ACT_ROLLING): # 翻滚中
+			animation_mgr.character_body.velocity = animation_mgr.roll_mgr.roll_direction * animation_mgr.roll_mgr.roll_speed
+			animation_mgr.character_body.move_and_slide()
+			return
 		return
 
 	var input_direction = animation_mgr.input_mgr.get_move_vector()
