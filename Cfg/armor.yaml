@@ -1,0 +1,10 @@
+# 护甲-配置
+# 任何修改此文件的行为都需要通知客户端和服务端开发人员
+
+# 护甲 [12000001,12999999]
+# type: Armor.proto ArmorType
+armors:
+  - id: 12000001
+    name: "护甲-12000001"
+    type: 1
+    description: "description-护甲-12000001"
