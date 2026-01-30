@@ -727,7 +727,9 @@ enum AssetIDRange {
 	AssetIDRange_UI_Start = 10000001,
 	AssetIDRange_UI_End = 10999999,
 	AssetIDRange_Weapon_Start = 11000001,
-	AssetIDRange_Weapon_End = 11999999
+	AssetIDRange_Weapon_End = 11999999,
+	AssetIDRange_Armor_Start = 12000001,
+	AssetIDRange_Armor_End = 12999999
 }
 
 enum AssetIDRecord {
