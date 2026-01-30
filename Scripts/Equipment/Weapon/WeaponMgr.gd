@@ -1,6 +1,6 @@
-extends Node
 # 武器-管理器
 class_name WeaponMgr
+extends Node
 
 # --- 配置 ---
 @export var weapon_attachment_path: NodePath
