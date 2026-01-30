@@ -44,6 +44,10 @@ func print_character_record(record, indent: int = 0) -> void:
 	var weapon_equipped = record.get_WeaponEquippedData()
 	print_weapon_equipped_data(weapon_equipped, indent + 1)
 
+	# ArmorEquippedData 护甲装备数据
+	var armor_equipped = record.get_ArmorEquippedData()
+	print_armor_equipped_data(armor_equipped, indent + 1)
+
 	# RecordMap 记录表
 	var record_map = record.get_RecordMap()
 	if record_map.size() > 0:
@@ -66,6 +70,14 @@ func print_character_record(record, indent: int = 0) -> void:
 		for weapon_uuid in weapon_map.keys():
 			var weapon_record = weapon_map[weapon_uuid]
 			print_weapon_record(weapon_record, indent + 1)
+
+	# ArmorRecordMap 护甲记录表
+	var armor_map = record.get_ArmorRecordMap()
+	if armor_map.size() > 0:
+		print("%sArmorRecordMap: %d 项  # 护甲记录表 (key: 护甲UUID)" % [pre, armor_map.size()])
+		for armor_uuid in armor_map.keys():
+			var armor_record = armor_map[armor_uuid]
+			print_armor_record(armor_record, indent + 1)
 
 
 func print_weapon_record(record, indent: int = 0) -> void:
@@ -91,6 +103,31 @@ func print_weapon_record(record, indent: int = 0) -> void:
 		for primary_key in record_map.keys():
 			var record_primary = record_map[primary_key]
 			print_record_primary(record_primary, indent + 2, "Weapon")
+
+
+func print_armor_record(record, indent: int = 0) -> void:
+	if not enabled:
+		return
+
+	var pre = _indent(indent)
+	print("%s---- ArmorRecord [UUID=%d] ----" % [pre, record.get_UUID()])
+	print("%s  UUID: %d  # 护甲UUID" % [pre, record.get_UUID()])
+
+	# RecordBaseMap
+	var base_map = record.get_RecordBaseMap()
+	print("%s  RecordBaseMap: %d 项  # 资产表 (key: AssetIDRecord/ArmorAssetIDRecordBase)" % [pre, base_map.size()])
+	for key in base_map.keys():
+		var value = base_map[key]
+		var key_name = _get_field_name(key)
+		print("%s    [%d] %s = %d" % [pre, key, key_name, value])
+
+	# RecordMap
+	var record_map = record.get_RecordMap()
+	if record_map.size() > 0:
+		print("%s  RecordMap: %d 项  # 记录表 (key: ArmorRecordPrimary)" % [pre, record_map.size()])
+		for primary_key in record_map.keys():
+			var record_primary = record_map[primary_key]
+			print_record_primary(record_primary, indent + 2, "Armor")
 
 
 func print_weapon_equipped_data(record, indent: int = 0) -> void:
@@ -123,6 +160,28 @@ func print_weapon_equipped_data(record, indent: int = 0) -> void:
 	# IsDualWield
 	var is_dual = record.get_DualWield()
 	print("%s  IsDualWield: %s  # 是否双持" % [pre, str(is_dual)])
+
+
+func print_armor_equipped_data(record, indent: int = 0) -> void:
+	if not enabled:
+		return
+
+	var pre = _indent(indent)
+	print("%s---- ArmorEquippedData ----" % pre)
+
+	if record == null:
+		print("%s  (无数据)" % pre)
+		return
+
+	# ArmorUUIDList
+	var armor_list = record.get_ArmorUUIDList()
+	print("%s  ArmorUUIDList: %s  # 护甲UUID列表 (顺序: Head/Body/Leg/Arm)" % [pre, str(armor_list)])
+	if armor_list.size() > 0:
+		var armor_type_names = ["Head", "Body", "Leg", "Arm"]
+		for i in range(armor_list.size()):
+			var armor_uuid = armor_list[i]
+			var type_name = armor_type_names[i] if i < armor_type_names.size() else "Unknown"
+			print("%s    [%d] %s: %d" % [pre, i, type_name, armor_uuid])
 
 
 func print_record_primary(record, indent: int = 0, context: String = "") -> void:
@@ -166,6 +225,11 @@ func _get_primary_id_name(id: int, context: String) -> String:
 				PbWeapon.WeaponRecordPrimary.WeaponRecordPrimary_Unknow: return "未知"
 				PbWeapon.WeaponRecordPrimary.WeaponRecordPrimary_Slot: return "孔(武器镶嵌槽)"
 				_: return "未知武器主记录类型"
+		"Armor":
+			match id:
+				PbArmor.ArmorRecordPrimary.ArmorRecordPrimary_Unknow: return "未知"
+				PbArmor.ArmorRecordPrimary.ArmorRecordPrimary_Slot: return "孔(护甲镶嵌槽)"
+				_: return "未知护甲主记录类型"
 		"Character":
 			match id:
 				PbCharacter.CharacterRecordPrimary.CharacterRecordPrimary_Unknow: return "未知"
@@ -187,6 +251,11 @@ func _get_secondary_id_name(id: int, context: String) -> String:
 				PbWeapon.WeaponRecordSecondary.WeaponRecordSecondary_Unknow: return "未知"
 				PbWeapon.WeaponRecordSecondary.WeaponRecordSecondary_Slot_Data: return "孔数据(镶嵌宝石信息)"
 				_: return "未知武器次记录类型"
+		"Armor":
+			match id:
+				PbArmor.ArmorRecordSecondary.ArmorRecordSecondary_Unknow: return "未知"
+				PbArmor.ArmorRecordSecondary.ArmorRecordSecondary_Slot_Data: return "孔数据(镶嵌宝石信息)"
+				_: return "未知护甲次记录类型"
 		"Character":
 			match id:
 				PbCharacter.CharacterRecordSecondary.CharacterRecordSecondary_Unknow: return "未知"
@@ -227,6 +296,10 @@ func _get_field_name(key: int) -> String:
 		PbWeapon.WeaponAssetIDRecordBase.WeaponAssetIDRecordBase_DamagePercent: return "伤害百分比"
 		PbWeapon.WeaponAssetIDRecordBase.WeaponAssetIDRecordBase_CritRate: return "暴击概率"
 		PbWeapon.WeaponAssetIDRecordBase.WeaponAssetIDRecordBase_CritDamageBonusRate: return "暴击伤害加成"
+		# ArmorAssetIDRecordBase 护甲 [10000,200000]
+		PbArmor.ArmorAssetIDRecordBase.ArmorAssetIDRecordBase_DamagePercent: return "伤害百分比"
+		PbArmor.ArmorAssetIDRecordBase.ArmorAssetIDRecordBase_CritRate: return "暴击概率"
+		PbArmor.ArmorAssetIDRecordBase.ArmorAssetIDRecordBase_CritDamageBonusRate: return "暴击伤害加成"
 		_: return "未知字段"
 
 
