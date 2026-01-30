@@ -6,10 +6,12 @@ extends Node
 # --- 配置数据 ---
 var cfg_weapon_mgr: CfgWeaponMgr
 var cfg_character_mgr: CfgCharacterMgr
+var cfg_armor_mgr: CfgArmorMgr
 
 func _ready() -> void:
 	cfg_weapon_mgr = CfgWeaponMgr.new()
 	cfg_character_mgr = CfgCharacterMgr.new()
+	cfg_armor_mgr = CfgArmorMgr.new()
 	_load_all_cfg()
 
 # 加载所有配置
@@ -17,12 +19,15 @@ func _load_all_cfg() -> void:
 	# --- 加载 ---
 	cfg_weapon_mgr.load("res://Cfg/weapon.yaml")
 	cfg_character_mgr.load("res://Cfg/character.yaml")
+	cfg_armor_mgr.load("res://Cfg/armor.yaml")
 	# --- 检查 ---
 	cfg_weapon_mgr.check()
 	cfg_character_mgr.check()
+	cfg_armor_mgr.check()
 	# --- 组装 ---
 	cfg_weapon_mgr.assemble()
 	cfg_character_mgr.assemble()
+	cfg_armor_mgr.assemble()
 
 	prints("配置加载完成")
 
