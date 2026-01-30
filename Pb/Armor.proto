@@ -1,0 +1,52 @@
+syntax="proto3";
+
+package pb;
+
+option go_package = "saClient/proto";
+
+import "Common.proto";
+import "Record.proto";
+
+////////////////////////////////////////////////////////////
+// 护甲 Armor
+////////////////////////////////////////////////////////////
+// 护甲-类型
+enum ArmorType {
+  ArmorType_Unknow = 0; //
+  ArmorType_Head = 1; // 头盔
+  ArmorType_Body = 2; // 身体
+  ArmorType_Leg = 3; // 腿部
+  ArmorType_Arm = 4; // 手臂
+  ArmorType_Max = 5; // 类型-最大值
+}
+
+// 护甲-记录
+message ArmorRecord {
+  uint64 UUID = 1; // 唯一ID
+  map<uint32, uint64> RecordBaseMap = 10; // 资产表 key: ArmorAssetIDRecordBase value: 数值
+  map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: ArmorRecordPrimary
+}
+
+// 武器-资产-ID-记录
+enum ArmorAssetIDRecordBase {
+  ArmorAssetIDRecordBase_Unknow = 0; // 未知
+
+  ArmorAssetIDRecordBase_DamagePercent = 10000; // 伤害百分比(0,100]
+  ArmorAssetIDRecordBase_CritRate = 10001; // 暴击概率 范围(0,100]
+  ArmorAssetIDRecordBase_CritDamageBonusRate = 10002; // 暴击伤害加成倍数 范围(0,100]
+}
+
+enum ArmorRecordPrimary {
+  ArmorRecordPrimary_Unknow = 0; // 未知
+  ArmorRecordPrimary_Slot = 1; // 孔
+}
+
+enum ArmorRecordSecondary {
+  ArmorRecordSecondary_Unknow = 0; // 未知
+  ArmorRecordSecondary_Slot_Data = 1; // 孔数据
+}
+
+// 护甲-装备数据
+message ArmorEquippedData {
+  repeated uint64 ArmorUUIDList = 1; // ArmorType 顺序装备的护甲 [固定数值 ArmorType_Max]
+}
