@@ -3,7 +3,7 @@ class_name PlayerDataMgr
 extends Node
 
 # 通过 UUID 获取武器记录
-func get_weapon_record_by_uuid(weapon_uuid: int) -> PbCharacter.WeaponRecord:
+func get_weapon_record_by_uuid(weapon_uuid: int) -> PbWeapon.WeaponRecord:
 	var weapon_map = GSave.character_record.get_WeaponRecordMap()
 	if weapon_map.has(weapon_uuid):
 		return weapon_map[weapon_uuid]
@@ -42,7 +42,7 @@ func get_right_weapon_cfg() -> CfgWeaponMgr.CfgWeaponEntry:
 	return get_weapon_cfg_by_uuid(uuid)
 
 # 通过 UUID 获取护甲记录
-func get_armor_record_by_uuid(armor_uuid: int) -> PbCharacter.ArmorRecord:
+func get_armor_record_by_uuid(armor_uuid: int) -> PbArmor.ArmorRecord:
 	var armor_map = GSave.character_record.get_ArmorRecordMap()
 	if armor_map.has(armor_uuid):
 		return armor_map[armor_uuid]
