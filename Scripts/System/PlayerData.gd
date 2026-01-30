@@ -41,7 +41,32 @@ func get_right_weapon_cfg() -> CfgWeaponMgr.CfgWeaponEntry:
 		return null
 	return get_weapon_cfg_by_uuid(uuid)
 
-# ==================== 武器装备数据 ====================
+# 通过 UUID 获取护甲记录
+func get_armor_record_by_uuid(armor_uuid: int) -> PbCharacter.ArmorRecord:
+	var armor_map = GSave.character_record.get_ArmorRecordMap()
+	if armor_map.has(armor_uuid):
+		return armor_map[armor_uuid]
+	else:
+		assert(false, "护甲 UUID:%d" % armor_uuid)
+	return null
+
+# 通过 UUID 获取护甲的 AssetID
+func get_armor_asset_id_by_uuid(armor_uuid: int) -> int:
+	var armor_record = get_armor_record_by_uuid(armor_uuid)
+
+	var base_map = armor_record.get_RecordBaseMap()
+	if base_map.has(PbAsset.AssetIDRecord.AssetIDRecord_AssetID):
+		return base_map[PbAsset.AssetIDRecord.AssetIDRecord_AssetID]
+	else:
+		assert(false, "护甲 UUID:%d" % armor_uuid)
+	return 0
+
+# 通过 UUID 获取护甲的 Cfg
+func get_armor_cfg_by_uuid(armor_uuid: int) -> CfgArmorMgr.CfgArmorEntry:
+	var asset_id = get_armor_asset_id_by_uuid(armor_uuid)
+	return GCfgMgr.cfg_armor_mgr.get_armor(asset_id)
+
+# ==================== 装备-武器-数据 ====================
 # 获取武器装备数据
 func _get_weapon_equipped_data():
 	return GSave.character_record.get_WeaponEquippedData()
