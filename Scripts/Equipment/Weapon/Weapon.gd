@@ -1,8 +1,8 @@
-extends Node3D
-
 # 通用武器. 
 # 不同武器, sword, axe ... 共用本脚本
 class_name Weapon
+
+extends Node3D
 
 # --- 配置 ---
 @export var weapon_data: WeaponData

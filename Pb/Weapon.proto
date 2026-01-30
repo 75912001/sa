@@ -24,7 +24,7 @@ enum WeaponType {
 //  WeaponType_Bow = 5; // 弓
 //  WeaponType_Stone = 6; // 石头
 //  WeaponType_Boomerang = 7; // 回旋镖
-  WeaponType_Max = 5; // 武器类型-最大值
+  WeaponType_Max = 5; // 类型-最大值
 }
 
 // 武器-备选
@@ -45,7 +45,7 @@ enum WeaponSwitchType {
 // 武器-记录
 message WeaponRecord {
   uint64 UUID = 1; // 唯一ID
-  map<uint32, uint64> RecordBaseMap = 10; // 资产表 key: WeaponAssetIDRecord value: 数值
+  map<uint32, uint64> RecordBaseMap = 10; // 资产表 key: WeaponAssetIDRecordBase value: 数值
   map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: WeaponRecordPrimary
 }
 
@@ -70,8 +70,8 @@ enum WeaponRecordSecondary {
 
 // 武器-装备数据
 message WeaponEquippedData {
-  repeated uint64 LeftHandBackupWeaponUUIDList = 1; // 左手备选武器UUID列表 [固定数值 WeaponEquipSlot_MAX]
-  repeated uint64 RightHandBackupWeaponUUIDList = 2; // 右手备选武器UUID列表 [固定数值 WeaponEquipSlot_MAX]
+  repeated uint64 LeftHandBackupWeaponUUIDList = 1; // 左手备选武器UUID列表 [固定数值 WeaponBackup_MAX]
+  repeated uint64 RightHandBackupWeaponUUIDList = 2; // 右手备选武器UUID列表 [固定数值 WeaponBackup_MAX]
   uint64  LeftHandWeaponUUID = 3; // 左手武器UUID [0表示空手] [是 LeftHandBackupWeaponUUIDList 中的一个]
   uint64  RightHandWeaponUUID = 4; // 右手武器UUID [0表示空手] [是 RightHandBackupWeaponUUIDList 中的一个]
   uint32 DualWield = 5; // 双持 [ 0: 未双持, 1: 双持-左手武器, 2: 双持-右手武器 ]
