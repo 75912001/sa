@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://ghj60ppwsau0"]
 
-[ext_resource type="PackedScene" path="res://Scenes/Equipment/Base/BaseEquipment.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://dhrua3debxpt0" path="res://Scenes/Equipment/Helmet.tscn" id="1_base"]
 [ext_resource type="PackedScene" uid="uid://dtxg82np4cgbn" path="res://Assets/Equipment/Helmet/Helmet.001/scene.gltf" id="1_model"]
 
 [node name="Helmet" unique_id=425343908 instance=ExtResource("1_base")]
 equipment_id = 12000001
-type = "Helmet"
 
 [node name="MeshModel" parent="." index="1" unique_id=1276904633 instance=ExtResource("1_model")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.385, -0.5, 1.3)
