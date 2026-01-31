@@ -1,11 +1,8 @@
-[gd_resource type="Resource" script_class="ArmorData" format=3]
+[gd_resource type="Resource" script_class="ArmorData" format=3 uid="uid://4tg7r5ofmut0"]
 
-[ext_resource type="Script" uid="uid://c8c7xs6l6yuq0" path="res://Scripts/Equipment/Armor/ArmorData.gd" id="1_script"]
-
+[ext_resource type="Script" uid="uid://c8c7xs6l6yuq0" path="res://Scripts/Equipment/Armor/ArmorData.gd" id="1_ixryr"]
 
 [resource]
-script = ExtResource("1_script")
+script = ExtResource("1_ixryr")
 armor_id = 12000001
-scene_path = "res://Assets/Equipment/Helmet/Helmet.001/Helmet.tscn"
-socket_name = "Head"
-
+scene_path = "uid://ghj60ppwsau0"

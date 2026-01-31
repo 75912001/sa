@@ -3,7 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://dhrua3debxpt0" path="res://Scenes/Equipment/Helmet.tscn" id="1_dqw5s"]
 [ext_resource type="PackedScene" uid="uid://dtxg82np4cgbn" path="res://Assets/Equipment/Helmet/Helmet.001/scene.gltf" id="2_x1yhl"]
 
-[node name="Helmet" unique_id=425343908 instance=ExtResource("1_dqw5s")]
+[node name="Helmet" unique_id=425343908 node_paths=PackedStringArray("model_root") instance=ExtResource("1_dqw5s")]
+model_root = NodePath("MeshModel")
 
 [node name="MeshModel" parent="." index="1" unique_id=1276904633 instance=ExtResource("2_x1yhl")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.385, -0.5, 1.3)
