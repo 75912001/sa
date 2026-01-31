@@ -80,9 +80,8 @@ func _init_armor_mgr() -> void:
 	armor_mgr.name = "ArmorMgr"
 	add_child(armor_mgr)
 
-	# 初始化装备系统 (寻找骨架)
-	# 根据 骨架位置: XBot/Skeleton/GeneralSkeleton
-	var skeleton = get_node_or_null("XBot/Skeleton/GeneralSkeleton")
+	# 初始化装备系统(寻找骨架)
+	var skeleton = get_node(cfg_character_entry.skeletonPath)
 	if skeleton and skeleton is Skeleton3D:
 		armor_mgr.setup(skeleton)
 	else:
