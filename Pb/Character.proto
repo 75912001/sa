@@ -7,6 +7,7 @@ option go_package = "saClient/proto";
 import "Record.proto";
 import "Pet.proto";
 import "Weapon.proto";
+import "Armor.proto";
 
 ////////////////////////////////////////////////////////////
 // 用户 Player
@@ -51,11 +52,13 @@ message CharacterRecord {
   uint64 UUID = 1; // 角色UUID 每个用户的角色唯一ID
   string Nick = 2; // 昵称
   map<uint32, uint64> RecordBaseMap = 10; // 资产表 key: CharacterAssetIDRecordBase value: 数值
-  WeaponEquippedData WeaponEquippedData = 11; // 武器装备数据
+  WeaponEquippedData WeaponEquippedData = 11; // 装备数据-武器
+  ArmorEquippedData ArmorEquippedData = 20; // 装备数据-护甲
 
   map<uint64, RecordPrimary> RecordMap = 1000; // 记录表 key: CharacterRecordPrimary
-  map<uint64, PetRecord> PetRecordMap = 2000; // 宠物记录表 key: 宠物UUID
-  map<uint64, WeaponRecord> WeaponRecordMap = 3000; // 武器记录表 key: 武器UUID
+  map<uint64, PetRecord> PetRecordMap = 2000; // 记录表-宠物 key: 宠物UUID
+  map<uint64, WeaponRecord> WeaponRecordMap = 3000; // 记录表-武器 key: 武器UUID
+  map<uint64, ArmorRecord> ArmorRecordMap = 4000; // 记录表-护甲 key: 护甲UUID
 }
 
 // 角色-资产-ID-记录 [1001,2000]
