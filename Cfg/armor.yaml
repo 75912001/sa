@@ -3,8 +3,10 @@
 
 # 护甲 [12000001,12999999]
 # type: Armor.proto ArmorType
+# resPath: 资源路径
 armors:
   - id: 12000001
     name: "护甲-12000001"
     type: 1
+    resPath: "res://Assets/Equipment/Helmet/Helmet.001/data.tres"
     description: "description-护甲-12000001"

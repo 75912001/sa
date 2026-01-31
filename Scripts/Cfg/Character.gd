@@ -37,6 +37,7 @@ func load(path: String) -> void:
 		entry.roll_distance = item.get("rollDistance", 1800)
 		entry.roll_duration = item.get("rollDuration", 1200)
 		entry.skeletonPath = item.get("skeletonPath", "")
+		assert(not entry.skeletonPath.is_empty(), "角色骨架路径为空: ID:%d" % entry.id)
 		entry.description = item.get("description", "")
 		if characters.has(entry.id):
 			assert(false, "角色ID-重复: %d" % entry.id)

@@ -8,6 +8,7 @@ class CfgArmorEntry extends RefCounted:
 	var id: int
 	var name: String
 	var type: PbArmor.ArmorType
+	var resPath: String
 	var description: String
 	func show() -> String:
 		return name
@@ -29,6 +30,8 @@ func load(path: String) -> void:
 		entry.type = item.get("type", 0)
 		assert(PbArmor.ArmorType.ArmorType_Unknow < entry.type and entry.type < PbArmor.ArmorType.ArmorType_Max,
 			"护甲类型无效: ID:%d, type:%d" % [entry.id, entry.type])
+		entry.resPath = item.get("resPath", "")
+		assert(not entry.resPath.is_empty(), "护甲资源路径为空: ID:%d" % entry.id)
 		entry.description = item.get("description", "")
 		if armors.has(entry.id):
 			assert(false, "护甲ID-重复: %d" % entry.id)
