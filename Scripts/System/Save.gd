@@ -135,8 +135,7 @@ func _create_new_save() -> void:
 
 	var armor_list = armorEquippedData.get_ArmorUUIDList()
 	armor_list[PbArmor.ArmorType.ArmorType_Head] = ArmorUUIDList[0]
-	
-	GGameMgr.player.armor_mgr.equip_armor(ArmorUUIDList[0])
+
 	save()
 
 func _init_systems_with_data() -> void:

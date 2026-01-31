@@ -31,6 +31,7 @@ class_name Character extends CharacterBody3D
 
 # --- 组件引用 ---
 @onready var input_mgr: IInputProvider = $InputMgr
+@onready var armor_mgr: ArmorMgr 
 @onready var weapon_mgr: WeaponMgr = $WeaponMgr
 @onready var animation_mgr: AnimationMgr = $AnimationMgr
 @onready var movement_mgr: MovementMgr = $MovementMgr
@@ -49,6 +50,7 @@ func _ready() -> void:
 	assert(cfg_character_entry != null, "角色配置不存在: %d" % character_id)
 
 	# 初始化所有管理器
+	_init_armor_mgr()
 	_init_weapon_mgr()
 	_init_weapon_switch_mgr()
 	_init_attack_mgr()
