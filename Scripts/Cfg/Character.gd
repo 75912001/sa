@@ -11,6 +11,7 @@ class CfgCharacterEntry extends RefCounted:
 	var rotation_speed: float
 	var roll_distance: int
 	var roll_duration: int
+	var skeletonPath: String
 	var description: String
 	func show() -> String:
 		return name
@@ -35,6 +36,7 @@ func load(path: String) -> void:
 		assert(0.0 < entry.rotation_speed, "角色旋转速度非法: ID:%d" % entry.id)
 		entry.roll_distance = item.get("rollDistance", 1800)
 		entry.roll_duration = item.get("rollDuration", 1200)
+		entry.skeletonPath = item.get("skeletonPath", "")
 		entry.description = item.get("description", "")
 		if characters.has(entry.id):
 			assert(false, "角色ID-重复: %d" % entry.id)

@@ -5,6 +5,7 @@
 # characters.rotationSpeed: 旋转速度
 # characters.rollDistance: 翻滚距离(毫米)
 # characters.rollDuration: 翻滚时长(毫秒)
+# characters.skeletonPath: 骨骼-相对路径
 
 # 角色 [1000001,1999999]
 characters:
@@ -14,4 +15,5 @@ characters:
     rotationSpeed: 6.0
     rollDistance: 1800
     rollDuration: 1200
+    skeletonPath: "XBot/Skeleton/GeneralSkeleton"
     description: "description-角色-1000001"
