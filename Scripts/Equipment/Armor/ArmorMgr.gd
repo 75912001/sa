@@ -43,13 +43,13 @@ func equip_armor(uuid: int) -> void:
 	# 获取挂点 (没有则创建)
 	var attachment = _get_or_create_attachment(cfg.type)
 	if not attachment:
-		push_error("EquipmentMgr: Failed to create attachment for socket: " + cfg.type)
+		push_error("ArmorMgr: Failed to create attachment for socket: " + cfg.type)
 		return
 
 	# 加载场景
 	var scene = load(res_data.scene_path)
 	if not scene:
-		push_error("EquipmentMgr: Failed to load scene: " + res_data.scene_path)
+		push_error("ArmorMgr: Failed to load scene: " + res_data.scene_path)
 		return
 
 	var instance = scene.instantiate()
