@@ -61,7 +61,7 @@ func _create_new_save() -> void:
 	character_record.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_CreateTimestamp, timestamp)
 	character_record.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_LastLoginTimestamp, timestamp)
 	character_record.add_RecordBaseMap(PbCharacter.CharacterAssetIDRecordBase.CharacterAssetIDRecordBase_AvailablePoint, 20)
-	# 武器
+	# 装备-武器
 	var weaponUUIDList: Array[int] = []
 	for weaponID in [11000001,11000002,11000003,11000004]:
 		new_uuid = GUuidMgr.get_new_uuid()
@@ -89,7 +89,7 @@ func _create_new_save() -> void:
 		recordSecondary.add_StrData("str1")
 		recordSecondary.add_StrData("str2")
 		recordSecondary.add_StrData("str3")
-	# 武器-装备
+	# 装备-武器
 	var weaponEquippedData = character_record.new_WeaponEquippedData()
 	for idx in PbWeapon.WeaponBackup.WeaponBackup_MAX:
 		weaponEquippedData.add_LeftHandBackupWeaponUUIDList(0)
@@ -97,9 +97,46 @@ func _create_new_save() -> void:
 	
 	var rightHandBackupWeaponUUIDList = weaponEquippedData.get_RightHandBackupWeaponUUIDList()
 	rightHandBackupWeaponUUIDList[0] = weaponUUIDList[0]
-	#for weaponUUID in weaponUUIDList:
-	#	weaponEquippedData.add_RightHandBackupWeaponUUIDList(weaponUUID)
 	weaponEquippedData.set_RightHandWeaponUUID(weaponUUIDList[0])
+	
+	# 装备-护甲
+	var ArmorUUIDList: Array[int] = []
+	for armorID in [12000001]:
+		new_uuid = GUuidMgr.get_new_uuid()
+		player_record.set_UUID(new_uuid)
+		ArmorUUIDList.append(new_uuid)
+
+		var armorRecord = character_record.add_ArmorRecordMap(new_uuid)
+		armorRecord.set_UUID(new_uuid)
+		armorRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_AssetID, armorID)
+		armorRecord.add_RecordBaseMap(PbAsset.AssetIDRecord.AssetIDRecord_Exp, 0)
+
+		armorRecord.add_RecordBaseMap(PbArmor.ArmorAssetIDRecordBase.ArmorAssetIDRecordBase_DamagePercent, 10)
+		armorRecord.add_RecordBaseMap(PbArmor.ArmorAssetIDRecordBase.ArmorAssetIDRecordBase_CritRate, 20)
+		armorRecord.add_RecordBaseMap(PbArmor.ArmorAssetIDRecordBase.ArmorAssetIDRecordBase_CritDamageBonusRate, 30)
+
+		var recordPrimary = armorRecord.add_RecordMap(PbArmor.ArmorRecordPrimary.ArmorRecordPrimary_Slot)
+		recordPrimary.set_PrimaryID(PbArmor.ArmorRecordPrimary.ArmorRecordPrimary_Slot)
+		var recordSecondary = recordPrimary.add_RecordElementMap(PbArmor.ArmorRecordSecondary.ArmorRecordSecondary_Slot_Data)
+		recordSecondary.set_SecondaryID(PbArmor.ArmorRecordSecondary.ArmorRecordSecondary_Slot_Data)
+		recordSecondary.set_Timestamp(timestamp)
+		# Data
+		recordSecondary.add_Data(1)
+		recordSecondary.add_Data(2)
+		recordSecondary.add_Data(3)
+		# StrData
+		recordSecondary.add_StrData("str1")
+		recordSecondary.add_StrData("str2")
+		recordSecondary.add_StrData("str3")
+	# 装备-护甲
+	var armorEquippedData = character_record.new_ArmorEquippedData()
+	for idx in PbArmor.ArmorType.ArmorType_Max:
+		armorEquippedData.add_ArmorUUIDList(0)
+
+	var armor_list = armorEquippedData.get_ArmorUUIDList()
+	armor_list[PbArmor.ArmorType.ArmorType_Head] = ArmorUUIDList[0]
+	
+	GGameMgr.player.armor_mgr.equip_armor(ArmorUUIDList[0])
 	save()
 
 func _init_systems_with_data() -> void:
