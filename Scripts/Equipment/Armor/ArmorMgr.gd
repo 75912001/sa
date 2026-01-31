@@ -20,12 +20,6 @@ class _ArmorData:
 var _armor_attachments_dictionary: Dictionary = {} # key: PbArmor.ArmorType, value: BoneAttachment3D
 var _armor_equipped_dictionary: Dictionary = {} # key: PbArmor.ArmorType, value: _ArmorData
 
-# --- 配置---
-# 这里暂时硬编码，以后可以改为从 yaml 加载
-var _armor_configs := {
-	12000001: preload("res://Assets/Equipment/Helmet/Helmet.001/data.tres")
-}
-
 # --- 初始化 ---
 func setup(skeleton: Skeleton3D) -> void:
 	_skeleton = skeleton
@@ -41,13 +35,7 @@ func setup(skeleton: Skeleton3D) -> void:
 # 装备
 func equip_armor(uuid: int) -> void:
 	var cfg = GPlayerData.get_armor_cfg_by_uuid(uuid)
-	
-	# 获取配置
-	if not _armor_configs.has(cfg.id):
-		push_warning("EquipmentMgr: Unknown armor id: %d" % cfg.id)
-		return
-
-	var data: ArmorData = _armor_configs[cfg.id]
+	var res_data = load(cfg.resPath) as ArmorData
 
 	# 卸下同位置旧装备
 	unequip_armor(cfg.type)
@@ -59,9 +47,9 @@ func equip_armor(uuid: int) -> void:
 		return
 
 	# 加载场景
-	var scene = load(data.scene_path)
+	var scene = load(res_data.scene_path)
 	if not scene:
-		push_error("EquipmentMgr: Failed to load scene: " + data.scene_path)
+		push_error("EquipmentMgr: Failed to load scene: " + res_data.scene_path)
 		return
 
 	var instance = scene.instantiate()
