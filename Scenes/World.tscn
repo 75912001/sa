@@ -26,7 +26,6 @@ uv1_triplanar = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1479600953]
 transform = Transform3D(0.7071068, -0.61237246, 0.35355338, 0, 0.49999997, 0.86602545, -0.7071068, -0.61237246, 0.35355338, 9.114449, 9.573223, 0)
-light_energy = 4.181
 shadow_enabled = true
 
 [node name="CameraPivot" parent="." unique_id=1927804392 node_paths=PackedStringArray("map_mesh") instance=ExtResource("1_d1c63")]

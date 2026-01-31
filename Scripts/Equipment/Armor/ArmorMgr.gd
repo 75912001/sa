@@ -7,10 +7,18 @@ signal armor_unequipped(armor_type: PbArmor.ArmorType)
 # --- 依赖 ---
 var _skeleton: Skeleton3D
 
+# --- 内部结构定义 ---
+# 用于封装单个部位的装备数据
+class _ArmorData:
+	var uuid: int = 0
+	var instance: Node = null
+	func _init(p_uuid: int, p_instance: Node):
+		uuid = p_uuid
+		instance = p_instance
+
 # --- 内部状态 ---
 var _armor_attachments_dictionary: Dictionary = {} # key: PbArmor.ArmorType, value: BoneAttachment3D
-var _armor_equipped_dictionary: Dictionary = {} # key: PbArmor.ArmorType, value: armor_uuid (int)
-var _armor_instances_dictionary: Dictionary = {} # key: PbArmor.ArmorType, value: Node (Instance)
+var _armor_equipped_dictionary: Dictionary = {} # key: PbArmor.ArmorType, value: _ArmorData
 
 # --- 配置---
 # 这里暂时硬编码，以后可以改为从 yaml 加载
@@ -59,19 +67,18 @@ func equip_armor(uuid: int) -> void:
 	var instance = scene.instantiate()
 	attachment.add_child(instance)
 
-	_armor_instances_dictionary[cfg.type] = instance
-	_armor_equipped_dictionary[cfg.type] = uuid
+	var armorData = _ArmorData.new(uuid, instance)
+	_armor_equipped_dictionary[cfg.type] = armorData
 
 	armor_equipped.emit(uuid)
 	print("EquipmentMgr: Equipped armor %d on %s" % [uuid, cfg.type])
 
 # 卸下
 func unequip_armor(armor_type: PbArmor.ArmorType) -> void:
-	if !_armor_instances_dictionary.has(armor_type): # 没有
+	if !_armor_equipped_dictionary.has(armor_type): # 没有
 		return
-	var instance = _armor_instances_dictionary[armor_type]
-	instance.queue_free()
-	_armor_instances_dictionary.erase(armor_type)
+	var armorData = _armor_equipped_dictionary[armor_type]
+	armorData.instance.queue_free()
 	_armor_equipped_dictionary.erase(armor_type)
 	armor_unequipped.emit(armor_type)
 
