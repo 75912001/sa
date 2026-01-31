@@ -10,6 +10,7 @@ class CfgWeaponEntry extends RefCounted:
 	var type: PbWeapon.WeaponType
 	var attack: int
 	var attack_duration_ms: int = 0  # 攻击动画时长(毫秒)
+	var resPath: String
 	var description: String
 	func show() -> String:
 		return name
@@ -34,6 +35,8 @@ func load(path: String) -> void:
 		entry.attack = item.get("attack", 0)
 		assert(0 < entry.attack, "武器攻击力非法: ID:%d " % entry.id)
 		entry.attack_duration_ms = item.get("attack_duration_ms", 0)
+		entry.resPath = item.get("resPath", "")
+		assert(not entry.resPath.is_empty(), "武器资源路径为空: ID:%d" % entry.id)
 		entry.description = item.get("description", "")
 		if weapons.has(entry.id):
 			assert(false, "武器ID-重复: %d" % entry.id)

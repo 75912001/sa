@@ -3,28 +3,34 @@
 
 # attack_duration_ms 攻击动画时长 毫秒 [0/default: 原速]
 # 武器 [11000001,11999999]
+# resPath: 资源路径
+
 weapons:
   - id: 11000001
     name: "武器-11000001"
     type: 1
     attack: 10
     attack_duration_ms: 800
+    resPath: "res://Assets/Equipment/Weapon/Sword.001/data.tres"
     description: "description-武器-11000001"
   - id: 11000002
     name: "武器-11000002"
     type: 2
     attack: 20
     attack_duration_ms: 1500
+    resPath: "res://Assets/Equipment/Weapon/Sword.002/data.tres"
     description: "description-武器-11000002"
   - id: 11000003
     name: "武器-11000003"
     type: 3
     attack: 30
     attack_duration_ms: 1500
+    resPath: "res://Assets/Equipment/Weapon/Sword.003/data.tres"
     description: "description-武器-11000003"
   - id: 11000004
     name: "武器-11000004"
     type: 4
     attack: 40
     attack_duration_ms: 1500
+    resPath: "res://Assets/Equipment/Weapon/Sword.004/data.tres"
     description: "description-武器-11000004"
