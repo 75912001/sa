@@ -689,11 +689,12 @@ class PBPacker:
 
 enum ArmorType {
 	ArmorType_Unknow = 0,
-	ArmorType_Head = 1,
-	ArmorType_Body = 2,
+	ArmorType_Helmet = 1,
+	ArmorType_Chest = 2,
 	ArmorType_Leg = 3,
-	ArmorType_Arm = 4,
-	ArmorType_Max = 5
+	ArmorType_Gauntlets = 4,
+	ArmorType_Boots = 5,
+	ArmorType_Max = 6
 }
 
 class ArmorRecord:

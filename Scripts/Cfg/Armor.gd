@@ -27,7 +27,7 @@ func load(path: String) -> void:
 		entry.name = item.get("name", "")
 		assert(not entry.name.is_empty(), "护甲名称为空: ID:%d" % entry.id)
 		entry.type = item.get("type", 0)
-		assert(PbArmor.ArmorType.ArmorType_Head <= entry.type and entry.type < PbArmor.ArmorType.ArmorType_Max,
+		assert(PbArmor.ArmorType.ArmorType_Unknow < entry.type and entry.type < PbArmor.ArmorType.ArmorType_Max,
 			"护甲类型无效: ID:%d, type:%d" % [entry.id, entry.type])
 		entry.description = item.get("description", "")
 		if armors.has(entry.id):

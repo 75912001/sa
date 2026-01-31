@@ -134,7 +134,7 @@ func _create_new_save() -> void:
 		armorEquippedData.add_ArmorUUIDList(0)
 
 	var armor_list = armorEquippedData.get_ArmorUUIDList()
-	armor_list[PbArmor.ArmorType.ArmorType_Head] = ArmorUUIDList[0]
+	armor_list[PbArmor.ArmorType.ArmorType_Helmet] = ArmorUUIDList[0]
 
 	save()
 
