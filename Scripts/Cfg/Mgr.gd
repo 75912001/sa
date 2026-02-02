@@ -7,11 +7,13 @@ extends Node
 var cfg_weapon_mgr: CfgWeaponMgr
 var cfg_character_mgr: CfgCharacterMgr
 var cfg_armor_mgr: CfgArmorMgr
+var cfg_map_mgr: CfgMapMgr
 
 func _ready() -> void:
 	cfg_weapon_mgr = CfgWeaponMgr.new()
 	cfg_character_mgr = CfgCharacterMgr.new()
 	cfg_armor_mgr = CfgArmorMgr.new()
+	cfg_map_mgr = CfgMapMgr.new()
 	_load_all_cfg()
 
 # 加载所有配置
@@ -20,14 +22,17 @@ func _load_all_cfg() -> void:
 	cfg_weapon_mgr.load("res://Cfg/weapon.yaml")
 	cfg_character_mgr.load("res://Cfg/character.yaml")
 	cfg_armor_mgr.load("res://Cfg/armor.yaml")
+	cfg_map_mgr.load("res://Cfg/map.yaml")
 	# --- 检查 ---
 	cfg_weapon_mgr.check()
 	cfg_character_mgr.check()
 	cfg_armor_mgr.check()
+	cfg_map_mgr.check()
 	# --- 组装 ---
 	cfg_weapon_mgr.assemble()
 	cfg_character_mgr.assemble()
 	cfg_armor_mgr.assemble()
+	cfg_map_mgr.assemble()
 
 	prints("配置加载完成")
 
