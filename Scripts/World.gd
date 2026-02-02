@@ -36,3 +36,4 @@ func load_map(map_id: int) -> void:
 	
 	# 设置玩家位置
 	GGameMgr.player.global_position = Vector3(0, 0, 0)
+
