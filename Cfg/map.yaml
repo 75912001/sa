@@ -6,9 +6,10 @@
 maps:
   - assetID: 2000001
     name: "地图1"
+    resPath: "res://Scenes/Maps/Map.2000001.tscn"
+    bgmPath: "res://Assets/Audio/BGM/sabgm_t0.wav"
 
   - assetID: 2000002
     name: "地图2"
-
-  - assetID: 2000003
-    name: "地图3"
+    resPath: "res://Scenes/Maps/Map.2000002.tscn"
+    bgmPath: "res://Assets/Audio/BGM/sabgm_t0.wav"
