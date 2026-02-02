@@ -7,6 +7,8 @@ extends RefCounted
 class CfgMapEntry extends RefCounted:
 	var id: int
 	var name: String
+	var res_path: String
+	var bgm_path: String
 	func show() -> String:
 		return name
 
@@ -24,6 +26,10 @@ func load(path: String) -> void:
 		assert(PbAsset.AssetIDRange.AssetIDRange_Map_Start <= entry.id && entry.id <= PbAsset.AssetIDRange.AssetIDRange_Map_End, "地图ID-超出范围: %d" % entry.id)
 		entry.name = item.get("name", "")
 		assert(not entry.name.is_empty(), "地图名称为空: ID:%d" % entry.id)
+		entry.res_path = item.get("resPath", "")
+		assert(not entry.res_path.is_empty(), "地图资源为空: ID:%d" % entry.id)
+		entry.bgm_path = item.get("bgmPath", "")
+		assert(not entry.bgm_path.is_empty(), "地图bgm为空: ID:%d" % entry.id)
 		if maps.has(entry.id):
 			assert(false, "地图ID-重复: %d" % entry.id)
 		else:
