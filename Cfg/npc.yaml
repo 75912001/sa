@@ -22,8 +22,27 @@
 
 npcs:
   - id: 5000001
-    name: "守卫"
-    description: "初级-守卫"
+    name: "守卫-5000001"
+    description: "初级-守卫-5000001"
+    elemental:
+      earth: 0
+      water: 0
+      fire: 10
+      wind: 0
+    attributes:
+      attack: 8
+      defense: 4
+      agility: 6
+      hp: 5
+      critRate: 0.12
+      counterRate: 0.08
+      dodgeRate: 0.15
+      hitRate: 0.92
+      critDamageBonusRate: 0.6
+      statusResistRate: 0.25
+  - id: 5000002
+    name: "守卫-5000002"
+    description: "初级-守卫-5000002"
     elemental:
       earth: 0
       water: 0
