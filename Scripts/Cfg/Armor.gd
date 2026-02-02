@@ -23,8 +23,7 @@ func load(path: String) -> void:
 	for item in armors_array:
 		var entry := CfgArmorEntry.new()
 		entry.id = item.get("id", 0)
-		assert(PbAsset.AssetIDRange.AssetIDRange_Armor_Start <= entry.id && entry.id <= PbAsset.AssetIDRange.AssetIDRange_Armor_End,
-			"护甲ID-超出范围: %d" % entry.id)
+		assert(PbAsset.AssetIDRange.AssetIDRange_Armor_Start <= entry.id && entry.id <= PbAsset.AssetIDRange.AssetIDRange_Armor_End, "护甲ID-超出范围: %d" % entry.id)
 		entry.name = item.get("name", "")
 		assert(not entry.name.is_empty(), "护甲名称为空: ID:%d" % entry.id)
 		entry.type = item.get("type", 0)
