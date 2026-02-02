@@ -1,0 +1,254 @@
+[gd_scene format=3 uid="uid://cgb8yaijh2omo"]
+
+[ext_resource type="PackedScene" uid="uid://bqpd5cm5dcy71" path="res://Assets/Characters/XBot.glb" id="1_mdl7e"]
+[ext_resource type="Script" uid="uid://btgkhykbev6d6" path="res://Scripts/Player.gd" id="1_oi5ui"]
+[ext_resource type="Script" uid="uid://bkp6agvjjm47t" path="res://Scripts/Equipment/Weapon/WeaponMgr.gd" id="2_52ee3"]
+[ext_resource type="Script" uid="uid://ruoxwj2thpuw" path="res://Scripts/Animation/MovementMgr.gd" id="2_megsn"]
+[ext_resource type="Animation" uid="uid://cmym1cbyn4tg5" path="res://Assets/Animations/Library/Unarmed/Idle.res" id="2_qu4a1"]
+[ext_resource type="Animation" uid="uid://biyh1eubhiecd" path="res://Assets/Animations/Library/Unarmed/Jump.res" id="3_70d11"]
+[ext_resource type="Animation" uid="uid://dygqhwo1805bn" path="res://Assets/Animations/Library/SwordAndShield/Idle.res" id="3_nn08x"]
+[ext_resource type="Script" uid="uid://d1unb2snnejk0" path="res://Scripts/Animation/AnimationMgr.gd" id="3_ulo2v"]
+[ext_resource type="Animation" uid="uid://e3vujykiovi8" path="res://Assets/Animations/Library/Unarmed/Walking.res" id="4_cw2d6"]
+[ext_resource type="Script" uid="uid://bu0vvm1a5hov7" path="res://Scripts/Animation/AttackMgr.gd" id="7_ulo2v"]
+[ext_resource type="Script" uid="uid://btx5u8pehj2ri" path="res://Scripts/Animation/RollMgr.gd" id="8_5v66d"]
+[ext_resource type="Animation" uid="uid://ywb7kg2bg88c" path="res://Assets/Animations/Library/SwordAndShield/Walk.res" id="8_ksbbd"]
+[ext_resource type="Animation" uid="uid://bm2d4g8pfoe07" path="res://Assets/Animations/Library/SwordAndShield/DrawSword.res" id="9_miouo"]
+[ext_resource type="Animation" uid="uid://dbxxuoc00n3h3" path="res://Assets/Animations/Library/SwordAndShield/SheathSword.1.res" id="10_1e7my"]
+[ext_resource type="Animation" uid="uid://25qcudnomvvf" path="res://Assets/Animations/Library/SwordAndShield/SheathSword.2.res" id="11_arntx"]
+[ext_resource type="Animation" uid="uid://ccb7gvpctg52q" path="res://Assets/Animations/Library/Roll/Roll.res" id="12_x63xi"]
+[ext_resource type="Animation" uid="uid://2xm16atxaaxj" path="res://Assets/Animations/Library/SwordAndShield/Attack.Slash.2.8.res" id="13_lslt6"]
+[ext_resource type="Animation" uid="uid://o4xndrx00au6" path="res://Assets/Animations/Library/Unarmed/DrawSword.res" id="13_o3h8g"]
+[ext_resource type="Script" uid="uid://qat0bt2h635k" path="res://Scripts/Animation/WeaponSwitchMgr.gd" id="14_switch"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mdl7e"]
+radius = 0.4
+height = 1.6
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qu4a1"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x63xi"]
+_data = {
+&"Roll": ExtResource("12_x63xi")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5ixxa"]
+_data = {
+&"Attack.Slash.2.8": ExtResource("13_lslt6"),
+&"DrawSword": ExtResource("9_miouo"),
+&"Idle": ExtResource("3_nn08x"),
+&"SheathSword.1": ExtResource("10_1e7my"),
+&"SheathSword.2": ExtResource("11_arntx"),
+&"Walk": ExtResource("8_ksbbd")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nn08x"]
+_data = {
+&"DrawSword": ExtResource("13_o3h8g"),
+&"Idle": ExtResource("2_qu4a1"),
+&"Jump": ExtResource("3_70d11"),
+&"Walking": ExtResource("4_cw2d6")
+}
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_ulo2v"]
+resource_name = "Action_OneShot"
+fadein_time = 0.1
+fadeout_time = 0.1
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_ulo2v"]
+resource_name = "Action_Type"
+xfade_time = 0.1
+input_0/name = "attack"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "roll"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qidb7"]
+resource_name = "Animation"
+animation = &"SwordAndShield/Attack.Slash.2.8"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_m0x7a"]
+resource_name = "Attack_TimeScale"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_utwlt"]
+resource_name = "Roll"
+animation = &"Roll/Roll"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_5v66d"]
+resource_name = "Roll_TimeScale"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lslt6"]
+resource_name = "blend"
+filter_enabled = true
+filters = ["%GeneralSkeleton:Chest", "%GeneralSkeleton:Head", "%GeneralSkeleton:LeftHand", "%GeneralSkeleton:LeftIndexDistal", "%GeneralSkeleton:LeftIndexIntermediate", "%GeneralSkeleton:LeftIndexProximal", "%GeneralSkeleton:LeftLittleDistal", "%GeneralSkeleton:LeftLittleIntermediate", "%GeneralSkeleton:LeftLittleProximal", "%GeneralSkeleton:LeftLowerArm", "%GeneralSkeleton:LeftMiddleDistal", "%GeneralSkeleton:LeftMiddleIntermediate", "%GeneralSkeleton:LeftMiddleProximal", "%GeneralSkeleton:LeftRingDistal", "%GeneralSkeleton:LeftRingIntermediate", "%GeneralSkeleton:LeftRingProximal", "%GeneralSkeleton:LeftShoulder", "%GeneralSkeleton:LeftThumbDistal", "%GeneralSkeleton:LeftThumbMetacarpal", "%GeneralSkeleton:LeftThumbProximal", "%GeneralSkeleton:LeftUpperArm", "%GeneralSkeleton:Neck", "%GeneralSkeleton:RightHand", "%GeneralSkeleton:RightIndexDistal", "%GeneralSkeleton:RightIndexIntermediate", "%GeneralSkeleton:RightIndexProximal", "%GeneralSkeleton:RightLittleDistal", "%GeneralSkeleton:RightLittleIntermediate", "%GeneralSkeleton:RightLittleProximal", "%GeneralSkeleton:RightLowerArm", "%GeneralSkeleton:RightMiddleDistal", "%GeneralSkeleton:RightMiddleIntermediate", "%GeneralSkeleton:RightMiddleProximal", "%GeneralSkeleton:RightRingDistal", "%GeneralSkeleton:RightRingIntermediate", "%GeneralSkeleton:RightRingProximal", "%GeneralSkeleton:RightShoulder", "%GeneralSkeleton:RightThumbDistal", "%GeneralSkeleton:RightThumbMetacarpal", "%GeneralSkeleton:RightThumbProximal", "%GeneralSkeleton:RightUpperArm", "%GeneralSkeleton:Spine", "%GeneralSkeleton:UpperChest"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lslt6"]
+resource_name = "Unarmed_Idle"
+animation = &"Unarmed/Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ulo2v"]
+resource_name = "Unarmed_Walking"
+animation = &"Unarmed/Walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5v66d"]
+xfade_time = 0.01
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m0x7a"]
+xfade_time = 0.01
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ulo2v"]
+xfade_time = 0.01
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ulo2v"]
+resource_name = "lower_body_sm"
+states/End/position = Vector2(1291, 140)
+states/Start/position = Vector2(188, 140)
+states/Unarmed_Idle/node = SubResource("AnimationNodeAnimation_lslt6")
+states/Unarmed_Idle/position = Vector2(431, 140)
+states/Unarmed_Walking/node = SubResource("AnimationNodeAnimation_ulo2v")
+states/Unarmed_Walking/position = Vector2(745, 140)
+transitions = ["Unarmed_Walking", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_5v66d"), "Unarmed_Idle", "Unarmed_Walking", SubResource("AnimationNodeStateMachineTransition_m0x7a"), "Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_ulo2v")]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_arntx"]
+resource_name = "SwordAndShield_DrawSword"
+animation = &"SwordAndShield/DrawSword"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1iu4k"]
+resource_name = "SwordAndShield_Idle"
+animation = &"SwordAndShield/Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m0x7a"]
+resource_name = "SwordAndShield_SheathSword_1"
+animation = &"SwordAndShield/SheathSword.1"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5v66d"]
+resource_name = "SwordAndShield_SheathSword_2"
+animation = &"SwordAndShield/SheathSword.2"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_x63xi"]
+resource_name = "Unarmed_DrawSword"
+animation = &"Unarmed/DrawSword"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i2e8t"]
+resource_name = "Unarmed_Idle"
+animation = &"Unarmed/Idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qidb7"]
+xfade_time = 0.01
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_70hv0"]
+xfade_time = 0.01
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_utwlt"]
+xfade_time = 0.01
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kih0c"]
+xfade_time = 0.01
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lslt6"]
+xfade_time = 0.01
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_arntx"]
+xfade_time = 0.01
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_1iu4k"]
+resource_name = "upper_body_sm"
+states/End/position = Vector2(1416, 399)
+states/Start/position = Vector2(70, 100)
+states/SwordAndShield_DrawSword/node = SubResource("AnimationNodeAnimation_arntx")
+states/SwordAndShield_DrawSword/position = Vector2(618, 189)
+states/SwordAndShield_Idle/node = SubResource("AnimationNodeAnimation_1iu4k")
+states/SwordAndShield_Idle/position = Vector2(1238, 100)
+states/SwordAndShield_SheathSword_1/node = SubResource("AnimationNodeAnimation_m0x7a")
+states/SwordAndShield_SheathSword_1/position = Vector2(1238, 334)
+states/SwordAndShield_SheathSword_2/node = SubResource("AnimationNodeAnimation_5v66d")
+states/SwordAndShield_SheathSword_2/position = Vector2(371, 329)
+states/Unarmed_DrawSword/node = SubResource("AnimationNodeAnimation_x63xi")
+states/Unarmed_DrawSword/position = Vector2(618, 100)
+states/Unarmed_Idle/node = SubResource("AnimationNodeAnimation_i2e8t")
+states/Unarmed_Idle/position = Vector2(371, 100)
+transitions = ["Start", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_qidb7"), "Unarmed_Idle", "Unarmed_DrawSword", SubResource("AnimationNodeStateMachineTransition_70hv0"), "SwordAndShield_SheathSword_1", "SwordAndShield_SheathSword_2", SubResource("AnimationNodeStateMachineTransition_utwlt"), "SwordAndShield_SheathSword_2", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_kih0c"), "Unarmed_DrawSword", "SwordAndShield_DrawSword", SubResource("AnimationNodeStateMachineTransition_lslt6"), "SwordAndShield_DrawSword", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_arntx")]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_m0x7a"]
+graph_offset = Vector2(-247.94366, 57.474884)
+nodes/output/position = Vector2(1220, 200)
+nodes/lower_body_sm/node = SubResource("AnimationNodeStateMachine_ulo2v")
+nodes/lower_body_sm/position = Vector2(180, 120)
+nodes/upper_body_sm/node = SubResource("AnimationNodeStateMachine_1iu4k")
+nodes/upper_body_sm/position = Vector2(180, 320)
+nodes/blend/node = SubResource("AnimationNodeBlend2_lslt6")
+nodes/blend/position = Vector2(520, 180)
+nodes/Action_OneShot/node = SubResource("AnimationNodeOneShot_ulo2v")
+nodes/Action_OneShot/position = Vector2(880, 180)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_qidb7")
+nodes/Animation/position = Vector2(80, 540)
+nodes/Action_Type/node = SubResource("AnimationNodeTransition_ulo2v")
+nodes/Action_Type/position = Vector2(700, 500)
+nodes/Roll/node = SubResource("AnimationNodeAnimation_utwlt")
+nodes/Roll/position = Vector2(220, 820)
+nodes/Attack_TimeScale/node = SubResource("AnimationNodeTimeScale_m0x7a")
+nodes/Attack_TimeScale/position = Vector2(440, 480)
+nodes/Roll_TimeScale/node = SubResource("AnimationNodeTimeScale_5v66d")
+nodes/Roll_TimeScale/position = Vector2(440, 780)
+node_connections = [&"output", 0, &"Action_OneShot", &"blend", 0, &"lower_body_sm", &"blend", 1, &"upper_body_sm", &"Action_OneShot", 0, &"blend", &"Action_OneShot", 1, &"Action_Type", &"Action_Type", 0, &"Attack_TimeScale", &"Action_Type", 1, &"Roll_TimeScale", &"Attack_TimeScale", 0, &"Animation", &"Roll_TimeScale", 0, &"Roll"]
+
+[node name="Character" type="CharacterBody3D" unique_id=210907959 groups=["Player"]]
+script = ExtResource("1_oi5ui")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1785551669]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1854881102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("CapsuleShape3D_mdl7e")
+
+[node name="AnimationMgr" type="Node" parent="." unique_id=1109611017]
+script = ExtResource("3_ulo2v")
+animation_tree_path = NodePath("../AnimationTree")
+
+[node name="MovementMgr" type="Node" parent="." unique_id=751856138]
+script = ExtResource("2_megsn")
+
+[node name="WeaponMgr" type="Node" parent="." unique_id=1272631338]
+script = ExtResource("2_52ee3")
+weapon_attachment_path = NodePath("../XBot/Skeleton/GeneralSkeleton/RightHandAttachment")
+
+[node name="WeaponSwitchMgr" type="Node" parent="." unique_id=233422225]
+script = ExtResource("14_switch")
+
+[node name="AttackMgr" type="Node" parent="." unique_id=1768348230]
+script = ExtResource("7_ulo2v")
+
+[node name="RollMgr" type="Node" parent="." unique_id=1949914716]
+script = ExtResource("8_5v66d")
+
+[node name="XBot" parent="." unique_id=520564406 instance=ExtResource("1_mdl7e")]
+
+[node name="RightHandAttachment" type="BoneAttachment3D" parent="XBot/Skeleton/GeneralSkeleton" index="2" unique_id=1882066302]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -0.7133314, 1.4405689, -0.055485006)
+bone_name = "RightHand"
+bone_idx = 10
+
+[node name="AnimationPlayer" parent="XBot" index="1"]
+libraries/ = SubResource("AnimationLibrary_qu4a1")
+libraries/Roll = SubResource("AnimationLibrary_x63xi")
+libraries/SwordAndShield = SubResource("AnimationLibrary_5ixxa")
+libraries/Unarmed = SubResource("AnimationLibrary_nn08x")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1922765421]
+root_node = NodePath("../XBot")
+tree_root = SubResource("AnimationNodeBlendTree_m0x7a")
+anim_player = NodePath("../XBot/AnimationPlayer")
+parameters/blend/blend_amount = 1.0
+parameters/Action_OneShot/active = false
+parameters/Action_OneShot/internal_active = false
+parameters/Action_OneShot/request = 0
+parameters/Action_Type/current_state = ""
+parameters/Action_Type/transition_request = ""
+parameters/Action_Type/current_index = -1
+parameters/Attack_TimeScale/scale = 1.0
+parameters/Roll_TimeScale/scale = 2.0
+
+[editable path="XBot"]
