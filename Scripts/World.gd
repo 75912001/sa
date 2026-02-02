@@ -35,13 +35,4 @@ func load_map(map_id: int) -> void:
 	print("World: 已加载地图 [%s]" % map_config.name)
 	
 	# 设置玩家位置
-	if GGameMgr.player:
-		var spawn_point = map_instance.find_child("SpawnPoint")
-		if spawn_point:
-			GGameMgr.player.global_position = spawn_point.global_position
-			# 如果出生点有旋转信息，也可以同步
-			GGameMgr.player.global_rotation.y = spawn_point.global_rotation.y
-		else:
-			GGameMgr.player.global_position = Vector3(0, 0, 0)
-	else:
-		push_error("World: GGameMgr.player 为空，无法设置玩家位置")
+	GGameMgr.player.global_position = Vector3(0, 0, 0)
