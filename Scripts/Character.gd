@@ -52,7 +52,7 @@ func _ready() -> void:
 
 	# 初始化装备系统(寻找骨架)
 	skeleton = get_node(cfg_character_entry.skeletonPath)
-	assert(skeleton and skeleton is Skeleton3D, "coule not find Skeleton3D context" % cfg_character_entry.skeletonPath)
+	assert(skeleton and skeleton is Skeleton3D, "coule not find Skeleton3D context %s" % cfg_character_entry.skeletonPath)
 	
 	# 初始化所有管理器
 	_init_armor_mgr()
