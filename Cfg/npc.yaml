@@ -1,0 +1,42 @@
+# NPC-配置
+# 任何修改此文件的行为都需要通知客户端和服务端开发人员
+
+# NPC [5000001,5999999]
+
+# elemental 元素属性: (整数, 范围[0,10], 总和必须等于10)
+# elemental.earth-土
+# elemental.water-水
+# elemental.fire-火
+# elemental.wind-风
+# attributes 属性
+# attributes.attack - 攻击
+# attributes.defense - 防御
+# attributes.agility - 敏捷
+# attributes.hp - 生命
+# attributes.critRate - 暴击率 范围[0,1] [默认: 0.1]
+# attributes.counterRate - 反击率 范围[0,1] [默认: 0.1]
+# attributes.dodgeRate - 闪避率 范围[0,1] [默认: 0.1]
+# attributes.hitRate - 命中率 范围[0,1] [默认: 0.9]
+# attributes.critDamageBonusRate - 暴击伤害加成倍数 范围[0,1] [默认: 0.5]
+# attributes.statusResistRate - 异常状态抗性比率 范围[0,1] [默认: 0.2]
+
+npcs:
+  - id: 5000001
+    name: "守卫"
+    description: "初级-守卫"
+    elemental:
+      earth: 0
+      water: 0
+      fire: 10
+      wind: 0
+    attributes:
+      attack: 8
+      defense: 4
+      agility: 6
+      hp: 5
+      critRate: 0.12
+      counterRate: 0.08
+      dodgeRate: 0.15
+      hitRate: 0.92
+      critDamageBonusRate: 0.6
+      statusResistRate: 0.25
