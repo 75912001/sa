@@ -5,7 +5,7 @@ signal armor_equipped(armor_uuid: int)
 signal armor_unequipped(armor_type: PbArmor.ArmorType)
 
 # --- 依赖 ---
-var _skeleton: Skeleton3D
+var _character: Character
 
 # --- 内部结构定义 ---
 # 用于封装单个部位的装备数据
@@ -21,8 +21,9 @@ var _armor_attachments_dictionary: Dictionary = {} # key: PbArmor.ArmorType, val
 var _armor_equipped_dictionary: Dictionary = {} # key: PbArmor.ArmorType, value: _ArmorData
 
 # --- 初始化 ---
-func setup(skeleton: Skeleton3D) -> void:
-	_skeleton = skeleton
+func setup(character: Character) -> void:
+	_character = character
+	name = "ArmorMgr"
 
 	# 从 Save 数据读取并装备护甲
 	var equipped_data = GSave.character_record.get_ArmorEquippedData()
@@ -83,26 +84,15 @@ func _get_or_create_attachment(armor_type: PbArmor.ArmorType) -> BoneAttachment3
 
 	# 检查场景中是否已经手动创建了
 	# 遍历 Skeleton 的子节点找 BoneAttachment3D
-	for child in _skeleton.get_children():
+	for child in _character.skeleton.get_children():
 		if child is BoneAttachment3D and child.bone_name == bone_name:
 			_armor_attachments_dictionary[bone_name] = child
 			return child
 
-	# 动态创建
-	if _skeleton.find_bone(bone_name) == -1:
-		push_warning("EquipmentMgr: Bone not found: " + bone_name + ". Trying Mixamorig prefix...")
-		# 尝试加上常用的 Mixamo 前缀
-		var mixamo_name = "Mixamorig:" + bone_name
-		if _skeleton.find_bone(mixamo_name) != -1:
-			bone_name = mixamo_name
-		else:
-			push_error("EquipmentMgr: Bone absolutely not found: " + bone_name)
-			return null
-
 	var attachment = BoneAttachment3D.new()
 	attachment.bone_name = bone_name
 	attachment.name = bone_name + "Attachment"
-	_skeleton.add_child(attachment)
+	_character.skeleton.add_child(attachment)
 
 	_armor_attachments_dictionary[bone_name] = attachment # Cache original key
 	return attachment

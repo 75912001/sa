@@ -41,6 +41,7 @@ class_name Character extends CharacterBody3D
 
 # --- 配置 ---
 var cfg_character_entry: CfgCharacterMgr.CfgCharacterEntry
+var skeleton: Skeleton3D
 
 func _ready() -> void:
 	print("Character._ready() called - character_id: %d" % character_id)
@@ -49,6 +50,10 @@ func _ready() -> void:
 	cfg_character_entry = GCfgMgr.cfg_character_mgr.get_character(character_id)
 	assert(cfg_character_entry != null, "角色配置不存在: %d" % character_id)
 
+	# 初始化装备系统(寻找骨架)
+	skeleton = get_node(cfg_character_entry.skeletonPath)
+	assert(skeleton and skeleton is Skeleton3D, "coule not find Skeleton3D context" % cfg_character_entry.skeletonPath)
+	
 	# 初始化所有管理器
 	_init_armor_mgr()
 	_init_weapon_mgr()
@@ -77,15 +82,9 @@ func _ready_subclass() -> void:
 func _init_armor_mgr() -> void:
 	# --- 装备管理器 ---
 	armor_mgr = ArmorMgr.new()
-	armor_mgr.name = "ArmorMgr"
 	add_child(armor_mgr)
 
-	# 初始化装备系统(寻找骨架)
-	var skeleton = get_node(cfg_character_entry.skeletonPath)
-	if skeleton and skeleton is Skeleton3D:
-		armor_mgr.setup(skeleton)
-	else:
-		push_error("Player: Could not find Skeleton3D context for EquipmentMgr")
+	armor_mgr.setup(self)
 
 ############################################################
 # WeaponMgr

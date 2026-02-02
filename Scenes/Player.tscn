@@ -198,7 +198,6 @@ node_connections = [&"output", 0, &"Action_OneShot", &"blend", 0, &"lower_body_s
 
 [node name="Player" type="CharacterBody3D" unique_id=210907959 groups=["Player"]]
 script = ExtResource("1_script")
-character_id = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1785551669]
 

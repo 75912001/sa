@@ -13,7 +13,7 @@ characters:
     name: "角色-1000001"
     speed: 1.0
     rotationSpeed: 6.0
-    rollDistance: 1800
+    rollDistance: 2200
     rollDuration: 1200
     skeletonPath: "XBot/Skeleton/GeneralSkeleton"
     description: "description-角色-1000001"
