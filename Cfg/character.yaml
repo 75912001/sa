@@ -1,28 +1,35 @@
 # 角色-配置
 # 任何修改此文件的行为都需要通知客户端和服务端开发人员
 
+# characters.modelPath: 模型文件路径 [必填]
+# characters.animationLibraryRef: 动画库引用 (在animations.yaml中定义) [必填]
+# characters.skeletonPath: 骨骼-相对于ModelContainer的相对路径 [必填]
 # characters.speed: 移动速度
 # characters.rotationSpeed: 旋转速度
 # characters.rollDistance: 翻滚距离(毫米)
 # characters.rollDuration: 翻滚时长(毫秒)
-# characters.skeletonPath: 骨骼-相对路径
 
 # 角色 [1000001,1999999]
 characters:
   - id: 1000001
     name: "角色-1000001"
+    modelPath: "res://Assets/Characters/XBot.glb"
+    animationLibraryRef: "default"
+    skeletonPath: "Skeleton/GeneralSkeleton"
     speed: 1.0
     rotationSpeed: 6.0
     rollDistance: 2200
     rollDuration: 1200
-    skeletonPath: "XBot/Skeleton/GeneralSkeleton"
     description: "description-角色-1000001"
 
   - id: 1000002
     name: "城堡守卫"
+    modelPath: "res://Assets/Characters/NPC/CastleGuard001/CastleGuard.001.fbx"
+    animationLibraryRef: "default"
+    skeletonPath: "Skeleton/GeneralSkeleton"
     speed: 0.8
     rotationSpeed: 5.0
     rollDistance: 2000
     rollDuration: 1200
-    skeletonPath: "CastleGuard/Skeleton/GeneralSkeleton"
     description: "城堡守卫角色模型，使用CastleGuard.001.fbx"
+
