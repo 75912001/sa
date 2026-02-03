@@ -7,6 +7,7 @@ extends Node
 var cfg_weapon_mgr: CfgWeaponMgr
 var cfg_character_mgr: CfgCharacterMgr
 var cfg_armor_mgr: CfgArmorMgr
+var cfg_animation_mgr: CfgAnimationMgr
 var cfg_map_mgr: CfgMapMgr
 var cfg_npc_mgr: CfgNpcMgr
 var cfg_enemy_group_mgr: CfgEnemyGroupMgr
@@ -15,6 +16,7 @@ func _ready() -> void:
 	cfg_weapon_mgr = CfgWeaponMgr.new()
 	cfg_character_mgr = CfgCharacterMgr.new()
 	cfg_armor_mgr = CfgArmorMgr.new()
+	cfg_animation_mgr = CfgAnimationMgr.new()
 	cfg_map_mgr = CfgMapMgr.new()
 	cfg_npc_mgr = CfgNpcMgr.new()
 	cfg_enemy_group_mgr = CfgEnemyGroupMgr.new()
@@ -24,6 +26,7 @@ func _ready() -> void:
 func _load_all_cfg() -> void:
 	# --- 加载 ---
 	cfg_weapon_mgr.load("res://Cfg/weapon.yaml")
+	cfg_animation_mgr.load("res://Cfg/animations.yaml")
 	cfg_character_mgr.load("res://Cfg/character.yaml")
 	cfg_armor_mgr.load("res://Cfg/armor.yaml")
 	cfg_map_mgr.load("res://Cfg/map.yaml")
@@ -31,6 +34,7 @@ func _load_all_cfg() -> void:
 	cfg_enemy_group_mgr.load("res://Cfg/enemy.groups.yaml")  # 必须在NPC之后加载
 	# --- 检查 ---
 	cfg_weapon_mgr.check()
+	cfg_animation_mgr.check()
 	cfg_character_mgr.check()
 	cfg_armor_mgr.check()
 	cfg_map_mgr.check()
@@ -38,6 +42,7 @@ func _load_all_cfg() -> void:
 	cfg_enemy_group_mgr.check()
 	# --- 组装 ---
 	cfg_weapon_mgr.assemble()
+	cfg_animation_mgr.assemble()
 	cfg_character_mgr.assemble()
 	cfg_armor_mgr.assemble()
 	cfg_map_mgr.assemble()
