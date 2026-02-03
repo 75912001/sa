@@ -12,10 +12,10 @@ func _ready() -> void:
 	load_map(map_id)
 
 # 动态加载地图
-func load_map(map_id: int) -> void:
+func load_map(_map_id: int) -> void:
 	# 查找配置
-	var map_config = GCfgMgr.cfg_map_mgr.get_map(map_id)
-	assert(map_config != null, "World: 未找到地图配置 ID: %d" % map_id)
+	var map_config = GCfgMgr.cfg_map_mgr.get_map(_map_id)
+	assert(map_config != null, "World: 未找到地图配置 ID: %d" % _map_id)
 
 	# 清理当前地图
 	for child in _map_loader.get_children():
@@ -36,4 +36,3 @@ func load_map(map_id: int) -> void:
 	
 	# 设置玩家位置
 	GGameMgr.player.global_position = Vector3(0, 0, 0)
-

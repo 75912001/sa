@@ -28,6 +28,9 @@ class CfgNpcEntry extends RefCounted:
 	var id: int
 	var name: String
 	var description: String
+	var character_id: int = 1000001         # 关联的角色ID
+	var default_weapon_id: int = 0          # 默认武器ID
+	var default_armor_ids: Array[int] = []  # 默认护甲ID列表
 	var elemental: CfgElemental
 	var attributes: CfgAttributes
 
@@ -49,6 +52,15 @@ func load(path: String) -> void:
 		entry.name = item.get("name", "")
 		assert(not entry.name.is_empty(), "NPC名称为空: ID:%d" % entry.id)
 		entry.description = item.get("description", "")
+		# 解析关联的角色ID
+		entry.character_id = item.get("characterId", 1000001)
+		# 解析默认武器ID
+		entry.default_weapon_id = item.get("defaultWeaponId", 0)
+		# 解析默认护甲ID列表
+		var default_armor_ids_array: Array = item.get("defaultArmorIds", [])
+		entry.default_armor_ids = []
+		for armor_id in default_armor_ids_array:
+			entry.default_armor_ids.append(armor_id)
 
 		# 解析元素属性
 		entry.elemental = CfgElemental.new()
@@ -85,6 +97,17 @@ func check() -> void:
 	for npc_id in npcs:
 		var entry: CfgNpcEntry = npcs[npc_id]
 		# prints("NPC:", entry.show())
+		# 校验关联的角色ID
+		assert(GCfgMgr.cfg_character_mgr.get_character(entry.character_id) != null,
+			"NPC引用的角色不存在: NPC ID:%d, 角色ID:%d" % [entry.id, entry.character_id])
+		# 校验默认武器ID
+		if entry.default_weapon_id != 0:
+			assert(GCfgMgr.cfg_weapon_mgr.get_weapon(entry.default_weapon_id) != null,
+				"NPC引用的武器不存在: NPC ID:%d, 武器ID:%d" % [entry.id, entry.default_weapon_id])
+		# 校验默认护甲ID
+		for armor_id in entry.default_armor_ids:
+			assert(GCfgMgr.cfg_armor_mgr.get_armor(armor_id) != null,
+				"NPC引用的护甲不存在: NPC ID:%d, 护甲ID:%d" % [entry.id, armor_id])
 
 # 组装配置 (预处理/索引构建)
 func assemble() -> void:
