@@ -8,6 +8,9 @@ extends Node3D
 # 引用刚才创建的空容器
 @onready var _map_loader: Node3D = $MapLoader
 
+# NPC管理器
+var npc_mgr: NPCMgr
+
 func _ready() -> void:
 	load_map(map_id)
 
@@ -33,6 +36,28 @@ func load_map(_map_id: int) -> void:
 	# 放入容器
 	_map_loader.add_child(map_instance)
 	print("World: 已加载地图 [%s]" % map_config.name)
-	
+
 	# 设置玩家位置
 	GGameMgr.player.global_position = Vector3(0, 0, 0)
+
+	# 初始化NPC管理器
+	if npc_mgr:
+		npc_mgr.clear_all_npcs()
+	npc_mgr = NPCMgr.new()
+	npc_mgr.setup(_map_loader)  # 使用地图容器作为NPC父节点
+
+	# 测试：生成几个NPC
+	_spawn_test_npcs()
+
+# 测试NPC生成（临时方法）
+func _spawn_test_npcs() -> void:
+	print("World: 开始生成测试NPC...")
+
+	# 生成单个NPC
+	var npc1 = npc_mgr.spawn_npc(5000001, Vector3(5, 0, 5))
+	var npc2 = npc_mgr.spawn_npc(5000002, Vector3(-5, 0, 5))
+
+	# 生成敌人组
+	var enemy_group = npc_mgr.spawn_enemy_group(1, Vector3(0, 0, 10))
+
+	print("World: 测试NPC生成完成 (单个:%d, 组:%d)" % [2, enemy_group.size()])
