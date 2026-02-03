@@ -2,8 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://cgb8yaijh2omo" path="res://Scenes/Character.tscn" id="1_c8tqv"]
 [ext_resource type="Script" uid="uid://dfml4yqikofgf" path="res://Scripts/Input/AIInputMgr.gd" id="2_m7bvo"]
+[ext_resource type="Script" uid="uid://b52gc8rgf8j8i" path="res://Scripts/NPC.gd" id="2_npc"]
 
 [node name="NPC" unique_id=210907959 instance=ExtResource("1_c8tqv")]
+script = ExtResource("2_npc")
 
 [node name="AIInputMgr" type="Node" parent="." index="2" unique_id=774535790]
 script = ExtResource("2_m7bvo")

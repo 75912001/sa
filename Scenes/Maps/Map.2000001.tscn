@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://b8q1u4qdsfj4i"]
+
+[ext_resource type="PackedScene" uid="uid://bu2wvq5fuhn86" path="res://Assets/Objects/Tree/Tree.001.glb" id="1_f60vi"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gv5m4"]
+size = Vector3(60, 0.1, 60)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_gv5m4"]
+size = Vector2(60, 60)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4wyf3"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k0juu"]
+noise = SubResource("FastNoiseLite_4wyf3")
+in_3d_space = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71j4m"]
+albedo_color = Color(0.84040916, 0.5770555, 0.12737384, 1)
+albedo_texture = SubResource("NoiseTexture2D_k0juu")
+uv1_triplanar = true
+
+[node name="MapRoot" type="Node3D" unique_id=681633577]
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=883426497]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=44867910]
+shape = SubResource("BoxShape3D_gv5m4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=1146090948]
+mesh = SubResource("PlaneMesh_gv5m4")
+surface_material_override/0 = SubResource("StandardMaterial3D_71j4m")
+
+[node name="Enviroment" type="Node3D" parent="." unique_id=185093828]
+
+[node name="tree_001" parent="Enviroment" unique_id=848300897 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6596127, 0.5002072, 5.2586393)
+
+[node name="tree_002" parent="Enviroment" unique_id=519670334 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.9729853, 0.5002072, -6.234214)
+
+[node name="tree_003" parent="Enviroment" unique_id=687857487 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.063698, 0.5002072, -6.097785)
+
+[node name="tree_005" parent="Enviroment/tree_003" unique_id=952208567 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5441303, 0.5002072, 7.7296104)
+
+[node name="tree_005" parent="Enviroment/tree_003/tree_005" unique_id=14129968 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5441303, 0.5002072, 7.7296104)
+
+[node name="tree_005" parent="Enviroment/tree_003/tree_005/tree_005" unique_id=1796965253 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5441303, 0.5002072, 7.7296104)
+
+[node name="tree_004" parent="Enviroment" unique_id=2123454855 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.462223, 0.5002072, 5.7070413)
+
+[node name="tree_005" parent="Enviroment" unique_id=1875635987 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5441303, 0.5002072, 7.7296104)
+
+[node name="tree_005" parent="Enviroment/tree_005" unique_id=1189208253 instance=ExtResource("1_f60vi")]
+transform = Transform3D(0.9983378, 0.057633724, 0, -0.057633724, 0.9983378, 0, 0, 0, 1, -5.542183, 0.5002072, -7.67271)
+
+[node name="tree_006" parent="Enviroment" unique_id=671694299 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7219725, 0.5002072, 4.1189947)
+
+[node name="tree_007" parent="Enviroment" unique_id=1782982507 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9832687, 0.5002072, 6.035952)
+
+[node name="tree_008" parent="Enviroment" unique_id=1034336801 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2891755, 0.5002072, -6.2015657)
+
+[node name="tree_008" parent="Enviroment/tree_008" unique_id=567935284 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2891755, 0.5002072, -6.2015657)
+
+[node name="tree_008" parent="Enviroment/tree_008/tree_008" unique_id=1653610980 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2890005, -1.246176, -6.2019997)
+
+[node name="tree_008" parent="Enviroment/tree_008/tree_008/tree_008" unique_id=713173337 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.56259, 0.5002072, -6.201565)
+
+[node name="tree_009" parent="Enviroment/tree_008" unique_id=584069566 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2891755, 0.5002072, 27.445015)
+
+[node name="tree_008" parent="Enviroment/tree_008/tree_009" unique_id=1097619587 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9673834, 0.5002072, -6.2015657)
+
+[node name="tree_008" parent="Enviroment/tree_008/tree_009/tree_008" unique_id=290599843 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.289175, -0.44780993, 9.609775)
+
+[node name="tree_008" parent="Enviroment/tree_008/tree_009/tree_008/tree_008" unique_id=1177375164 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.56259, 0.5002072, -6.201565)
+
+[node name="tree_009" parent="Enviroment" unique_id=1582130136 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.601384, 0.5002072, -2.867649)
+
+[node name="tree_010" parent="Enviroment" unique_id=1844028170 instance=ExtResource("1_f60vi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4884496, 0.5002072, -4.3577223)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=371788688]
+transform = Transform3D(0.7071068, -0.61237246, 0.35355335, 0, 0.49999997, 0.86602545, -0.7071068, -0.61237246, 0.35355335, 9.114449, 9.573223, 0)
+shadow_enabled = true
+
+[node name="SpawnPoint" type="Marker3D" parent="." unique_id=1329309019]
