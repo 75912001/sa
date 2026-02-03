@@ -1,0 +1,26 @@
+# animations.yaml - 动画库配置
+# 任何修改此文件的行为都需要通知客户端和服务端开发人员
+
+# 动画库集合
+# 每个库包含：basePath（基础路径）+ categories（分类动画）
+# 角色通过 animationLibraryRef 引用具体库
+
+animationLibraries:
+  # 默认动画库：所有人形角色共用
+  default:
+    basePath: "res://Assets/Animations/Library/"
+    categories:
+      Roll:
+        - "Roll"
+      SwordAndShield:
+        - "Attack.Slash.2.8"
+        - "DrawSword"
+        - "Idle"
+        - "SheathSword.1"
+        - "SheathSword.2"
+        - "Walk"
+      Unarmed:
+        - "DrawSword"
+        - "Idle"
+        - "Jump"
+        - "Walking"
