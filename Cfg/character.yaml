@@ -17,3 +17,12 @@ characters:
     rollDuration: 1200
     skeletonPath: "XBot/Skeleton/GeneralSkeleton"
     description: "description-角色-1000001"
+
+  - id: 1000002
+    name: "城堡守卫"
+    speed: 0.8
+    rotationSpeed: 5.0
+    rollDistance: 2000
+    rollDuration: 1200
+    skeletonPath: "CastleGuard/Skeleton/GeneralSkeleton"
+    description: "城堡守卫角色模型，使用CastleGuard.001.fbx"

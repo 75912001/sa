@@ -3,6 +3,9 @@
 
 # NPC [5000001,5999999]
 
+# characterId: 关联character.yaml中的角色ID [必填]
+# defaultWeaponId: 默认装备的武器ID [可选，默认0表示无]
+# defaultArmorIds: 默认装备的护甲ID列表 [可选，格式为数组]
 # elemental 元素属性: (整数, 范围[0,10], 总和必须等于10)
 # elemental.earth-土
 # elemental.water-水
@@ -24,6 +27,9 @@ npcs:
   - id: 5000001
     name: "守卫-5000001"
     description: "初级-守卫-5000001"
+    characterId: 1000002  # 使用城堡守卫角色模型
+    defaultWeaponId: 11000001  # 默认装备武器（剑）
+    defaultArmorIds: [12000001]  # 默认装备护甲（头盔）
     elemental:
       earth: 0
       water: 0
@@ -40,9 +46,13 @@ npcs:
       hitRate: 0.92
       critDamageBonusRate: 0.6
       statusResistRate: 0.25
+
   - id: 5000002
     name: "守卫-5000002"
     description: "初级-守卫-5000002"
+    characterId: 1000002  # 使用城堡守卫角色模型
+    defaultWeaponId: 11000001  # 默认装备武器（剑）
+    defaultArmorIds: [12000001]  # 默认装备护甲（头盔）
     elemental:
       earth: 0
       water: 0
