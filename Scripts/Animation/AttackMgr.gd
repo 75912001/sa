@@ -12,6 +12,7 @@ var animation_mgr: AnimationMgr
 const ATTACK_ANIMATION_DURATION := 1.5
 
 func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if animation_mgr.input_mgr.get_jump_pressed(): # 模拟测试-打断 (比如按了 空格)
 		animation_mgr.one_shot.stop()
 	if !animation_mgr.lock_mgr.can_act(LockMgr.ACT_ATTACKING):

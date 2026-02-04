@@ -30,7 +30,7 @@ func spawn_npc(npc_id: int, position: Vector3, rotation: float = 0.0) -> NPC:
 	# 从配置读取NPC信息
 	var npc_cfg = GCfgMgr.cfg_npc_mgr.get_npc(npc_id)
 	assert(npc_cfg != null,"NPCMgr: NPC配置不存在 ID:%d" % npc_id)
-	var char_cfg = GCfgMgr.cfg_character_mgr.get_character(npc_cfg.character_id)
+	var _char_cfg = GCfgMgr.cfg_character_mgr.get_character(npc_cfg.character_id)
 	# 加载NPC场景并实例化
 	var npc_scene = load("res://Scenes/NPC.tscn")
 	var npc: NPC = npc_scene.instantiate()

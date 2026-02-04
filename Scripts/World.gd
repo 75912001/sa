@@ -54,8 +54,8 @@ func _spawn_test_npcs() -> void:
 	print("World: 开始生成测试NPC...")
 
 	# 生成单个NPC
-	var npc1 = npc_mgr.spawn_npc(5000001, Vector3(5, 0, 5))
-	var npc2 = npc_mgr.spawn_npc(5000002, Vector3(-5, 0, 5))
+	var _npc1 = npc_mgr.spawn_npc(5000001, Vector3(5, 0, 5))
+	var _npc2 = npc_mgr.spawn_npc(5000002, Vector3(-5, 0, 5))
 
 	# 生成敌人组
 	var enemy_group = npc_mgr.spawn_enemy_group(1, Vector3(0, 0, 10))

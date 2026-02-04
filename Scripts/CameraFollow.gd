@@ -11,32 +11,20 @@ extends Node3D
 @export var smooth_speed: float = 10.0
 
 # --- 变量 ---
-var _target: Node3D
 var _limit_left: float = -1000.0
 var _limit_right: float = 1000.0
 var _limit_top: float = -1000.0
 var _limit_bottom: float = 1000.0
 
 func _ready() -> void:
-	# 寻找主角
-	var players = get_tree().get_nodes_in_group("Player")
-	if 0 < players.size():
-		_target = players[0]
-	
 	if map_mesh: # 绑定了地图网格
 		_calculate_map_limits()
 
 func _process(delta: float) -> void:
-	if not _target:
-		return
-
-	# 获取目标当前位置
-	var target_pos = _target.global_position
-	
 	# 【核心】钳制坐标 (Clamp)
 	# 如果目标坐标超出了 limit 范围，就强制设为 limit 值
-	var final_x = clamp(target_pos.x, _limit_left, _limit_right)
-	var final_z = clamp(target_pos.z, _limit_top, _limit_bottom)
+	var final_x = clamp(GGameMgr.player.global_position.x, _limit_left, _limit_right)
+	var final_z = clamp(GGameMgr.player.global_position.z, _limit_top, _limit_bottom)
 	
 	# 构造目标位置 (Y轴保持不变，只动水平面)
 	var desired_pos = Vector3(final_x, global_position.y, final_z)

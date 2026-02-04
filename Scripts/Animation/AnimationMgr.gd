@@ -7,8 +7,8 @@ extends Node
 
 # --- 信号 ---
 signal animation_finished(animation_name: String)
-signal lower_animation_finished(animation_name: String)
-signal upper_animation_finished(animation_name: String)
+#signal lower_animation_finished(animation_name: String)
+#signal upper_animation_finished(animation_name: String)
 
 var character_body: CharacterBody3D
 # --- 引用（在 Player.gd 中设置）---

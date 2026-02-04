@@ -39,9 +39,7 @@ func load(path: String) -> void:
 
 # 校验配置
 func check() -> void:
-	for armor_id in armors:
-		var entry: CfgArmorEntry = armors[armor_id]
-		#prints("护甲:", entry.show())
+	return
 
 # 组装配置 (预处理/索引构建)
 func assemble() -> void:

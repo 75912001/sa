@@ -37,9 +37,7 @@ func load(path: String) -> void:
 
 # 校验配置
 func check() -> void:
-	for map_id in maps:
-		var entry: CfgMapEntry = maps[map_id]
-		# prints("地图:", entry.show())
+	return
 
 # 组装配置 (预处理/索引构建)
 func assemble() -> void:

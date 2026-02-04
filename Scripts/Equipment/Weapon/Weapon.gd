@@ -10,7 +10,7 @@ extends Node3D
 func _ready() -> void:
 	_apply_config()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 ## 应用武器配置
