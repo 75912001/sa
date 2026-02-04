@@ -2,7 +2,7 @@
 # 任何修改此文件的行为都需要通知客户端和服务端开发人员
 
 # 动画库集合
-# 每个库包含：basePath（基础路径）+ categories（分类动画）
+# 每个库包含: basePath (基础路径) + categories (分类动画)
 # 角色通过 animationLibraryRef 引用具体库
 
 animationLibraries:
