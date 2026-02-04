@@ -45,14 +45,23 @@ var skeleton: Skeleton3D
 
 func _ready() -> void:
 	print("Character._ready() called - character_id: %d" % character_id)
-
+	
+	# 子类特化初始化
+	_ready_subclass()
+	
 	# 加载配置
 	cfg_character_entry = GCfgMgr.cfg_character_mgr.get_character(character_id)
 	assert(cfg_character_entry != null, "角色配置不存在: %d" % character_id)
+	
+	# 动态加载角色模型
+	_load_character_model()
+
+	# 加载动画库
+	_load_animation_library()
 
 	# 初始化装备系统(寻找骨架)
-	skeleton = get_node(cfg_character_entry.skeleton_path)
-	assert(skeleton and skeleton is Skeleton3D, "coule not find Skeleton3D context %s" % cfg_character_entry.skeleton_path)
+	skeleton = $ModelContainer.get_node(cfg_character_entry.skeleton_path)
+	assert(skeleton and skeleton is Skeleton3D, "找不到骨架: %s" % cfg_character_entry.skeleton_path)
 	
 	# 初始化所有管理器
 	_init_armor_mgr()
@@ -63,8 +72,7 @@ func _ready() -> void:
 	_init_roll_mgr()
 	_init_animation_mgr()
 
-	# 子类特化初始化
-	_ready_subclass()
+
 
 func _physics_process(delta: float) -> void:
 	move_and_slide()
@@ -161,3 +169,25 @@ func _init_animation_mgr() -> void:
 	animation_mgr.weapon_switch_mgr = weapon_switch_mgr
 	animation_mgr.attack_mgr = attack_mgr
 	animation_mgr.roll_mgr = roll_mgr
+
+############################################################
+# 模型加载
+############################################################
+func _load_character_model() -> void:
+	var model_scene = load(cfg_character_entry.model_path) as PackedScene
+	assert(model_scene, "无法加载角色模型: %s" % cfg_character_entry.model_path)
+	var model_instance = model_scene.instantiate()
+	var model_container = $ModelContainer
+	model_container.add_child(model_instance)
+	print("角色模型已加载: %s" % cfg_character_entry.model_path)
+
+func _load_animation_library() -> void:
+	var anim_lib = GCfgMgr.cfg_animation_mgr.get_library(cfg_character_entry.animation_library_ref)
+	assert(anim_lib, "动画库不存在: %s" % cfg_character_entry.animation_library_ref)
+	var anim_player = $AnimationPlayer
+	# 清空现有动画库
+	for lib_name in anim_player.get_animation_library_list():
+		anim_player.remove_animation_library(lib_name)
+	# 添加新的动画库
+	anim_player.add_animation_library("", anim_lib)
+	print("动画库已加载: %s" % cfg_character_entry.animation_library_ref)

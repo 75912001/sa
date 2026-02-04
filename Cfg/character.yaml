@@ -15,7 +15,7 @@ characters:
     name: "角色-1000001"
     modelPath: "res://Assets/Characters/XBot.glb"
     animationLibraryRef: "default"
-    skeletonPath: "Skeleton/GeneralSkeleton"
+    skeletonPath: "XBot/Skeleton/GeneralSkeleton"
     speed: 1.0
     rotationSpeed: 6.0
     rollDistance: 2200
@@ -26,7 +26,7 @@ characters:
     name: "城堡守卫"
     modelPath: "res://Assets/Characters/NPC/CastleGuard001/CastleGuard.001.fbx"
     animationLibraryRef: "default"
-    skeletonPath: "Skeleton/GeneralSkeleton"
+    skeletonPath: "CastleGuard_001/Skeleton3D"
     speed: 0.8
     rotationSpeed: 5.0
     rollDistance: 2000
