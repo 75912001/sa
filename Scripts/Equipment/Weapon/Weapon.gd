@@ -26,7 +26,3 @@ func _apply_config() -> void:
 	$Grip.position = weapon_data.grip_position
 	$Grip.rotation_degrees = weapon_data.grip_rotation_degrees
 	$Grip.scale = weapon_data.grip_scale
-
-## 获取武器名称
-func get_weapon_name() -> String:
-	return weapon_data.weapon_name
