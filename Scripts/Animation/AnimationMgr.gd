@@ -48,13 +48,13 @@ func _ready() -> void:
 
 	_lower_body_sm = animation_tree.get("parameters/lower_body_sm/playback")
 	_upper_body_sm = animation_tree.get("parameters/upper_body_sm/playback")
-	
-	# 初始化状态，避免第一次切换时 T-pose
-	_lower_body_sm.start("Unarmed_Idle")
-	_upper_body_sm.start("Unarmed_Idle")
 
 func setup(_character: Character) -> void:
 	character = _character
+
+	# 初始化状态，避免第一次切换时 T-pose
+	_lower_body_sm.start("Unarmed_Idle")
+	_upper_body_sm.start("Unarmed_Idle")
 	return
 
 func _on_one_shot_action_finished(action_name: String) -> void:
