@@ -11,8 +11,9 @@ var animation_mgr: AnimationMgr
 # 原始动画时长（秒）- 与 Animation 资源一致
 const ATTACK_ANIMATION_DURATION := 1.5
 
-func _process(delta: float) -> void:
 func _process(_delta: float) -> void:
+	if not animation_mgr:
+		return
 	if animation_mgr.input_mgr.get_jump_pressed(): # 模拟测试-打断 (比如按了 空格)
 		animation_mgr.one_shot.stop()
 	if !animation_mgr.lock_mgr.can_act(LockMgr.ACT_ATTACKING):

@@ -4,7 +4,7 @@ extends Node3D
 # --- 配置 ---
 @export_group("Map Settings")
 # 拖入地图的 MeshInstance3D，脚本会自动计算多大
-@export var map_mesh: MeshInstance3D 
+@export var map_mesh: MeshInstance3D # todo menglc 暂时未用
 # 视野边距：为了防止看到地图外的虚空，必须往里缩一点 (通常等于 Camera Size 的一半左右)
 @export var view_margin: float = 18.0 
 @export_group("Smooth Settings")
