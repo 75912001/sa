@@ -50,13 +50,14 @@ func _ready() -> void:
 	assert(cfg_character_entry != null, "角色配置不存在: %d" % character_id)
 	# 动态加载角色模型
 	_load_character_model()
-	# 加载动画库
-	_load_animation_library()
 
 	# 初始化装备系统(寻找骨架)
 	skeleton = $ModelContainer.get_node(cfg_character_entry.skeleton_path)
 	assert(skeleton and skeleton is Skeleton3D, "找不到骨架: %s" % cfg_character_entry.skeleton_path)
-	
+
+	# 加载动画库
+	_load_animation_library()
+
 	# 初始化所有管理器
 	_init_armor_mgr()
 	weapon_mgr.setup(self)
