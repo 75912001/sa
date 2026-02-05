@@ -10,7 +10,6 @@
 # 优点：
 # ✓ 所有NPC动作完全复用Player
 # ✓ AI通过设置AIInputMgr来控制角色
-# ✓ 代码极其简洁（< 30行）
 
 class_name NPC extends Character
 
@@ -24,15 +23,18 @@ var pending_armor_ids: Array[int] = []
 # --- AI控制器（由子类设置） ---
 var ai_controller #: NPCAIController
 
-func _ready_subclass() -> void:
+func _ready() -> void:
 	input_mgr = $AIInputMgr
 	# NPC不注册到GGameMgr.player
-
 	# 装配装备（由NPCMgr设置的pending数据）
 	_equip_pending_equipment()
-
 	# 创建AI控制器
 	_create_ai_controller()
+
+	super._ready()
+
+	return
+
 
 # 装配待装配的装备（暂时不装配，后续完善）
 func _equip_pending_equipment() -> void:

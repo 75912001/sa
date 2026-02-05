@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://cltl4miymivys"]
 
 [ext_resource type="PackedScene" uid="uid://cgb8yaijh2omo" path="res://Scenes/Character.tscn" id="1_kyqiw"]
+[ext_resource type="Script" uid="uid://btgkhykbev6d6" path="res://Scripts/Player.gd" id="1_script"]
 [ext_resource type="Script" uid="uid://cgibjq8orsoge" path="res://Scripts/Input/InputMgr.gd" id="2_m0x7a"]
 
 [node name="Player" unique_id=210907959 instance=ExtResource("1_kyqiw")]
+script = ExtResource("1_script")
 
 [node name="InputMgr" type="Node" parent="." index="2" unique_id=83129134]
 script = ExtResource("2_m0x7a")
-
-[editable path="XBot"]

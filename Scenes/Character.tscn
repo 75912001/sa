@@ -169,15 +169,15 @@ shape = SubResource("CapsuleShape3D_mdl7e")
 
 [node name="ModelContainer" type="Node3D" parent="." unique_id=1805368993]
 
+[node name="WeaponMgr" type="Node" parent="." unique_id=1272631338]
+script = ExtResource("2_52ee3")
+
 [node name="AnimationMgr" type="Node" parent="." unique_id=1109611017]
 script = ExtResource("3_ulo2v")
 animation_tree_path = NodePath("../AnimationTree")
 
 [node name="MovementMgr" type="Node" parent="." unique_id=751856138]
 script = ExtResource("2_megsn")
-
-[node name="WeaponMgr" type="Node" parent="." unique_id=1272631338]
-script = ExtResource("2_52ee3")
 
 [node name="WeaponSwitchMgr" type="Node" parent="." unique_id=233422225]
 script = ExtResource("14_switch")

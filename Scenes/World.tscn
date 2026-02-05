@@ -8,9 +8,8 @@
 [node name="World" type="Node3D" unique_id=856880418]
 script = ExtResource("1_p70al")
 
-[node name="CameraPivot" parent="." unique_id=1927804392 node_paths=PackedStringArray("map_mesh") instance=ExtResource("1_d1c63")]
+[node name="CameraPivot" parent="." unique_id=1927804392 instance=ExtResource("1_d1c63")]
 transform = Transform3D(0.7071067, -0.40860698, 0.5770962, 0, 0.8161375, 0.57785743, -0.7071067, -0.40860698, 0.5770962, 0, 0, 0)
-map_mesh = NodePath("")
 
 [node name="Player" parent="." unique_id=1893600887 instance=ExtResource("2_1lgw5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0022144318, 1.1920929e-07, 0.0029768944)

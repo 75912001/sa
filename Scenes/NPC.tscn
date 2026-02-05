@@ -9,5 +9,3 @@ script = ExtResource("2_npc")
 
 [node name="AIInputMgr" type="Node" parent="." index="2" unique_id=774535790]
 script = ExtResource("2_m7bvo")
-
-[editable path="XBot"]

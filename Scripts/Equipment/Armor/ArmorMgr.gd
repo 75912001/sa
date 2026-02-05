@@ -25,14 +25,6 @@ func setup(character: Character) -> void:
 	_character = character
 	name = "ArmorMgr"
 
-	# 从 Save 数据读取并装备护甲
-	var equipped_data = GSave.character_record.get_ArmorEquippedData()
-	var armor_list = equipped_data.get_ArmorUUIDList()
-	# 装备所有护甲
-	for armor_uuid in armor_list:
-		if 0 < armor_uuid:
-			equip_armor(armor_uuid)
-
 # 装备
 func equip_armor(uuid: int) -> void:
 	var cfg = GPlayerData.get_armor_cfg_by_uuid(uuid)

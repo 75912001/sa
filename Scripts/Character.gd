@@ -1,4 +1,4 @@
-# Character.gd - 通用角色基类（第一阶段完成）
+# Character.gd - 通用角色基类
 #
 # 职责：
 # 1. 管理所有组件的初始化（weapon、animation、movement等）
@@ -30,7 +30,6 @@ class_name Character extends CharacterBody3D
 @export var character_id: int = 1000001
 
 # --- 组件引用 ---
-@onready var input_mgr: IInputProvider = $InputMgr
 @onready var armor_mgr: ArmorMgr 
 @onready var weapon_mgr: WeaponMgr = $WeaponMgr
 @onready var animation_mgr: AnimationMgr = $AnimationMgr
@@ -39,23 +38,18 @@ class_name Character extends CharacterBody3D
 @onready var attack_mgr: AttackMgr = $AttackMgr
 @onready var roll_mgr: RollMgr = $RollMgr
 
+var input_mgr: IInputProvider
+
 # --- 配置 ---
 var cfg_character_entry: CfgCharacterMgr.CfgCharacterEntry
 var skeleton: Skeleton3D
 
 func _ready() -> void:
-	print("Character._ready() called - character_id: %d" % character_id)
-	
-	# 子类特化初始化
-	_ready_subclass()
-	
 	# 加载配置
 	cfg_character_entry = GCfgMgr.cfg_character_mgr.get_character(character_id)
 	assert(cfg_character_entry != null, "角色配置不存在: %d" % character_id)
-	
 	# 动态加载角色模型
 	_load_character_model()
-
 	# 加载动画库
 	_load_animation_library()
 
@@ -72,17 +66,11 @@ func _ready() -> void:
 	_init_roll_mgr()
 	_init_animation_mgr()
 
-
-
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
 	# 更新动画
 	animation_mgr.update_lower_animation()
 	animation_mgr.update_upper_animation()
-
-func _ready_subclass() -> void:
-	# 子类覆写这个方法，用于子类特化初始化
-	pass
 
 ############################################################
 # ArmorMgr
@@ -100,10 +88,6 @@ func _init_armor_mgr() -> void:
 func _init_weapon_mgr() -> void:
 	weapon_mgr.weapon_equipped.connect(_on_weapon_equipped)
 	weapon_mgr.weapon_unequipped.connect(_on_weapon_unequipped)
-	# 根据存档初始化武器
-	var right_hand_weapon_uuid = GPlayerData.get_right_hand_weapon_uuid()
-	if right_hand_weapon_uuid != 0:
-		weapon_mgr.equip_weapon_by_uuid(right_hand_weapon_uuid)
 
 func _on_weapon_equipped(weapon_uuid: int) -> void:
 	var cfg = GPlayerData.get_weapon_cfg_by_uuid(weapon_uuid)
@@ -179,7 +163,6 @@ func _load_character_model() -> void:
 	var model_instance = model_scene.instantiate()
 	var model_container = $ModelContainer
 	model_container.add_child(model_instance)
-	print("角色模型已加载: %s" % cfg_character_entry.model_path)
 
 func _load_animation_library() -> void:
 	var anim_lib = GCfgMgr.cfg_animation_mgr.get_library(cfg_character_entry.animation_library_ref)
