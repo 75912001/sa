@@ -11,12 +11,8 @@ signal animation_finished(animation_name: String)
 #signal upper_animation_finished(animation_name: String)
 
 var character_body: CharacterBody3D
-# --- 引用（在 Player.gd 中设置）---
-var input_mgr: IInputProvider
-var weapon_switch_mgr: WeaponSwitchMgr
-var movement_mgr: MovementMgr
-var attack_mgr: AttackMgr
-var roll_mgr: RollMgr
+# --- 引用 ---
+var character: Character
 var one_shot: AnimationOneShot
 var lock_mgr: LockMgr  # 锁管理器
 
@@ -48,6 +44,7 @@ func _ready() -> void:
 	one_shot.animation_mgr = self
 	one_shot.name = "AnimationOneShot"
 	add_child(one_shot) # 挂载为子节点，以便它能使用 get_tree()
+	one_shot.setup(self)
 
 	_lower_body_sm = animation_tree.get("parameters/lower_body_sm/playback")
 	_upper_body_sm = animation_tree.get("parameters/upper_body_sm/playback")
@@ -55,6 +52,14 @@ func _ready() -> void:
 	# 初始化状态，避免第一次切换时 T-pose
 	_lower_body_sm.start("Unarmed_Idle")
 	_upper_body_sm.start("Unarmed_Idle")
+
+func setup(_character: Character) -> void:
+	character = _character
+	return
+
+func _on_one_shot_action_finished(action_name: String) -> void:
+	character.attack_mgr.on_animation_one_shot_action_finished(action_name)
+	return
 
 # ==================== 动画模式 ====================
 # 设置动画模式
@@ -125,7 +130,7 @@ func _update_mode() -> void:
 # 下半身
 func update_lower_animation() -> void:
 	_update_mode()
-	if movement_mgr.is_moving(): # 移动
+	if character.movement_mgr.is_moving(): # 移动
 		play_lower("Unarmed_Walking")
 		return
 	if lock_mgr.has_lock(LockMgr.ACT_WEAPON_SWITCH): # 正在换武器

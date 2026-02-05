@@ -5,7 +5,7 @@ signal armor_equipped(armor_uuid: int)
 signal armor_unequipped(armor_type: PbArmor.ArmorType)
 
 # --- 依赖 ---
-var _character: Character
+var character: Character
 
 # --- 内部结构定义 ---
 # 用于封装单个部位的装备数据
@@ -20,10 +20,9 @@ class _ArmorData:
 var _armor_attachments_dictionary: Dictionary = {} # key: PbArmor.ArmorType, value: BoneAttachment3D
 var _armor_equipped_dictionary: Dictionary = {} # key: PbArmor.ArmorType, value: _ArmorData
 
-# --- 初始化 ---
-func setup(character: Character) -> void:
-	_character = character
-	name = "ArmorMgr"
+func setup(_character: Character) -> void:
+	character = _character
+	return
 
 # 装备
 func equip_armor(uuid: int) -> void:
@@ -76,7 +75,7 @@ func _get_or_create_attachment(armor_type: PbArmor.ArmorType) -> BoneAttachment3
 
 	# 检查场景中是否已经手动创建了
 	# 遍历 Skeleton 的子节点找 BoneAttachment3D
-	for child in _character.skeleton.get_children():
+	for child in character.skeleton.get_children():
 		if child is BoneAttachment3D and child.bone_name == bone_name:
 			_armor_attachments_dictionary[bone_name] = child
 			return child
@@ -84,7 +83,7 @@ func _get_or_create_attachment(armor_type: PbArmor.ArmorType) -> BoneAttachment3
 	var attachment = BoneAttachment3D.new()
 	attachment.bone_name = bone_name
 	attachment.name = bone_name + "Attachment"
-	_character.skeleton.add_child(attachment)
+	character.skeleton.add_child(attachment)
 
 	_armor_attachments_dictionary[bone_name] = attachment # Cache original key
 	return attachment

@@ -8,7 +8,7 @@ signal action_finished(action_name: String) # 当 OneShot 播放完毕（或被�
 # --- 内部变量 ---
 var _current_action: String = ""
 
-# --- 引用（在 Player.gd 中设置）---
+# --- 引用 ---
 var animation_mgr: AnimationMgr
 
 # --- 路径常量 (必须与你的 AnimationTree 节点名一致) ---
@@ -18,6 +18,11 @@ const PATH_ACTIVE = "parameters/Action_OneShot/active"
 const PATH_TRANSITION = "parameters/Action_Type/transition_request"
 # 攻击动画速度控制
 const PATH_ATTACK_TIME_SCALE = "parameters/Attack_TimeScale/scale"
+
+func setup(_animation_mgr: AnimationMgr) -> void:
+	animation_mgr = _animation_mgr
+	action_finished.connect(_on_action_finished)
+	return
 
 # 播放指定动作
 func play(action_name: String, speed_scale: float = 1.0) -> void:
@@ -54,3 +59,7 @@ func _monitor_loop() -> void:
 	var last_action = _current_action
 	_current_action = ""
 	action_finished.emit(last_action)
+
+func _on_action_finished(action_name: String) -> void:
+	animation_mgr.character.attack_mgr.on_animation_one_shot_action_finished(action_name)
+	return

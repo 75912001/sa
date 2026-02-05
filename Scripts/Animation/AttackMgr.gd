@@ -6,40 +6,44 @@ signal attack_started()
 signal attack_finished()
 
 # --- 引用（在 Player.gd 中设置）---
-var animation_mgr: AnimationMgr
+var character: Character
 
 # 原始动画时长（秒）- 与 Animation 资源一致
 const ATTACK_ANIMATION_DURATION := 1.5
 
 func _process(_delta: float) -> void:
-	if not animation_mgr:
+	if not character.animation_mgr:
 		return
-	if animation_mgr.input_mgr.get_jump_pressed(): # 模拟测试-打断 (比如按了 空格)
-		animation_mgr.one_shot.stop()
-	if !animation_mgr.lock_mgr.can_act(LockMgr.ACT_ATTACKING):
+	if character.input_mgr.get_jump_pressed(): # 模拟测试-打断 (比如按了 空格)
+		character.animation_mgr.one_shot.stop()
+	if !character.animation_mgr.lock_mgr.can_act(LockMgr.ACT_ATTACKING):
 		return
 	if GPlayerData.get_right_hand_weapon_uuid() == 0: # 右手没有武器
 		return
-	if animation_mgr.input_mgr.get_attack_right_pressed(): # 攻击-右手
+	if character.input_mgr.get_attack_right_pressed(): # 攻击-右手
 		attack()
 
-func setup() -> void:
-	animation_mgr.one_shot.action_finished.connect(_on_action_finished)
+func setup(_character: Character) -> void:
+	character = _character
+	# 连接信号
+	attack_started.connect(_on_attack_started)
+	attack_finished.connect(_on_attack_finished)
+	return
 
 # 执行攻击
 func attack() -> void:
 	var speed_scale = _calculate_attack_speed()
-	animation_mgr.one_shot.play("attack", speed_scale)
+	character.animation_mgr.one_shot.play("attack", speed_scale)
 	print("攻击-开始 speed_scale:", speed_scale)
-	animation_mgr.lock_mgr.add_lock(LockMgr.ACT_ATTACKING)
+	character.animation_mgr.lock_mgr.add_lock(LockMgr.ACT_ATTACKING)
 	attack_started.emit()
 
 # 统一的回调：当 OneShot 结束时触发
-func _on_action_finished(action_name: String) -> void:
+func on_animation_one_shot_action_finished(action_name: String) -> void:
 	# 只有当前是攻击状态，且结束的动作是 "attack" 时才处理
 	if action_name == "attack":
 		print("攻击-结束 state: idle")
-		animation_mgr.lock_mgr.remove_lock(LockMgr.ACT_ATTACKING)
+		character.animation_mgr.lock_mgr.remove_lock(LockMgr.ACT_ATTACKING)
 		attack_finished.emit()
 
 
@@ -54,3 +58,10 @@ func _calculate_attack_speed() -> float:
 	# 速度 = 原始时长 / 目标时长
 	var target_duration = weapon_cfg.attack_duration_ms / 1000.0
 	return ATTACK_ANIMATION_DURATION / target_duration
+
+
+func _on_attack_started() -> void:
+	pass
+
+func _on_attack_finished() -> void:
+	pass

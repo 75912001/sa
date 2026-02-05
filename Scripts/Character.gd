@@ -59,12 +59,12 @@ func _ready() -> void:
 	
 	# 初始化所有管理器
 	_init_armor_mgr()
-	_init_weapon_mgr()
-	_init_weapon_switch_mgr()
-	_init_attack_mgr()
-	_init_movement_mgr()
-	_init_roll_mgr()
-	_init_animation_mgr()
+	weapon_mgr.setup()
+	weapon_switch_mgr.setup(self)
+	attack_mgr.setup(self)
+	movement_mgr.setup(self)
+	roll_mgr.setup(self)
+	animation_mgr.setup(self)
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
@@ -81,78 +81,6 @@ func _init_armor_mgr() -> void:
 	add_child(armor_mgr)
 
 	armor_mgr.setup(self)
-
-############################################################
-# WeaponMgr
-############################################################
-func _init_weapon_mgr() -> void:
-	weapon_mgr.weapon_equipped.connect(_on_weapon_equipped)
-	weapon_mgr.weapon_unequipped.connect(_on_weapon_unequipped)
-
-func _on_weapon_equipped(weapon_uuid: int) -> void:
-	var cfg = GPlayerData.get_weapon_cfg_by_uuid(weapon_uuid)
-	prints("weapon equipped: UUID=%d, Name=%s" % [weapon_uuid, cfg.name if cfg else "unknown"])
-
-func _on_weapon_unequipped() -> void:
-	prints("weapon unequipped")
-
-############################################################
-# WeaponSwitchMgr
-############################################################
-func _init_weapon_switch_mgr() -> void:
-	# 设置引用
-	weapon_switch_mgr.animation_mgr = animation_mgr
-	weapon_switch_mgr.weapon_mgr = weapon_mgr
-	# 连接信号
-	weapon_switch_mgr.switch_started.connect(_on_weapon_switch_started)
-	weapon_switch_mgr.switch_finished.connect(_on_weapon_switch_finished)
-
-func _on_weapon_switch_started() -> void:
-	pass
-
-func _on_weapon_switch_finished() -> void:
-	pass
-
-############################################################
-# MovementMgr
-############################################################
-func _init_movement_mgr() -> void:
-	movement_mgr.animation_mgr = animation_mgr
-
-############################################################
-# AttackMgr
-############################################################
-func _init_attack_mgr() -> void:
-	attack_mgr.animation_mgr = animation_mgr
-	# 连接信号
-	attack_mgr.attack_started.connect(_on_attack_started)
-	attack_mgr.attack_finished.connect(_on_attack_finished)
-	attack_mgr.setup()
-
-func _on_attack_started() -> void:
-	pass
-
-func _on_attack_finished() -> void:
-	pass
-
-############################################################
-# RollMgr
-############################################################
-func _init_roll_mgr() -> void:
-	# 设置引用
-	roll_mgr.animation_mgr = animation_mgr
-	roll_mgr.setup()
-
-############################################################
-# AnimationMgr
-############################################################
-func _init_animation_mgr() -> void:
-	# 设置引用
-	animation_mgr.input_mgr = input_mgr
-	animation_mgr.movement_mgr = movement_mgr
-	animation_mgr.weapon_switch_mgr = weapon_switch_mgr
-	animation_mgr.attack_mgr = attack_mgr
-	animation_mgr.roll_mgr = roll_mgr
 
 ############################################################
 # 模型加载
