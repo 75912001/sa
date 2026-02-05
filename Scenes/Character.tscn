@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cgb8yaijh2omo"]
 
-[ext_resource type="Script" uid="uid://btgkhykbev6d6" path="res://Scripts/Player.gd" id="1_oi5ui"]
+[ext_resource type="Script" uid="uid://brbfbc346d084" path="res://Scripts/Character.gd" id="1_4b18b"]
 [ext_resource type="Script" uid="uid://bkp6agvjjm47t" path="res://Scripts/Equipment/Weapon/WeaponMgr.gd" id="2_52ee3"]
 [ext_resource type="Script" uid="uid://ruoxwj2thpuw" path="res://Scripts/Animation/MovementMgr.gd" id="2_megsn"]
 [ext_resource type="Script" uid="uid://d1unb2snnejk0" path="res://Scripts/Animation/AnimationMgr.gd" id="3_ulo2v"]
@@ -159,7 +159,7 @@ nodes/Roll_TimeScale/position = Vector2(440, 780)
 node_connections = [&"output", 0, &"Action_OneShot", &"blend", 0, &"lower_body_sm", &"blend", 1, &"upper_body_sm", &"Action_OneShot", 0, &"blend", &"Action_OneShot", 1, &"Action_Type", &"Action_Type", 0, &"Attack_TimeScale", &"Action_Type", 1, &"Roll_TimeScale", &"Attack_TimeScale", 0, &"Animation", &"Roll_TimeScale", 0, &"Roll"]
 
 [node name="Character" type="CharacterBody3D" unique_id=210907959 groups=["Player"]]
-script = ExtResource("1_oi5ui")
+script = ExtResource("1_4b18b")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1785551669]
 
