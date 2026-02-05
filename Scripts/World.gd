@@ -27,8 +27,7 @@ func load_map(_map_id: int) -> void:
 	# 动态加载场景文件
 	var map_path = map_config.res_path
 
-	if not ResourceLoader.exists(map_path):
-		assert(false, "World: 地图文件不存在: %s" % map_path)
+	assert(ResourceLoader.exists(map_path), "World: 地图文件不存在: %s" % map_path)
 
 	var map_scene = load(map_path)
 	var map_instance = map_scene.instantiate()
@@ -40,14 +39,15 @@ func load_map(_map_id: int) -> void:
 	# 设置玩家位置
 	GGameMgr.player.global_position = Vector3(0, 0, 0)
 
-	# 初始化NPC管理器
+	# 清理-旧
 	if npc_mgr:
 		npc_mgr.clear_all_npcs()
+	# 初始化NPC管理器
 	npc_mgr = NPCMgr.new()
 	npc_mgr.setup(_map_loader)  # 使用地图容器作为NPC父节点
 
 	# 测试：生成几个NPC
-	_spawn_test_npcs()
+	#_spawn_test_npcs()
 
 # 测试NPC生成（临时方法）
 func _spawn_test_npcs() -> void:

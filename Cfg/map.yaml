@@ -5,11 +5,11 @@
 
 maps:
   - assetID: 2000001
-    name: "地图1"
+    name: "地图-2000001"
     resPath: "res://Scenes/Maps/Map.2000001.tscn"
     bgmPath: "res://Assets/Audio/BGM/sabgm_t0.wav"
 
   - assetID: 2000002
-    name: "地图2"
+    name: "地图-2000002"
     resPath: "res://Scenes/Maps/Map.2000002.tscn"
     bgmPath: "res://Assets/Audio/BGM/sabgm_t0.wav"

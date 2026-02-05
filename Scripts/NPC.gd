@@ -25,14 +25,14 @@ var ai_controller #: NPCAIController
 
 func _ready() -> void:
 	input_mgr = $AIInputMgr
+
+	super._ready()
+
 	# NPC不注册到GGameMgr.player
 	# 装配装备（由NPCMgr设置的pending数据）
 	_equip_pending_equipment()
 	# 创建AI控制器
 	_create_ai_controller()
-
-	super._ready()
-
 	return
 
 
@@ -47,10 +47,10 @@ func _create_ai_controller() -> void:
 	# 由子类覆写此方法创建具体的AI
 	pass
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	# AI控制器每帧更新决策
-	if ai_controller:
-		ai_controller.update(delta)
+	#ai_controller.update(delta)
 
 	# 调用父类逻辑（move_and_slide、动画更新等）
-	super._physics_process(delta)
+	#super._physics_process(delta)
+	return
