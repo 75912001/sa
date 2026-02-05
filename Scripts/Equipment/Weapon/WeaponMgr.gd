@@ -2,30 +2,27 @@
 class_name WeaponMgr
 extends Node
 
-# --- 配置 ---
-@export var weapon_attachment_path: NodePath
-
 # --- 信号 ---
 signal weapon_equipped(weapon_uuid: int)
 signal weapon_unequipped
+
+# --- 依赖 ---
+var character: Character
 
 # --- 变量 ---
 var _weapon_attachment: BoneAttachment3D
 var _current_weapon: Weapon = null
 var _current_weapon_uuid: int = 0  # 0 表示无武器
 
-func _ready() -> void:
-	_weapon_attachment = get_node(weapon_attachment_path)
-
-func setup() -> void:
+func setup(_character: Character) -> void:
+	character = _character
 	weapon_equipped.connect(_on_weapon_equipped)
 	weapon_unequipped.connect(_on_weapon_unequipped)
+	_weapon_attachment = _get_or_create_attachment()
 	return
 
 ## 通过 UUID 装备武器
 func equip_weapon_by_uuid(weapon_uuid: int) -> void:
-	if not _weapon_attachment:
-		return
 	if weapon_uuid == 0:
 		unequip_weapon()
 		return
@@ -65,3 +62,14 @@ func _on_weapon_equipped(_weapon_uuid: int) -> void:
 
 func _on_weapon_unequipped() -> void:
 	return
+
+# --- 辅助 ---
+func _get_or_create_attachment() -> BoneAttachment3D:
+	var bone_name = "RightHand"  # 默认右手挂点
+	# 动态创建
+	var attachment = BoneAttachment3D.new()
+	attachment.bone_name = bone_name
+	attachment.name = bone_name + "Attachment"
+	character.skeleton.add_child(attachment)
+
+	return attachment

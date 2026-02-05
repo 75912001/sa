@@ -59,7 +59,7 @@ func _ready() -> void:
 	
 	# 初始化所有管理器
 	_init_armor_mgr()
-	weapon_mgr.setup()
+	weapon_mgr.setup(self)
 	weapon_switch_mgr.setup(self)
 	attack_mgr.setup(self)
 	movement_mgr.setup(self)
