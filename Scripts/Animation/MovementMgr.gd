@@ -21,15 +21,15 @@ func _physics_process(delta: float) -> void:
 	# 旋转45度适配等距摄像机
 	direction = direction.rotated(Vector3.UP, deg_to_rad(45))
 	if direction:
-		character.velocity.x = direction.x * GGameMgr.player.cfg_character_entry.speed
-		character.velocity.z = direction.z * GGameMgr.player.cfg_character_entry.speed
+		character.velocity.x = direction.x * character.cfg_character_entry.speed
+		character.velocity.z = direction.z * character.cfg_character_entry.speed
 		# 平滑转身
 		var target_rotation = atan2(direction.x, direction.z)
-		character.rotation.y = lerp_angle(character.rotation.y, target_rotation, GGameMgr.player.cfg_character_entry.rotation_speed * delta)
+		character.rotation.y = lerp_angle(character.rotation.y, target_rotation, character.cfg_character_entry.rotation_speed * delta)
 	else:
 		# 处理停止时的逻辑
-		character.velocity.x = move_toward(character.velocity.x, 0, GGameMgr.player.cfg_character_entry.speed)
-		character.velocity.z = move_toward(character.velocity.z, 0, GGameMgr.player.cfg_character_entry.speed)
+		character.velocity.x = move_toward(character.velocity.x, 0, character.cfg_character_entry.speed)
+		character.velocity.z = move_toward(character.velocity.z, 0, character.cfg_character_entry.speed)
 
 	character.move_and_slide()
 
