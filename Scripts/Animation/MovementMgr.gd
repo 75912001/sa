@@ -8,10 +8,10 @@ var character: Character
 
 func _physics_process(delta: float) -> void:
 	if !character.animation_mgr.lock_mgr.can_act(LockMgr.ACT_MOVE):
-		character.animation_mgr.character_body.velocity.x = 0
-		character.animation_mgr.character_body.velocity.z = 0
+		character.velocity.x = 0
+		character.velocity.z = 0
 		if character.animation_mgr.lock_mgr.has_lock(LockMgr.ACT_ROLLING): # 翻滚中
-			character.animation_mgr.character_body.velocity = character.animation_mgr.roll_mgr.roll_direction * character.animation_mgr.roll_mgr.roll_speed
+			character.velocity = character.roll_mgr.roll_direction * character.roll_mgr.roll_speed
 			character.animation_mgr.character_body.move_and_slide()
 			return
 		return
@@ -21,17 +21,17 @@ func _physics_process(delta: float) -> void:
 	# 旋转45度适配等距摄像机
 	direction = direction.rotated(Vector3.UP, deg_to_rad(45))
 	if direction:
-		character.animation_mgr.character_body.velocity.x = direction.x * GGameMgr.player.cfg_character_entry.speed
-		character.animation_mgr.character_body.velocity.z = direction.z * GGameMgr.player.cfg_character_entry.speed
+		character.velocity.x = direction.x * GGameMgr.player.cfg_character_entry.speed
+		character.velocity.z = direction.z * GGameMgr.player.cfg_character_entry.speed
 		# 平滑转身
 		var target_rotation = atan2(direction.x, direction.z)
-		character.animation_mgr.character_body.rotation.y = lerp_angle(character.animation_mgr.character_body.rotation.y, target_rotation, GGameMgr.player.cfg_character_entry.rotation_speed * delta)
+		character.rotation.y = lerp_angle(character.rotation.y, target_rotation, GGameMgr.player.cfg_character_entry.rotation_speed * delta)
 	else:
 		# 处理停止时的逻辑
-		character.animation_mgr.character_body.velocity.x = move_toward(character.animation_mgr.character_body.velocity.x, 0, GGameMgr.player.cfg_character_entry.speed)
-		character.animation_mgr.character_body.velocity.z = move_toward(character.animation_mgr.character_body.velocity.z, 0, GGameMgr.player.cfg_character_entry.speed)
+		character.velocity.x = move_toward(character.velocity.x, 0, GGameMgr.player.cfg_character_entry.speed)
+		character.velocity.z = move_toward(character.velocity.z, 0, GGameMgr.player.cfg_character_entry.speed)
 
-	character.animation_mgr.character_body.move_and_slide()
+	character.move_and_slide()
 
 func setup(_character: Character) -> void:
 	character = _character
