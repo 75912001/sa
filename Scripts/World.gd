@@ -47,7 +47,7 @@ func load_map(_map_id: int) -> void:
 	npc_mgr.setup(_map_loader)  # 使用地图容器作为NPC父节点
 
 	# 测试：生成几个NPC
-	#_spawn_test_npcs()
+	_spawn_test_npcs()
 
 # 测试NPC生成（临时方法）
 func _spawn_test_npcs() -> void:

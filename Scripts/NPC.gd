@@ -49,8 +49,9 @@ func _create_ai_controller() -> void:
 
 func _physics_process(_delta: float) -> void:
 	# AI控制器每帧更新决策
-	#ai_controller.update(delta)
+	# TODO: 实现AI控制器后取消注释
+	# if ai_controller:
+	#     ai_controller.update(delta)
 
 	# 调用父类逻辑（move_and_slide、动画更新等）
-	#super._physics_process(delta)
-	return
+	super._physics_process(_delta)
