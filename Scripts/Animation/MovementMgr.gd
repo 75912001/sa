@@ -12,7 +12,6 @@ func _physics_process(delta: float) -> void:
 		character.velocity.z = 0
 		if character.animation_mgr.lock_mgr.has_lock(LockMgr.ACT_ROLLING): # 翻滚中
 			character.velocity = character.roll_mgr.roll_direction * character.roll_mgr.roll_speed
-			character.animation_mgr.character_body.move_and_slide()
 			return
 		return
 
@@ -30,8 +29,6 @@ func _physics_process(delta: float) -> void:
 		# 处理停止时的逻辑
 		character.velocity.x = move_toward(character.velocity.x, 0, character.cfg_character_entry.speed)
 		character.velocity.z = move_toward(character.velocity.z, 0, character.cfg_character_entry.speed)
-
-	character.move_and_slide()
 
 func setup(_character: Character) -> void:
 	character = _character

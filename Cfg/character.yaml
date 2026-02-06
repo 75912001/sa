@@ -16,9 +16,9 @@ characters:
     modelPath: "res://Assets/Characters/XBot.glb"
     animationLibraryRef: "default"
     skeletonPath: "XBot/Skeleton/GeneralSkeleton"
-    speed: 1.0
-    rotationSpeed: 6.0
-    rollDistance: 2200
+    speed: 2.0
+    rotationSpeed: 8.0
+    rollDistance: 3200
     rollDuration: 1200
     description: "description-角色-1000001"
 
