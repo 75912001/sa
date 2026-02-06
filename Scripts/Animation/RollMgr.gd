@@ -31,7 +31,7 @@ func roll() -> void:
 		roll_direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
 		roll_direction = roll_direction.rotated(Vector3.UP, deg_to_rad(45))
 	# 从配置获取翻滚参数
-	roll_speed = character.cfg_character_entry.roll_distance / character.cfg_character_entry.roll_duration
+	roll_speed = float(character.cfg_character_entry.roll_distance) / character.cfg_character_entry.roll_duration
 
 	character.animation_mgr.lock_mgr.add_lock(LockMgr.ACT_ROLLING)
 	character.animation_mgr.one_shot.play("roll")
