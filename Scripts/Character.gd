@@ -94,12 +94,17 @@ func _load_character_model() -> void:
 	model_container.add_child(model_instance)
 
 func _load_animation_library() -> void:
-	var anim_lib = GCfgMgr.cfg_animation_mgr.get_library(cfg_character_entry.animation_library_ref)
-	assert(anim_lib, "动画库不存在: %s" % cfg_character_entry.animation_library_ref)
+	var libs_map = GCfgMgr.cfg_animation_mgr.get_animation_libraries_map(cfg_character_entry.animation_library_ref)
+	assert(libs_map.size() > 0, "动画库集合为空或加载失败: %s" % cfg_character_entry.animation_library_ref)
+	
 	var anim_player = $AnimationPlayer
 	# 清空现有动画库
 	for lib_name in anim_player.get_animation_library_list():
 		anim_player.remove_animation_library(lib_name)
+		
 	# 添加新的动画库
-	anim_player.add_animation_library("", anim_lib)
-	print("动画库已加载: %s" % cfg_character_entry.animation_library_ref)
+	for category_name in libs_map:
+		var lib = libs_map[category_name]
+		anim_player.add_animation_library(category_name, lib)
+		
+	print("动画库集合已加载: %s, 包含分类: %s" % [cfg_character_entry.animation_library_ref, libs_map.keys()])
