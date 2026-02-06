@@ -21,7 +21,7 @@ func setup(_character: Character) -> void:
 
 func roll() -> void:
 	# 获取当前输入方向（翻滚开始时）
-	var input_dir = character.animation_mgr.input_mgr.get_move_vector()
+	var input_dir = character.input_mgr.get_move_vector()
 	# 如果没有输入，使用角色当前面朝方向
 	if input_dir == Vector2.ZERO:
 		# 根据当前 rotation.y 计算方向向量
