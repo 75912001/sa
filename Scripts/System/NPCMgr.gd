@@ -37,11 +37,15 @@ func spawn_npc(npc_id: int, position: Vector3, rotation: float = 0.0) -> NPC:
 	# 配置NPC
 	npc.character_id = npc_cfg.character_id
 	npc.uuid = GUuidMgr.get_new_uuid()
-	npc.global_position = position
+
+	npc.position = position
 	npc.rotation.y = rotation
+	
 	# 添加到场景树
 	_npc_container.add_child(npc)
-	
+
+	npc.global_position = position
+
 	npc.pending_weapon_id = npc_cfg.default_weapon_id
 	npc.pending_armor_ids = npc_cfg.default_armor_ids.duplicate()
 	# 记录到字典
