@@ -55,6 +55,14 @@ func _ready() -> void:
 	skeleton = $ModelContainer.get_node(cfg_character_entry.skeleton_path)
 	assert(skeleton and skeleton is Skeleton3D, "找不到骨架: %s" % cfg_character_entry.skeleton_path)
 
+	# 修复动画警告: 动画中使用 %GeneralSkeleton 访问骨架
+	# 确保骨架名字匹配且能作为唯一名称被访问
+	if skeleton.name != "GeneralSkeleton":
+		skeleton.name = "GeneralSkeleton"
+	skeleton.unique_name_in_owner = true
+	# 动态加载的节点 Owner 为空，需手动设为当前场景根节点，AnimationPlayer 才能通过 % 找到它
+	skeleton.owner = self
+
 	# 加载动画库
 	_load_animation_library()
 
