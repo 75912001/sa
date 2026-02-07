@@ -37,6 +37,9 @@ func _ready() -> void:
 		animation_tree.active = true
 		# 连接动画完成信号
 		animation_tree.animation_finished.connect(_on_animation_finished)
+	else:
+		assert(false, "❌ AnimationMgr._ready() - 找不到 AnimationTree!")
+		return
 	# lock_mgr
 	lock_mgr = LockMgr.new()
 	# one_shot
@@ -49,6 +52,11 @@ func _ready() -> void:
 	_lower_body_sm = animation_tree.get("parameters/lower_body_sm/playback")
 	_upper_body_sm = animation_tree.get("parameters/upper_body_sm/playback")
 
+	if _lower_body_sm == null or _upper_body_sm == null:
+		assert(false, "❌ AnimationMgr._ready() - 状态机获取失败! lower=%s, upper=%s" % [_lower_body_sm, _upper_body_sm])
+	else:
+		print("✓ AnimationMgr._ready() - 状态机初始化成功")
+
 func setup(_character: Character) -> void:
 	character = _character
 
@@ -59,6 +67,15 @@ func setup(_character: Character) -> void:
 	# 启动状态机
 	_lower_body_sm.start("Unarmed_Idle")
 	_upper_body_sm.start("Unarmed_Idle")
+
+	# 调试：打印骨骼信息
+	var bone_count = character.skeleton.get_bone_count()
+	print("✓ AnimationMgr.setup() - 状态机已启动 (角色: %s)" % character.name)
+	print("  🦴 骨骼数量: %d" % bone_count)
+	print("  🦴 前10个骨骼:")
+	for i in range(min(10, bone_count)):
+		print("    [%d] %s" % [i, character.skeleton.get_bone_name(i)])
+
 	return
 
 func _on_one_shot_action_finished(action_name: String) -> void:
