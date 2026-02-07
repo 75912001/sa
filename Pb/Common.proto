@@ -26,6 +26,7 @@ enum NPCStance {
   NPCStance_Unknown = 0;   // 未知立场
   NPCStance_Neutral = 1;   // 中立（不主动攻击玩家）
   NPCStance_Hostile = 2;   // 敌对（主动攻击玩家）
+  NPCStance_Max = 3; // 最大值
 }
 
 // NPC 行为类型枚举
@@ -33,4 +34,5 @@ enum NPCBehaviorType {
   NPCBehaviorType_Unknown = 0;      // 未知行为
   NPCBehaviorType_Idle = 1;         // 待机（原地不动）
   NPCBehaviorType_PatrolArea = 2;   // 巡逻-区域（在范围内随机巡逻）
+  NPCBehaviorType_Max= 3; // 最大值
 }

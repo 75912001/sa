@@ -2495,13 +2495,15 @@ enum HandType {
 enum NPCStance {
 	NPCStance_Unknown = 0,
 	NPCStance_Neutral = 1,
-	NPCStance_Hostile = 2
+	NPCStance_Hostile = 2,
+	NPCStance_Max = 3
 }
 
 enum NPCBehaviorType {
 	NPCBehaviorType_Unknown = 0,
 	NPCBehaviorType_Idle = 1,
-	NPCBehaviorType_PatrolArea = 2
+	NPCBehaviorType_PatrolArea = 2,
+	NPCBehaviorType_Max = 3
 }
 
 enum ArmorType {

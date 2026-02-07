@@ -13,6 +13,10 @@ class CfgNpcGroupEntry extends RefCounted:
 	var id: int
 	var name: String
 	var countRange: Array[int]     # [最小数量, 最大数量]
+	# 默认行为
+	var default_stance: PbCommon.NPCStance = PbCommon.NPCStance.NPCStance_Unknown
+	var default_behavior: PbCommon.NPCBehaviorType = PbCommon.NPCBehaviorType.NPCBehaviorType_Unknown
+	var default_behavior_params: Dictionary = {}
 	var npcs: Array[CfgNpc]
 
 	func show() -> String:
