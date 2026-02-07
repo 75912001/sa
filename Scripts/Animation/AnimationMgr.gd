@@ -52,7 +52,11 @@ func _ready() -> void:
 func setup(_character: Character) -> void:
 	character = _character
 
-	# 初始化状态，避免第一次切换时 T-pose
+	# 重新激活 AnimationTree，强制重新缓存轨道引用
+	animation_tree.active = false
+	animation_tree.active = true
+
+	# 启动状态机
 	_lower_body_sm.start("Unarmed_Idle")
 	_upper_body_sm.start("Unarmed_Idle")
 	return
