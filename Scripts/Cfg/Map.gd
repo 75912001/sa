@@ -44,7 +44,6 @@ func load(path: String) -> void:
 		for spawn_data in spawns_array:
 			var spawn := SpawnEntry.new()
 			spawn.npc_group_id = spawn_data.get("npcGroupId", 0)
-			assert(spawn.npc_group_id > 0, "Spawn必须指定npcGroupId: 地图ID:%d" % entry.id)
 			# 解析位置
 			var pos_array: Array = spawn_data.get("position", [0, 0, 0])
 			spawn.position = Vector3(pos_array[0], pos_array[1], pos_array[2])
@@ -59,7 +58,12 @@ func load(path: String) -> void:
 
 # 校验配置
 func check() -> void:
-	return
+	for map_id in maps:
+		var entry: CfgMapEntry = maps[map_id]
+		# 校验所有 spawn 点的 npcGroupId 合法性
+		for spawn in entry.spawns:
+			assert(GCfgMgr.cfg_npc_group_mgr.get_npc_group(spawn.npc_group_id) != null,
+				"地图中引用的NPC组不存在: 地图ID:%d, NPC组ID:%d" % [entry.id, spawn.npc_group_id])
 
 # 组装配置 (预处理/索引构建)
 func assemble() -> void:
