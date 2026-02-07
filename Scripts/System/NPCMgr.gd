@@ -54,11 +54,11 @@ func spawn_npc(npc_id: int, position: Vector3, rotation: float = 0.0) -> NPC:
 	return npc
 
 # ============================================
-# 创建敌人组（引用enemy.groups.yaml）
+# 创建NPC组（引用npc.groups.yaml）
 # ============================================
 func spawn_enemy_group(group_id: int, position: Vector3) -> Array[NPC]:
-	# 使用CfgEnemyGroupMgr的随机生成功能
-	var enemy_ids = GCfgMgr.cfg_enemy_group_mgr.spawn_enemies_from_group(group_id)
+	# 使用CfgNpcGroupMgr的随机生成功能
+	var enemy_ids = GCfgMgr.cfg_npc_group_mgr.spawn_npcs_from_group(group_id)
 	if enemy_ids.is_empty():
 		push_error("NPCMgr: 敌人组生成失败 group_id:%d" % group_id)
 		return []

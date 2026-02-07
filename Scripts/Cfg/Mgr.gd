@@ -10,7 +10,7 @@ var cfg_armor_mgr: CfgArmorMgr
 var cfg_animation_mgr: CfgAnimationMgr
 var cfg_map_mgr: CfgMapMgr
 var cfg_npc_mgr: CfgNpcMgr
-var cfg_enemy_group_mgr: CfgEnemyGroupMgr
+var cfg_npc_group_mgr: CfgNpcGroupMgr
 
 func _ready() -> void:
 	cfg_weapon_mgr = CfgWeaponMgr.new()
@@ -19,7 +19,7 @@ func _ready() -> void:
 	cfg_animation_mgr = CfgAnimationMgr.new()
 	cfg_map_mgr = CfgMapMgr.new()
 	cfg_npc_mgr = CfgNpcMgr.new()
-	cfg_enemy_group_mgr = CfgEnemyGroupMgr.new()
+	cfg_npc_group_mgr = CfgNpcGroupMgr.new()
 	_load_all_cfg()
 
 # 加载所有配置
@@ -31,7 +31,7 @@ func _load_all_cfg() -> void:
 	cfg_armor_mgr.load("res://Cfg/armor.yaml")
 	cfg_map_mgr.load("res://Cfg/map.yaml")
 	cfg_npc_mgr.load("res://Cfg/npc.yaml")
-	cfg_enemy_group_mgr.load("res://Cfg/enemy.groups.yaml")  # 必须在NPC之后加载
+	cfg_npc_group_mgr.load("res://Cfg/npc.groups.yaml")  # 必须在NPC之后加载
 	# --- 检查 ---
 	cfg_weapon_mgr.check()
 	cfg_animation_mgr.check()
@@ -39,7 +39,7 @@ func _load_all_cfg() -> void:
 	cfg_armor_mgr.check()
 	cfg_map_mgr.check()
 	cfg_npc_mgr.check()
-	cfg_enemy_group_mgr.check()
+	cfg_npc_group_mgr.check()
 	# --- 组装 ---
 	cfg_weapon_mgr.assemble()
 	cfg_animation_mgr.assemble()
@@ -47,7 +47,7 @@ func _load_all_cfg() -> void:
 	cfg_armor_mgr.assemble()
 	cfg_map_mgr.assemble()
 	cfg_npc_mgr.assemble()
-	cfg_enemy_group_mgr.assemble()
+	cfg_npc_group_mgr.assemble()
 
 	prints("配置加载完成")
 
