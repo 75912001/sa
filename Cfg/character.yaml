@@ -26,7 +26,7 @@ characters:
     name: "城堡守卫"
     modelPath: "res://Assets/Characters/NPC/CastleGuard001/CastleGuard.001.fbx"
     animationLibraryRef: "default"
-    skeletonPath: "CastleGuard_001/Skeleton3D"
+    skeletonPath: "CastleGuard_001/GeneralSkeleton"
     speed: 0.8
     rotationSpeed: 5.0
     rollDistance: 2000

@@ -1,16 +1,16 @@
-# 敌人组-配置
+# NPC组-配置
 # 任何修改此文件的行为都需要通知客户端和服务端开发人员
 
-# countRange: [2, 5] 敌人数量范围(先放入必选,不足的循环从非必选中选择,直到达到敌人数量) [1, 10] 之内
-# enemies[].id: 引用 npc.yaml 中的 npc-ID (作为敌人模板)
-# enemies[].weight: 权重(加权池)，用于随机选择敌人 [默认:0]:0:必定出现
+# countRange: [2, 5] NPC数量范围(先放入必出,不足的从可选池中按权重随机选择,直到达到数量) [1, 10] 之内
+# npcs[].id: 引用 npc.yaml 中的 npc-ID
+# npcs[].weight: 权重(加权池)，用于随机选择NPC [默认:0] 0=必出 >0=可选
 
-enemyGroups:
+npcGroups:
   # 普通怪组1
   - id: 1
     name: "巡逻队"
     countRange: [1, 2]
-    enemies:
+    npcs:
       - id: 5000001
       - id: 5000002
         weight: 100
@@ -19,7 +19,7 @@ enemyGroups:
   - id: 2
     name: "精锐"
     countRange: [3, 6]
-    enemies:
+    npcs:
       - id: 5000001
         weight: 50
       - id: 5000002
