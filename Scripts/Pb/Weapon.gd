@@ -1149,6 +1149,18 @@ enum HandType {
 	HandType_Right = 2
 }
 
+enum NPCStance {
+	NPCStance_Unknown = 0,
+	NPCStance_Neutral = 1,
+	NPCStance_Hostile = 2
+}
+
+enum NPCBehaviorType {
+	NPCBehaviorType_Unknown = 0,
+	NPCBehaviorType_Idle = 1,
+	NPCBehaviorType_PatrolArea = 2
+}
+
 class RecordPrimary:
 	func _init():
 		var service
