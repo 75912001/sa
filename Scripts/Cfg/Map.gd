@@ -3,12 +3,19 @@ class_name CfgMapMgr
 
 extends RefCounted
 
+# --- NPC生成点数据 ---
+class SpawnEntry extends RefCounted:
+	var npc_group_id: int
+	var position: Vector3
+	var rotation: float = 0.0
+
 # --- 单个地图数据 ---
 class CfgMapEntry extends RefCounted:
 	var id: int
 	var name: String
 	var res_path: String
 	var bgm_path: String
+	var spawns: Array[SpawnEntry] = []           # NPC生成点列表（可选）
 	func show() -> String:
 		return name
 
@@ -30,6 +37,21 @@ func load(path: String) -> void:
 		assert(not entry.res_path.is_empty(), "地图资源为空: ID:%d" % entry.id)
 		entry.bgm_path = item.get("bgmPath", "")
 		assert(not entry.bgm_path.is_empty(), "地图bgm为空: ID:%d" % entry.id)
+
+		# 解析NPC生成点（可选字段）
+		var spawns_array: Array = item.get("spawns", [])
+		entry.spawns = []
+		for spawn_data in spawns_array:
+			var spawn := SpawnEntry.new()
+			spawn.npc_group_id = spawn_data.get("npcGroupId", 0)
+			assert(spawn.npc_group_id > 0, "Spawn必须指定npcGroupId: 地图ID:%d" % entry.id)
+			# 解析位置
+			var pos_array: Array = spawn_data.get("position", [0, 0, 0])
+			spawn.position = Vector3(pos_array[0], pos_array[1], pos_array[2])
+			# 解析旋转（可选）
+			spawn.rotation = spawn_data.get("rotation", 0.0)
+			entry.spawns.append(spawn)
+
 		if maps.has(entry.id):
 			assert(false, "地图ID-重复: %d" % entry.id)
 		else:
