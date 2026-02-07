@@ -50,7 +50,7 @@ func load(path: String) -> void:
 			npc.id = npc_item.get("id", 0)
 			assert(npc.id > 0, "Npc ID无效: Npc组ID:%d" % entry.id)
 			npc.weight = npc_item.get("weight", 0)
-			entry.enemies.append(npc)
+			entry.npcs.append(npc)
 
 		if npcGroups.has(entry.id):
 			assert(false, "Npc组ID-重复: %d" % entry.id)
@@ -89,7 +89,7 @@ func spawn_npcs_from_group(group_id: int) -> Array[int]:
 	var target_count = randi_range(min_count, max_count)
 
 	# 先添加权重为0的npc(必定出现)
-	for npc in group.enemies:
+	for npc in group.npcs:
 		if npc.weight == 0:
 			result.append(npc.id)
 			if result.size() >= target_count:
