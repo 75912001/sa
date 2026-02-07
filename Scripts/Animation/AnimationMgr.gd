@@ -103,6 +103,8 @@ func play_lower(animation_name: String) -> void:
 	if _current_lower != animation_name:
 		_current_lower = animation_name
 		_lower_body_sm.travel(animation_name)
+		# character.name 是 StringName, "null" 是 String, 需要强转以兼容三元运算符
+		print("📍 play_lower(%s) - %s" % [animation_name, String(character.name) if character else "null"])
 
 # 播放上半身动画
 func play_upper(animation_name: String) -> void:
@@ -161,6 +163,8 @@ func update_lower_animation() -> void:
 		return
 	#idle
 	play_lower("Unarmed_Idle")
+	if character.name == "@NPC@8" or character.name == "@NPC@9":  # 仅 NPC 输出调试
+		print("🎬 [%s] update_lower_animation: mode=%s, moving=%s" % [character.name, _current_mode, character.movement_mgr.is_moving()])
 
 # 上半身
 func update_upper_animation() -> void:
