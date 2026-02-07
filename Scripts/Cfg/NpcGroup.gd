@@ -56,14 +56,29 @@ func load(path: String) -> void:
 
 		# 解析NPC列表
 		var npcs_array: Array = item.get("npcs", [])
-		assert(npcs_array.size() > 0, "Npc组中没有敌人: ID:%d" % entry.id)
+		assert(npcs_array.size() > 0, "Npc组中没有npc: ID:%d" % entry.id)
 		entry.npcs = []
+		var required_npc_count = 0  # 必出NPC数量（weight=0）
+		var random_npc_count = 0    # 随机出NPC数量（weight>0）
 		for npc_item in npcs_array:
 			var npc := CfgNpc.new()
 			npc.id = npc_item.get("id", 0)
 			assert(npc.id > 0, "Npc ID无效: Npc组ID:%d" % entry.id)
 			npc.weight = npc_item.get("weight", 0)
+			if npc.weight == 0:
+				required_npc_count += 1
+			else:
+				random_npc_count += 1
 			entry.npcs.append(npc)
+
+		# 校验countRange与npcs数量的合理性
+		# 生成逻辑：先放入必出NPC，不足则从随机池循环选择直到达到目标
+		# 规则1: 必出NPC <= max_count
+		# 规则2: 必出NPC >= min_count OR 随机NPC >= 1（只要有随机NPC，就能无限填充）
+		assert(required_npc_count <= max_count,
+			"NPC组配置不合理: ID:%d, 必出NPC(%d)超过最大生成数(%d)" % [entry.id, required_npc_count, max_count])
+		assert(required_npc_count >= min_count or random_npc_count >= 1,
+			"NPC组配置不合理: ID:%d, 必出NPC(%d)不足最小(%d)，且无随机NPC补充" % [entry.id, required_npc_count, min_count])
 
 		if npcGroups.has(entry.id):
 			assert(false, "Npc组ID-重复: %d" % entry.id)
