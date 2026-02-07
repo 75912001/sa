@@ -45,6 +45,15 @@ func load(path: String) -> void:
 			"NPC组数量范围非法: ID:%d, 范围:[%d,%d]" % [entry.id, min_count, max_count])
 		entry.countRange = [min_count, max_count]
 
+		# 解析默认行为
+		entry.default_stance = item.get("defaultStance", PbCommon.NPCStance.NPCStance_Neutral)
+		assert(PbCommon.NPCStance.NPCStance_Unknown < entry.default_stance and entry.default_stance < PbCommon.NPCStance.NPCStance_Max,
+			"NPC组默认立场无效: ID:%d, stance:%d" % [entry.id, entry.default_stance])
+		entry.default_behavior = item.get("defaultBehavior", PbCommon.NPCBehaviorType.NPCBehaviorType_Idle)
+		assert(PbCommon.NPCBehaviorType.NPCBehaviorType_Unknown < entry.default_behavior and entry.default_behavior < PbCommon.NPCBehaviorType.NPCBehaviorType_Max,
+			"NPC组默认行为无效: ID:%d, behavior:%d" % [entry.id, entry.default_behavior])
+		entry.default_behavior_params = item.get("defaultBehaviorParams", {})
+
 		# 解析NPC列表
 		var npcs_array: Array = item.get("npcs", [])
 		assert(npcs_array.size() > 0, "Npc组中没有敌人: ID:%d" % entry.id)
