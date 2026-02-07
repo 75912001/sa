@@ -9,7 +9,26 @@ maps:
     resPath: "res://Scenes/Maps/Map.2000001.tscn"
     bgmPath: "res://Assets/Audio/BGM/sabgm_t0.wav"
 
+    # NPC生成点（spawns）
+    spawns:
+      # 巡逻队 - 使用组-1的默认值（敌对、区域巡逻）
+      - npcGroupId: 1
+        position: [5.0, 0, 5.0]
+        rotation: 0.0
+
+      # 精锐 - 使用组-2的默认值（敌对、区域巡逻）
+      - npcGroupId: 2
+        position: [0, 0, 10]
+        rotation: 0.0
+
   - assetID: 2000002
     name: "地图-2000002"
     resPath: "res://Scenes/Maps/Map.2000002.tscn"
     bgmPath: "res://Assets/Audio/BGM/sabgm_t0.wav"
+
+    # NPC生成点
+    spawns:
+      # 巡逻队
+      - npcGroupId: 1
+        position: [10, 0, 10]
+        rotation: 0.0
