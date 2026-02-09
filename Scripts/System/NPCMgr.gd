@@ -109,3 +109,40 @@ func clear_all_npcs() -> void:
 		npc.queue_free()
 	_npc_dict.clear()
 	print("NPCMgr: 清空所有NPC (共%d个)" % count)
+
+# 根据地图配置生成NPC
+func spawn_npcs_from_config(map_config: CfgMapMgr.CfgMapEntry) -> void:
+	for spawn in map_config.spawns:
+		_spawn_npc_group(spawn)
+	print("World: NPC生成完成")
+
+# 生成单个spawn点的NPC组
+func _spawn_npc_group(spawn: CfgMapMgr.SpawnEntry) -> void:
+	# 获取组配置
+	var group_config = GCfgMgr.cfg_npc_group_mgr.get_npc_group(spawn.npc_group_id)
+
+	# 从组中随机生成NPC列表
+	var npc_ids = GCfgMgr.cfg_npc_group_mgr.spawn_npcs_from_group(spawn.npc_group_id)
+	if npc_ids.is_empty():
+		return
+
+	# 使用组配置中的立场、行为和参数
+	var final_stance = group_config.default_stance
+	var final_behavior = group_config.default_behavior
+	var final_params = group_config.default_behavior_params.duplicate()
+
+	# 生成组内每个NPC
+	for npc_id in npc_ids:
+		var offset = Vector3.ZERO
+		if npc_ids.size() > 1:
+			# 多个NPC时随机偏移，避免重叠
+			offset = Vector3(randf_range(-2, 2), 0, randf_range(-2, 2))
+
+		spawn_npc_with_config(
+			npc_id,
+			spawn.position + offset,
+			spawn.rotation,
+			final_stance,
+			final_behavior,
+			final_params
+		)
