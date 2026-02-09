@@ -46,18 +46,5 @@ func load_map(_map_id: int) -> void:
 	npc_mgr = NPCMgr.new()
 	npc_mgr.setup(_map_loader)  # 使用地图容器作为NPC父节点
 
-	# 测试：生成几个NPC
-	_spawn_test_npcs()
-
-# 测试NPC生成（临时方法）
-func _spawn_test_npcs() -> void:
-	print("World: 开始生成测试NPC...")
-
-	# 生成单个NPC
-	var _npc1 = npc_mgr.spawn_npc(5000001, Vector3(5, 0, 5))
-	var _npc2 = npc_mgr.spawn_npc(5000002, Vector3(-5, 0, 5))
-
-	# 生成npc组
-	var npc_group = npc_mgr.spawn_npc_group(1, Vector3(0, 0, 10))
-
-	print("World: 测试NPC生成完成 (单个:%d, 组:%d)" % [2, npc_group.size()])
+	# 根据地图配置生成NPC
+	npc_mgr.spawn_npcs_from_config(map_config)
