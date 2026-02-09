@@ -104,7 +104,7 @@ func assemble() -> void:
 func get_npc_group(id: int) -> CfgNpcGroupEntry:
 	return npcGroups.get(id, null)
 
-# 从Npc组随机生成敌人
+# 从Npc组随机生成npc
 func spawn_npcs_from_group(group_id: int) -> Array[int]:
 	var group = get_npc_group(group_id)
 	if group == null:
