@@ -54,6 +54,27 @@ func spawn_npc(npc_id: int, position: Vector3, rotation: float = 0.0) -> NPC:
 	return npc
 
 # ============================================
+# 创建单个NPC（带AI配置）
+# ============================================
+func spawn_npc_with_config(
+	npc_id: int,
+	position: Vector3,
+	rotation: float,
+	stance: PbCommon.NPCStance,  
+	behavior_type: PbCommon.NPCBehaviorType, 
+	behavior_params: Dictionary
+) -> NPC:
+	# 先调用基础 spawn_npc 方法
+	var npc = spawn_npc(npc_id, position, rotation)
+
+	# 设置AI配置
+	npc.stance = stance
+	npc.behavior_type = behavior_type
+	npc.behavior_params = behavior_params
+
+	return npc
+
+# ============================================
 # 创建NPC组（引用npc.groups.yaml）
 # ============================================
 func spawn_npc_group(group_id: int, position: Vector3) -> Array[NPC]:
