@@ -20,7 +20,12 @@ var uuid: int = 0
 var pending_weapon_id: int = 0
 var pending_armor_ids: Array[int] = []
 
-# --- AI控制器（由子类设置） ---
+# --- AI实例属性（由NPCMgr在生成时设置，来自配置） ---
+var stance: PbCommon.NPCStance = PbCommon.NPCStance.NPCStance_Unknown
+var behavior_type: PbCommon.NPCBehaviorType = PbCommon.NPCBehaviorType.NPCBehaviorType_Unknown
+var behavior_params: Dictionary = {}
+
+# --- AI控制器 ---
 var ai_controller #: NPCAIController
 
 func _ready() -> void:
@@ -28,7 +33,6 @@ func _ready() -> void:
 
 	super._ready()
 
-	# NPC不注册到GGameMgr.player
 	# 装配装备（由NPCMgr设置的pending数据）
 	_equip_pending_equipment()
 	# 创建AI控制器
@@ -44,14 +48,12 @@ func _equip_pending_equipment() -> void:
 	pass
 
 func _create_ai_controller() -> void:
-	# 由子类覆写此方法创建具体的AI
-	pass
+	# 创建基础 AI 控制器
+	ai_controller = NPCAIController.new()
+	ai_controller.setup(self)
+	add_child(ai_controller)
 
 func _physics_process(_delta: float) -> void:
-	# AI控制器每帧更新决策
-	# TODO: 实现AI控制器后取消注释
-	# if ai_controller:
-	#     ai_controller.update(delta)
-
+	# AI控制器作为子节点，会自动调用 _process()
 	# 调用父类逻辑（move_and_slide、动画更新等）
 	super._physics_process(_delta)
