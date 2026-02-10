@@ -9,6 +9,7 @@ class_name NPCAIController extends Node
 
 # 引用
 var npc: NPC
+var ai_input: AIInputMgr
 
 # 出生点（用于巡逻）
 var spawn_position: Vector3
@@ -21,6 +22,7 @@ var patrol_wait_duration: float = 2.0  # 到达目标后等待的时间（秒）
 # 初始化
 func setup(_npc: NPC) -> void:
 	npc = _npc
+	ai_input = npc.input_mgr as AIInputMgr
 	spawn_position = npc.global_position
 
 	# 根据行为类型初始化
@@ -41,7 +43,7 @@ func _process(delta: float) -> void:
 # Idle 行为：原地不动
 # ============================================
 func _update_idle() -> void:
-	npc.ai_input.set_move_direction(Vector2.ZERO)
+	ai_input.set_move_direction(Vector2.ZERO)
 
 # ============================================
 # PatrolArea 行为：在出生点周围随机巡逻
@@ -50,7 +52,7 @@ func _update_patrol_area(delta: float) -> void:
 	# 如果在等待，倒计时
 	if patrol_timer > 0:
 		patrol_timer -= delta
-		npc.ai_input.set_move_direction(Vector2.ZERO)
+		ai_input.set_move_direction(Vector2.ZERO)
 		return
 
 	# 计算到目标的距离（忽略Y轴）
@@ -65,7 +67,7 @@ func _update_patrol_area(delta: float) -> void:
 	if distance < 1.0:
 		patrol_timer = patrol_wait_duration
 		_generate_new_patrol_target()
-		npc.ai_input.set_move_direction(Vector2.ZERO)
+		ai_input.set_move_direction(Vector2.ZERO)
 		return
 
 	# 计算移动方向（2D平面）
@@ -73,7 +75,7 @@ func _update_patrol_area(delta: float) -> void:
 	var direction_2d = Vector2(direction_3d.x, direction_3d.z)
 
 	# 设置移动方向
-	npc.ai_input.set_move_direction(direction_2d)
+	ai_input.set_move_direction(direction_2d)
 
 # 生成新的巡逻目标点
 func _generate_new_patrol_target() -> void:
